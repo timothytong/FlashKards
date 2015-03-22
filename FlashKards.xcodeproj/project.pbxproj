@@ -1,0 +1,443 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3320C5C21ABF807B00A90CD4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5C11ABF807B00A90CD4 /* AppDelegate.swift */; };
+		3320C5C51ABF807B00A90CD4 /* FlashKards.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5C31ABF807B00A90CD4 /* FlashKards.xcdatamodeld */; };
+		3320C5C71ABF807B00A90CD4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5C61ABF807B00A90CD4 /* ViewController.swift */; };
+		3320C5CA1ABF807B00A90CD4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3320C5C81ABF807B00A90CD4 /* Main.storyboard */; };
+		3320C5CC1ABF807B00A90CD4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3320C5CB1ABF807B00A90CD4 /* Images.xcassets */; };
+		3320C5CF1ABF807B00A90CD4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3320C5CD1ABF807B00A90CD4 /* LaunchScreen.xib */; };
+		3320C5DB1ABF807C00A90CD4 /* FlashKardsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5DA1ABF807C00A90CD4 /* FlashKardsTests.swift */; };
+		3320C5E91ABF816600A90CD4 /* NavBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5E81ABF816600A90CD4 /* NavBarController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3320C5D51ABF807C00A90CD4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3320C5B41ABF807B00A90CD4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3320C5BB1ABF807B00A90CD4;
+			remoteInfo = FlashKards;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3320C5BC1ABF807B00A90CD4 /* FlashKards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlashKards.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3320C5C01ABF807B00A90CD4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3320C5C11ABF807B00A90CD4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3320C5C41ABF807B00A90CD4 /* FlashKards.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FlashKards.xcdatamodel; sourceTree = "<group>"; };
+		3320C5C61ABF807B00A90CD4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3320C5C91ABF807B00A90CD4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		3320C5CB1ABF807B00A90CD4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		3320C5CE1ABF807B00A90CD4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		3320C5D41ABF807C00A90CD4 /* FlashKardsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlashKardsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3320C5D91ABF807C00A90CD4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3320C5DA1ABF807C00A90CD4 /* FlashKardsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashKardsTests.swift; sourceTree = "<group>"; };
+		3320C5E81ABF816600A90CD4 /* NavBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavBarController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3320C5B91ABF807B00A90CD4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3320C5D11ABF807C00A90CD4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3320C5B31ABF807B00A90CD4 = {
+			isa = PBXGroup;
+			children = (
+				3320C5BE1ABF807B00A90CD4 /* FlashKards */,
+				3320C5D71ABF807C00A90CD4 /* FlashKardsTests */,
+				3320C5BD1ABF807B00A90CD4 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3320C5BD1ABF807B00A90CD4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3320C5BC1ABF807B00A90CD4 /* FlashKards.app */,
+				3320C5D41ABF807C00A90CD4 /* FlashKardsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3320C5BE1ABF807B00A90CD4 /* FlashKards */ = {
+			isa = PBXGroup;
+			children = (
+				3320C5E81ABF816600A90CD4 /* NavBarController.swift */,
+				3320C5C11ABF807B00A90CD4 /* AppDelegate.swift */,
+				3320C5C61ABF807B00A90CD4 /* ViewController.swift */,
+				3320C5C81ABF807B00A90CD4 /* Main.storyboard */,
+				3320C5CB1ABF807B00A90CD4 /* Images.xcassets */,
+				3320C5CD1ABF807B00A90CD4 /* LaunchScreen.xib */,
+				3320C5C31ABF807B00A90CD4 /* FlashKards.xcdatamodeld */,
+				3320C5BF1ABF807B00A90CD4 /* Supporting Files */,
+			);
+			path = FlashKards;
+			sourceTree = "<group>";
+		};
+		3320C5BF1ABF807B00A90CD4 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				3320C5C01ABF807B00A90CD4 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3320C5D71ABF807C00A90CD4 /* FlashKardsTests */ = {
+			isa = PBXGroup;
+			children = (
+				3320C5DA1ABF807C00A90CD4 /* FlashKardsTests.swift */,
+				3320C5D81ABF807C00A90CD4 /* Supporting Files */,
+			);
+			path = FlashKardsTests;
+			sourceTree = "<group>";
+		};
+		3320C5D81ABF807C00A90CD4 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				3320C5D91ABF807C00A90CD4 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3320C5BB1ABF807B00A90CD4 /* FlashKards */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3320C5DE1ABF807C00A90CD4 /* Build configuration list for PBXNativeTarget "FlashKards" */;
+			buildPhases = (
+				3320C5B81ABF807B00A90CD4 /* Sources */,
+				3320C5B91ABF807B00A90CD4 /* Frameworks */,
+				3320C5BA1ABF807B00A90CD4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FlashKards;
+			productName = FlashKards;
+			productReference = 3320C5BC1ABF807B00A90CD4 /* FlashKards.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3320C5D31ABF807C00A90CD4 /* FlashKardsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3320C5E11ABF807C00A90CD4 /* Build configuration list for PBXNativeTarget "FlashKardsTests" */;
+			buildPhases = (
+				3320C5D01ABF807C00A90CD4 /* Sources */,
+				3320C5D11ABF807C00A90CD4 /* Frameworks */,
+				3320C5D21ABF807C00A90CD4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3320C5D61ABF807C00A90CD4 /* PBXTargetDependency */,
+			);
+			name = FlashKardsTests;
+			productName = FlashKardsTests;
+			productReference = 3320C5D41ABF807C00A90CD4 /* FlashKardsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3320C5B41ABF807B00A90CD4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0620;
+				ORGANIZATIONNAME = "Timothy Tong";
+				TargetAttributes = {
+					3320C5BB1ABF807B00A90CD4 = {
+						CreatedOnToolsVersion = 6.2;
+					};
+					3320C5D31ABF807C00A90CD4 = {
+						CreatedOnToolsVersion = 6.2;
+						TestTargetID = 3320C5BB1ABF807B00A90CD4;
+					};
+				};
+			};
+			buildConfigurationList = 3320C5B71ABF807B00A90CD4 /* Build configuration list for PBXProject "FlashKards" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3320C5B31ABF807B00A90CD4;
+			productRefGroup = 3320C5BD1ABF807B00A90CD4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3320C5BB1ABF807B00A90CD4 /* FlashKards */,
+				3320C5D31ABF807C00A90CD4 /* FlashKardsTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3320C5BA1ABF807B00A90CD4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3320C5CA1ABF807B00A90CD4 /* Main.storyboard in Resources */,
+				3320C5CF1ABF807B00A90CD4 /* LaunchScreen.xib in Resources */,
+				3320C5CC1ABF807B00A90CD4 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3320C5D21ABF807C00A90CD4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3320C5B81ABF807B00A90CD4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3320C5C71ABF807B00A90CD4 /* ViewController.swift in Sources */,
+				3320C5C51ABF807B00A90CD4 /* FlashKards.xcdatamodeld in Sources */,
+				3320C5C21ABF807B00A90CD4 /* AppDelegate.swift in Sources */,
+				3320C5E91ABF816600A90CD4 /* NavBarController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3320C5D01ABF807C00A90CD4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3320C5DB1ABF807C00A90CD4 /* FlashKardsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3320C5D61ABF807C00A90CD4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3320C5BB1ABF807B00A90CD4 /* FlashKards */;
+			targetProxy = 3320C5D51ABF807C00A90CD4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		3320C5C81ABF807B00A90CD4 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3320C5C91ABF807B00A90CD4 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		3320C5CD1ABF807B00A90CD4 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3320C5CE1ABF807B00A90CD4 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3320C5DC1ABF807C00A90CD4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3320C5DD1ABF807C00A90CD4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3320C5DF1ABF807C00A90CD4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = FlashKards/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		3320C5E01ABF807C00A90CD4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = FlashKards/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		3320C5E21ABF807C00A90CD4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = FlashKardsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlashKards.app/FlashKards";
+			};
+			name = Debug;
+		};
+		3320C5E31ABF807C00A90CD4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = FlashKardsTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlashKards.app/FlashKards";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3320C5B71ABF807B00A90CD4 /* Build configuration list for PBXProject "FlashKards" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3320C5DC1ABF807C00A90CD4 /* Debug */,
+				3320C5DD1ABF807C00A90CD4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3320C5DE1ABF807C00A90CD4 /* Build configuration list for PBXNativeTarget "FlashKards" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3320C5DF1ABF807C00A90CD4 /* Debug */,
+				3320C5E01ABF807C00A90CD4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		3320C5E11ABF807C00A90CD4 /* Build configuration list for PBXNativeTarget "FlashKardsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3320C5E21ABF807C00A90CD4 /* Debug */,
+				3320C5E31ABF807C00A90CD4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		3320C5C31ABF807B00A90CD4 /* FlashKards.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3320C5C41ABF807B00A90CD4 /* FlashKards.xcdatamodel */,
+			);
+			currentVersion = 3320C5C41ABF807B00A90CD4 /* FlashKards.xcdatamodel */;
+			path = FlashKards.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 3320C5B41ABF807B00A90CD4 /* Project object */;
+}
