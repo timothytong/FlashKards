@@ -14,7 +14,8 @@
 		3320C5CC1ABF807B00A90CD4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3320C5CB1ABF807B00A90CD4 /* Images.xcassets */; };
 		3320C5CF1ABF807B00A90CD4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3320C5CD1ABF807B00A90CD4 /* LaunchScreen.xib */; };
 		3320C5DB1ABF807C00A90CD4 /* FlashKardsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5DA1ABF807C00A90CD4 /* FlashKardsTests.swift */; };
-		3320C5E91ABF816600A90CD4 /* NavBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5E81ABF816600A90CD4 /* NavBarController.swift */; };
+		33402CEF1AC09B5E00265F70 /* FlashCardsOverviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CED1AC09B5E00265F70 /* FlashCardsOverviewCell.swift */; };
+		33402CF01AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33402CEE1AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +40,8 @@
 		3320C5D41ABF807C00A90CD4 /* FlashKardsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlashKardsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3320C5D91ABF807C00A90CD4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3320C5DA1ABF807C00A90CD4 /* FlashKardsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashKardsTests.swift; sourceTree = "<group>"; };
-		3320C5E81ABF816600A90CD4 /* NavBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavBarController.swift; sourceTree = "<group>"; };
+		33402CED1AC09B5E00265F70 /* FlashCardsOverviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardsOverviewCell.swift; sourceTree = "<group>"; };
+		33402CEE1AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlashCardsOverviewCellTemplate.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,9 +83,10 @@
 		3320C5BE1ABF807B00A90CD4 /* FlashKards */ = {
 			isa = PBXGroup;
 			children = (
-				3320C5E81ABF816600A90CD4 /* NavBarController.swift */,
 				3320C5C11ABF807B00A90CD4 /* AppDelegate.swift */,
 				3320C5C61ABF807B00A90CD4 /* ViewController.swift */,
+				33402CED1AC09B5E00265F70 /* FlashCardsOverviewCell.swift */,
+				33402CEE1AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib */,
 				3320C5C81ABF807B00A90CD4 /* Main.storyboard */,
 				3320C5CB1ABF807B00A90CD4 /* Images.xcassets */,
 				3320C5CD1ABF807B00A90CD4 /* LaunchScreen.xib */,
@@ -199,6 +202,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3320C5CA1ABF807B00A90CD4 /* Main.storyboard in Resources */,
+				33402CF01AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib in Resources */,
 				3320C5CF1ABF807B00A90CD4 /* LaunchScreen.xib in Resources */,
 				3320C5CC1ABF807B00A90CD4 /* Images.xcassets in Resources */,
 			);
@@ -219,9 +223,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3320C5C71ABF807B00A90CD4 /* ViewController.swift in Sources */,
+				33402CEF1AC09B5E00265F70 /* FlashCardsOverviewCell.swift in Sources */,
 				3320C5C51ABF807B00A90CD4 /* FlashKards.xcdatamodeld in Sources */,
 				3320C5C21ABF807B00A90CD4 /* AppDelegate.swift in Sources */,
-				3320C5E91ABF816600A90CD4 /* NavBarController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,6 +419,7 @@
 				3320C5E01ABF807C00A90CD4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3320C5E11ABF807C00A90CD4 /* Build configuration list for PBXNativeTarget "FlashKardsTests" */ = {
 			isa = XCConfigurationList;
@@ -423,6 +428,7 @@
 				3320C5E31ABF807C00A90CD4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
