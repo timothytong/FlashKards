@@ -50,10 +50,10 @@
                         <color key="textColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ieu-Cq-4V3">
-                        <rect key="frame" x="23" y="98" width="329" height="1"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ieu-Cq-4V3" userLabel="SepLine">
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="width" id="Pgv-os-UfX"/>
                             <constraint firstAttribute="height" constant="1" id="eDT-jg-l9S"/>
                         </constraints>
                     </view>
@@ -88,7 +88,6 @@
                     <constraint firstItem="7YK-Ec-Ajs" firstAttribute="leading" secondItem="5vi-dV-4fl" secondAttribute="leadingMargin" constant="15" id="fzk-gv-rZN"/>
                     <constraint firstItem="Nme-Aa-3OM" firstAttribute="trailing" secondItem="5vi-dV-4fl" secondAttribute="trailingMargin" id="grQ-Fa-3k1"/>
                     <constraint firstItem="c1J-2j-xBr" firstAttribute="top" secondItem="zGi-DK-Nr5" secondAttribute="bottom" id="n0S-p4-DQd"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="ieu-Cq-4V3" secondAttribute="trailing" id="plc-rq-8DL"/>
                     <constraint firstItem="Sha-Jc-mGN" firstAttribute="top" secondItem="5vi-dV-4fl" secondAttribute="topMargin" constant="13" id="uPg-j5-ON2"/>
                     <constraint firstItem="8xX-Ou-m3Z" firstAttribute="trailing" secondItem="5vi-dV-4fl" secondAttribute="trailingMargin" id="wll-Rc-YCM"/>
                     <constraint firstItem="Nme-Aa-3OM" firstAttribute="leading" secondItem="zGi-DK-Nr5" secondAttribute="trailing" constant="1" id="xq4-xy-uPr"/>
@@ -100,6 +99,7 @@
                 <outlet property="collectionProgressLabel" destination="Sha-Jc-mGN" id="oeb-DU-hZQ"/>
                 <outlet property="lastReviewedLabel" destination="c1J-2j-xBr" id="jPp-2i-VKn"/>
                 <outlet property="numCardsLabel" destination="Nme-Aa-3OM" id="y2F-o7-ysR"/>
+                <outlet property="sepLineWidthConstraint" destination="Pgv-os-UfX" id="zLz-iZ-ZC9"/>
                 <outlet property="separatorLine" destination="ieu-Cq-4V3" id="WUV-xE-u6f"/>
             </connections>
             <point key="canvasLocation" x="168" y="298"/>
