@@ -10,6 +10,7 @@ import UIKit
 
 class FlashCardsOverviewCell: UITableViewCell {
     @IBOutlet weak var separatorLine: UIView!
+
     @IBOutlet weak var collectionLabel: UILabel!
     @IBOutlet weak var collectionProgressLabel: UILabel!
     @IBOutlet weak var lastReviewedLabel: UILabel!
@@ -18,8 +19,9 @@ class FlashCardsOverviewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         self.collectionLabel.adjustsFontSizeToFitWidth = true
-        self.collectionLabel.numberOfLines = 0
+        self.collectionLabel.numberOfLines = 2
         self.collectionLabel.minimumScaleFactor = 0.5
+        self.selectionStyle = UITableViewCellSelectionStyle.None
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -29,18 +31,15 @@ class FlashCardsOverviewCell: UITableViewCell {
     }
     
     func populateCellWithCollectionName(collectionName: String!, progress: Int!, lastReviewedDate: String!, numCardsInCollection: Int!){
-        /* Calculate optimal width based on string length */
+        /* Calculate optimal width based on string length
         var collNameOptimalBounds = (collectionName as NSString!).boundingRectWithSize(self.collectionLabel.frame.size,
             options: NSStringDrawingOptions.UsesLineFragmentOrigin,
             attributes: [NSFontAttributeName:self.collectionLabel.font],
             context: nil)
-        
-        /*
-        self.collectionLabel.frame = CGRectMake(self.collectionLabel.frame.origin.x, self.collectionLabel.frame.origin.y, collNameOptimalBounds.width, self.collectionLabel.frame.height)
         */
         
-        self.collectionLabel.text = collectionName
-        self.collectionProgressLabel.text = "(\(progress)%)"
+        self.collectionLabel.text = collectionName.utf16Count >= 20 ? (collectionName as NSString!).substringToIndex(18) + "..": collectionName
+        self.collectionProgressLabel.text = "\(progress)%"
         self.lastReviewedLabel.text = lastReviewedDate
         self.numCardsLabel.text = "\(numCardsInCollection)"
         var progressColor:UIColor
@@ -59,5 +58,4 @@ class FlashCardsOverviewCell: UITableViewCell {
         self.collectionProgressLabel.textColor = progressColor
         self.separatorLine.backgroundColor = progressColor
     }
-
 }
