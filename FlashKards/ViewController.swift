@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, InputPopupDelegate {
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private weak var addCardsButton: UIBarButtonItem!
     private var flashcardCollections: Array<FlashCardCollection>!
@@ -58,7 +58,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // New collection popup
         newCollectionPopup = InputPopup(frame: CGRect(x: 35, y: view.frame.height/5, width: view.frame.width - 70, height: view.frame.height * 3/5))
         newCollectionPopup.alpha = 0
-        newCollectionPopup.transform = CGAffineTransformMakeScale(0.8, 0.8)
+        newCollectionPopup.transform = CGAffineTransformMakeScale(1.1, 1.1)
+        newCollectionPopup.delegate = self
         navigationController?.view.addSubview(newCollectionPopup)
         
     }
@@ -80,7 +81,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func openAddColPopup(){
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+            UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
                 self.dimLayer.alpha = 1
                 }, completion: { (complete) -> Void in
             })
@@ -88,11 +89,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 self.newCollectionPopup.alpha = 0.5
                 self.newCollectionPopup.transform = CGAffineTransformMakeScale(1.2, 1.2)
                 }, completion: { (complete) -> Void in
-                    UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                    UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                         self.newCollectionPopup.alpha = 1
                         self.newCollectionPopup.transform = CGAffineTransformIdentity
                         }, completion: { (complete) -> Void in
-                            
                     })
             })
         })
@@ -100,12 +100,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func closeAddColPopup(){
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+            UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
                 self.dimLayer.alpha = 0
+                self.newCollectionPopup.transform = CGAffineTransformMakeScale(0.8, 0.8)
+                self.newCollectionPopup.alpha = 0
                 }, completion: { (complete) -> Void in
-                    
+                    self.newCollectionPopup.transform = CGAffineTransformMakeScale(1.1, 1.1)
             })
         })
+    }
+    
+    func inputPopupWillClose() {
+        closeAddColPopup()
     }
 }
 

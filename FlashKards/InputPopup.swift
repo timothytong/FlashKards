@@ -7,9 +7,12 @@
 //
 
 import UIKit
-
+@objc protocol InputPopupDelegate{
+    func inputPopupWillClose()
+}
 class InputPopup: UIView, UITextFieldDelegate {
     private var inputField: UITextField!
+    var delegate: AnyObject?
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
@@ -23,6 +26,7 @@ class InputPopup: UIView, UITextFieldDelegate {
         layer.borderWidth = 2
         layer.borderColor = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 0.7).CGColor
         
+        // Instruction label
         var instrucLabel = UILabel(frame: CGRectMake(0, 25, frame.width, frame.height/3))
         instrucLabel.text = "Name your new collection."
         instrucLabel.font = UIFont(name: "AvenirNextCondensed-Ultralight", size: 35)
@@ -38,14 +42,22 @@ class InputPopup: UIView, UITextFieldDelegate {
         inputField.backgroundColor = UIColor(red: 53/255, green: 53/255, blue: 53/255, alpha: 1)
         inputField.font = UIFont(name: "AvenirNextCondensed-Regular", size: 25)
         inputField.textColor = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha:1)
-        inputField.placeholder = "Name here."
+        let attrs = [NSForegroundColorAttributeName: UIColor(red: 128/255, green: 132/255, blue: 131/255, alpha: 1)]
+        if inputField.respondsToSelector("setAttributedPlaceholder:"){
+            inputField.attributedPlaceholder = NSAttributedString(string: "Name here.", attributes: attrs)
+        }
+        else{
+             inputField.placeholder = "Name here."
+        }
+
         inputField.textAlignment = NSTextAlignment.Center
         inputField.returnKeyType = UIReturnKeyType.Done
         inputField.delegate = self
         var cancelImg = UIImage(named: "cancel-white.png")
+        var cancelImg_hilighted = UIImage(named: "cancel-white-highlighted.png")
         var clrBtn = UIButton(frame:CGRectMake(0, 0, 22, 24))
         clrBtn.setImage(cancelImg, forState: .Normal)
-        clrBtn.setImage(cancelImg, forState: .Highlighted)
+        clrBtn.setImage(cancelImg_hilighted, forState: .Highlighted)
         clrBtn.addTarget(self, action: "clearTxt", forControlEvents: .TouchUpInside)
         inputField.rightView = clrBtn
         inputField.rightViewMode = .WhileEditing
@@ -57,6 +69,7 @@ class InputPopup: UIView, UITextFieldDelegate {
         inputField.layer.masksToBounds = true
         addSubview(inputField)
         
+        // Done Btn
         var doneBtn = UIButton(frame: CGRect(x: frame.width/2 - 50, y: frame.height * 2/3, width: 100, height: 50))
         var doneBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: doneBtn.frame.width, height: doneBtn.frame.height))
         doneBtnLabel.font = UIFont(name: "AvenirNext-UltraLight", size: 25)
@@ -66,13 +79,23 @@ class InputPopup: UIView, UITextFieldDelegate {
         doneBtn.addSubview(doneBtnLabel)
         addSubview(doneBtn)
         
+        // Cancel Btn
+        var cancelBtn = UIButton(frame: CGRect(x: frame.width - 25, y: 5, width: 20, height: 20))
+        cancelBtn.setImage(cancelImg, forState: .Normal)
+        cancelBtn.setImage(cancelImg_hilighted, forState: .Highlighted)
+        cancelBtn.addTarget(self, action: "cancelBtnTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        addSubview(cancelBtn)
+        
+        
     }
     
     func clearTxt(){
         inputField.text = ""
     }
     
-    
+    func cancelBtnTapped(){
+        self.delegate?.inputPopupWillClose()
+    }
     
     func textFieldDidBeginEditing(textField: UITextField) {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "textFieldTextDidChange:", name: UITextFieldTextDidChangeNotification, object: inputField)

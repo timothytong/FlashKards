@@ -15,6 +15,7 @@
 		3320C5CF1ABF807B00A90CD4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3320C5CD1ABF807B00A90CD4 /* LaunchScreen.xib */; };
 		3320C5DB1ABF807C00A90CD4 /* FlashKardsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5DA1ABF807C00A90CD4 /* FlashKardsTests.swift */; };
 		33213C391AC1E44700CF1B38 /* cancel-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 33213C381AC1E44700CF1B38 /* cancel-white.png */; };
+		33213C3B1AC20D6A00CF1B38 /* cancel-white-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 33213C3A1AC20D6A00CF1B38 /* cancel-white-highlighted.png */; };
 		33402CEF1AC09B5E00265F70 /* FlashCardsOverviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CED1AC09B5E00265F70 /* FlashCardsOverviewCell.swift */; };
 		33402CF01AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33402CEE1AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib */; };
 		33402CF31AC0ABD000265F70 /* FlashCardCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CF21AC0ABD000265F70 /* FlashCardCollection.swift */; };
@@ -44,6 +45,7 @@
 		3320C5D91ABF807C00A90CD4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3320C5DA1ABF807C00A90CD4 /* FlashKardsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashKardsTests.swift; sourceTree = "<group>"; };
 		33213C381AC1E44700CF1B38 /* cancel-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cancel-white.png"; path = "Images/cancel-white.png"; sourceTree = "<group>"; };
+		33213C3A1AC20D6A00CF1B38 /* cancel-white-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cancel-white-highlighted.png"; path = "Images/cancel-white-highlighted.png"; sourceTree = "<group>"; };
 		33402CED1AC09B5E00265F70 /* FlashCardsOverviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardsOverviewCell.swift; sourceTree = "<group>"; };
 		33402CEE1AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlashCardsOverviewCellTemplate.xib; sourceTree = "<group>"; };
 		33402CF21AC0ABD000265F70 /* FlashCardCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardCollection.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 		33213C371AC1E43900CF1B38 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				33213C3A1AC20D6A00CF1B38 /* cancel-white-highlighted.png */,
 				33213C381AC1E44700CF1B38 /* cancel-white.png */,
 			);
 			name = Images;
@@ -253,6 +256,7 @@
 				33213C391AC1E44700CF1B38 /* cancel-white.png in Resources */,
 				3320C5CA1ABF807B00A90CD4 /* Main.storyboard in Resources */,
 				33402CF01AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib in Resources */,
+				33213C3B1AC20D6A00CF1B38 /* cancel-white-highlighted.png in Resources */,
 				3320C5CF1ABF807B00A90CD4 /* LaunchScreen.xib in Resources */,
 				3320C5CC1ABF807B00A90CD4 /* Images.xcassets in Resources */,
 			);
