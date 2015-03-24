@@ -14,9 +14,11 @@
 		3320C5CC1ABF807B00A90CD4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3320C5CB1ABF807B00A90CD4 /* Images.xcassets */; };
 		3320C5CF1ABF807B00A90CD4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3320C5CD1ABF807B00A90CD4 /* LaunchScreen.xib */; };
 		3320C5DB1ABF807C00A90CD4 /* FlashKardsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5DA1ABF807C00A90CD4 /* FlashKardsTests.swift */; };
+		33213C391AC1E44700CF1B38 /* cancel-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 33213C381AC1E44700CF1B38 /* cancel-white.png */; };
 		33402CEF1AC09B5E00265F70 /* FlashCardsOverviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CED1AC09B5E00265F70 /* FlashCardsOverviewCell.swift */; };
 		33402CF01AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33402CEE1AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib */; };
 		33402CF31AC0ABD000265F70 /* FlashCardCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CF21AC0ABD000265F70 /* FlashCardCollection.swift */; };
+		33402CF91AC0C1F400265F70 /* InputPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CF81AC0C1F400265F70 /* InputPopup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,9 +43,11 @@
 		3320C5D41ABF807C00A90CD4 /* FlashKardsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlashKardsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3320C5D91ABF807C00A90CD4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3320C5DA1ABF807C00A90CD4 /* FlashKardsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashKardsTests.swift; sourceTree = "<group>"; };
+		33213C381AC1E44700CF1B38 /* cancel-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cancel-white.png"; path = "Images/cancel-white.png"; sourceTree = "<group>"; };
 		33402CED1AC09B5E00265F70 /* FlashCardsOverviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardsOverviewCell.swift; sourceTree = "<group>"; };
 		33402CEE1AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlashCardsOverviewCellTemplate.xib; sourceTree = "<group>"; };
 		33402CF21AC0ABD000265F70 /* FlashCardCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardCollection.swift; sourceTree = "<group>"; };
+		33402CF81AC0C1F400265F70 /* InputPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputPopup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,10 +89,10 @@
 		3320C5BE1ABF807B00A90CD4 /* FlashKards */ = {
 			isa = PBXGroup;
 			children = (
+				33402CF71AC0B7F300265F70 /* ViewControllers */,
+				33402CF61AC0B7DA00265F70 /* Models */,
 				3320C5C11ABF807B00A90CD4 /* AppDelegate.swift */,
-				3320C5C61ABF807B00A90CD4 /* ViewController.swift */,
-				33402CF21AC0ABD000265F70 /* FlashCardCollection.swift */,
-				33402CF11AC09CB800265F70 /* HomePageCell */,
+				33402CFA1AC0C20700265F70 /* Views */,
 				3320C5C81ABF807B00A90CD4 /* Main.storyboard */,
 				3320C5CB1ABF807B00A90CD4 /* Images.xcassets */,
 				3320C5CD1ABF807B00A90CD4 /* LaunchScreen.xib */,
@@ -102,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				3320C5C01ABF807B00A90CD4 /* Info.plist */,
+				33213C371AC1E43900CF1B38 /* Images */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -123,6 +128,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		33213C371AC1E43900CF1B38 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				33213C381AC1E44700CF1B38 /* cancel-white.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		33402CF11AC09CB800265F70 /* HomePageCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +143,31 @@
 				33402CEE1AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib */,
 			);
 			name = HomePageCell;
+			sourceTree = "<group>";
+		};
+		33402CF61AC0B7DA00265F70 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				33402CF21AC0ABD000265F70 /* FlashCardCollection.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		33402CF71AC0B7F300265F70 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				3320C5C61ABF807B00A90CD4 /* ViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		33402CFA1AC0C20700265F70 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				33402CF81AC0C1F400265F70 /* InputPopup.swift */,
+				33402CF11AC09CB800265F70 /* HomePageCell */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,6 +250,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33213C391AC1E44700CF1B38 /* cancel-white.png in Resources */,
 				3320C5CA1ABF807B00A90CD4 /* Main.storyboard in Resources */,
 				33402CF01AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib in Resources */,
 				3320C5CF1ABF807B00A90CD4 /* LaunchScreen.xib in Resources */,
@@ -234,6 +273,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3320C5C71ABF807B00A90CD4 /* ViewController.swift in Sources */,
+				33402CF91AC0C1F400265F70 /* InputPopup.swift in Sources */,
 				33402CF31AC0ABD000265F70 /* FlashCardCollection.swift in Sources */,
 				33402CEF1AC09B5E00265F70 /* FlashCardsOverviewCell.swift in Sources */,
 				3320C5C51ABF807B00A90CD4 /* FlashKards.xcdatamodeld in Sources */,
