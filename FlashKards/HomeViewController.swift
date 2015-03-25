@@ -195,11 +195,18 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         closeConfirmDeletePopup()
         if let rowOfInterest = self.rowOfInterest{
             //            println("Deleting row \(rowOfInterest); CDObjCount: \(flashcardCoreDataObjs.count); tableRowsCount: \(tableView.numberOfRowsInSection(0))")
-            flashcardCoreDataObjs.removeAtIndex(rowOfInterest.row)
-            tableView.deleteRowsAtIndexPaths([rowOfInterest], withRowAnimation: UITableViewRowAnimation.Automatic)
+            
+            let collectionToBeDeleted = flashcardCoreDataObjs[rowOfInterest.row]
+            if(deleteCollectionWithName(collectionToBeDeleted.valueForKey("name") as? String!)){
+                flashcardCoreDataObjs.removeAtIndex(rowOfInterest.row)
+                tableView.deleteRowsAtIndexPaths([rowOfInterest], withRowAnimation: UITableViewRowAnimation.Automatic)
+            }
+            else{
+                println("Deletion Error")
+            }
         }
         else{
-            println("Deletion error")
+            println("rowOfInterest NOT FOUND")
         }
     }
     
@@ -238,7 +245,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let entity = NSEntityDescription.entityForName("Collection", inManagedObjectContext: managedContext)
         let fetchRequest = NSFetchRequest()
         fetchRequest.entity = entity
-        let predicate = NSPredicate(format: "name == \(collectionName)")
+        let predicate = NSPredicate(format: "name == '\(collectionName)'")
         fetchRequest.predicate = predicate
         /* sorting...
         let sortDescriptor = NSSortDescriptor(key: "lastReviewed", ascending: true)
@@ -252,8 +259,21 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         return nil
     }
     
-    private func deleteCollection(collection: FlashCardCollection){
-        
+    private func deleteCollectionWithName(name: String!) -> Bool{
+        if let collectionCoreDataObj = searchExistingCollectionsWithName(name){
+            let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+            let managedContext = appDelegate.managedObjectContext!
+            managedContext.deleteObject(collectionCoreDataObj)
+            var error: NSError?
+            if !managedContext.save(&error) {
+                println("Could not save \(error), \(error?.userInfo)")
+            }
+            else{
+                println("Deleted successfully")
+            }
+            return true
+        }
+        return false
     }
 }
 
