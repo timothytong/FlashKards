@@ -47,11 +47,14 @@ class FlashCardsOverviewCell: UITableViewCell {
             attributes: [NSFontAttributeName:self.collectionLabel.font],
             context: nil)
             */
+            self.sepLineWidthConstraint.constant = 0
+            self.layoutIfNeeded()
             let collectionName = collection.collectionName
             let progress = collection.progress
             let lastReviewedDate = collection.lastReviewed
             let numCardsInCollection = collection.numCards
             
+            self.kardLabel.text = (numCardsInCollection == 1) ? "KARD" : "KARDS"
             self.collectionLabel.text = collectionName.utf16Count >= 20 ? (collectionName as NSString!).substringToIndex(18) + "..": collectionName
             self.collectionProgressLabel.text = "\(progress)%"
             self.lastReviewedLabel.text = lastReviewedDate
@@ -75,7 +78,6 @@ class FlashCardsOverviewCell: UITableViewCell {
             UIView.animateWithDuration(1, delay: 0.5, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
                 self.layoutIfNeeded()
                 }) { (complete) -> Void in
-
             }
             
         })
