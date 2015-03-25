@@ -15,13 +15,14 @@ class FlashCardsOverviewCell: UITableViewCell {
     @IBOutlet private weak var collectionProgressLabel: UILabel!
     @IBOutlet private weak var lastReviewedLabel: UILabel!
     @IBOutlet private weak var numCardsLabel: UILabel!
+    @IBOutlet weak var kardLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.collectionLabel.adjustsFontSizeToFitWidth = true
-        self.collectionLabel.numberOfLines = 2
-        self.collectionLabel.minimumScaleFactor = 0.5
-        self.selectionStyle = UITableViewCellSelectionStyle.None
+        collectionLabel.adjustsFontSizeToFitWidth = true
+        collectionLabel.numberOfLines = 2
+        collectionLabel.minimumScaleFactor = 0.5
+        selectionStyle = UITableViewCellSelectionStyle.None
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
@@ -30,13 +31,21 @@ class FlashCardsOverviewCell: UITableViewCell {
     }
     
     override func setHighlighted(highlighted: Bool, animated: Bool) {
-        if highlighted{
-        }
-        else{
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            if highlighted{
+                UIView.animateWithDuration(0.15, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                    self.contentView.backgroundColor = UIColor(red: 128/255, green: 132/255, blue: 131/255, alpha: 1)
+                    }, completion: { (complete) -> Void in
+                })
+            }
+            else{
                 
-            })
-        }
+                UIView.animateWithDuration(0.15, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                    self.contentView.backgroundColor = UIColor(red: 57/255, green: 57/255, blue: 57/255, alpha: 1)
+                    }, completion: { (complete) -> Void in
+                })
+            }
+        })
     }
     
     func populateCellWithCollection(collection: FlashCardCollection!){
