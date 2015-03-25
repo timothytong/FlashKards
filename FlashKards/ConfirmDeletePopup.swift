@@ -36,19 +36,20 @@ class ConfirmDeletePopup: UIView {
         layer.borderColor = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 0.7).CGColor
         
         // Instruction label
-        instrucLabel = UILabel(frame: CGRectMake(10, 25, frame.width - 20, frame.height/3))
-        instrucLabel.font = UIFont(name: "AvenirNextCondensed-Ultralight", size: 35)
+        instrucLabel = UILabel(frame: CGRectMake(10, 25, frame.width - 20, frame.height/2))
+        instrucLabel.font = UIFont(name: "AppleSDGothicNeo-Thin", size: 30)
         instrucLabel.textColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
-        instrucLabel.numberOfLines = 2
+        instrucLabel.numberOfLines = 3
         instrucLabel.textAlignment = NSTextAlignment.Center
-        instrucLabel.transform = CGAffineTransformMakeScale(1, 0.8)
+        instrucLabel.adjustsFontSizeToFitWidth = true
+        instrucLabel.minimumScaleFactor = 0.7
         addSubview(instrucLabel)
         
         
         // Confirm Btn
         var confirmBtn = UIButton(frame: CGRect(x: 10, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50))
         var confirmBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: confirmBtn.frame.width, height: confirmBtn.frame.height))
-        confirmBtnLabel.font = UIFont(name: "AvenirNext-UltraLight", size: 25)
+        confirmBtnLabel.font = UIFont(name: "AppleSDGothicNeo-Semibold", size: 25)
         confirmBtnLabel.text = "Delete"
         confirmBtnLabel.textAlignment = NSTextAlignment.Center
         confirmBtnLabel.textColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
@@ -59,7 +60,7 @@ class ConfirmDeletePopup: UIView {
         // Cancel Btn
         var cancelBtn = UIButton(frame: CGRect(x: frame.width/2 + 5, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50))
         var cancelBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: confirmBtn.frame.width, height: confirmBtn.frame.height))
-        cancelBtnLabel.font = UIFont(name: "AvenirNext-UltraLight", size: 25)
+        cancelBtnLabel.font = UIFont(name: "AppleSDGothicNeo-Semibold", size: 25)
         cancelBtnLabel.text = "Cancel"
         cancelBtnLabel.textAlignment = NSTextAlignment.Center
         cancelBtnLabel.textColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)

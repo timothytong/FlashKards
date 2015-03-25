@@ -66,7 +66,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         navigationController?.view.addSubview(newCollectionPopup)
         
         // Delete collection confirmation popup
-        deleteCollectionPopup = ConfirmDeletePopup(frame: CGRect(x: 35, y: view.frame.height/5, width: view.frame.width - 70, height: view.frame.height * 3/5))
+        deleteCollectionPopup = ConfirmDeletePopup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
         deleteCollectionPopup.alpha = 0
         deleteCollectionPopup.transform = CGAffineTransformMakeScale(1.1, 1.1)
         deleteCollectionPopup.delegate = self

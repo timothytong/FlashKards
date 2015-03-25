@@ -29,11 +29,11 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         // Instruction label
         var instrucLabel = UILabel(frame: CGRectMake(10, 25, frame.width - 20, frame.height/3))
         instrucLabel.text = "Name your new collection."
-        instrucLabel.font = UIFont(name: "AvenirNextCondensed-Ultralight", size: 35)
+        instrucLabel.font = UIFont(name: "AppleSDGothicNeo-Thin", size: 30)
         instrucLabel.textColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
         instrucLabel.numberOfLines = 2
         instrucLabel.textAlignment = NSTextAlignment.Center
-        instrucLabel.transform = CGAffineTransformMakeScale(1, 0.8)
+//        instrucLabel.transform = CGAffineTransformMakeScale(1, 0.8)
         addSubview(instrucLabel)
         
         // Input field & its border.
@@ -65,8 +65,8 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         // Done Btn
         var doneBtn = UIButton(frame: CGRect(x: frame.width/2 - 50, y: frame.height * 2/3, width: 100, height: 50))
         var doneBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: doneBtn.frame.width, height: doneBtn.frame.height))
-        doneBtnLabel.font = UIFont(name: "AvenirNext-UltraLight", size: 25)
-        doneBtnLabel.text = "DONE"
+        doneBtnLabel.font = UIFont(name: "AppleSDGothicNeo-Semibold", size: 25)
+        doneBtnLabel.text = "Done"
         doneBtnLabel.textAlignment = NSTextAlignment.Center
         doneBtnLabel.textColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
         doneBtn.addTarget(self, action: "doneBtnTapped", forControlEvents: UIControlEvents.TouchUpInside)
