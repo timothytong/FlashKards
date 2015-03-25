@@ -62,8 +62,13 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         addSubview(inputField)
         resetInputPlaceHolder()
         
+        // Error Message
+        var errMsgLabel = UILabel(frame: CGRect(x: frame.width/8, y: inputField.frame.origin.y + inputField.frame.height + 15, width: frame.width * 3/4, height: 25))
+        
+        addSubview(errMsgLabel)
+        
         // Done Btn
-        var doneBtn = UIButton(frame: CGRect(x: frame.width/2 - 50, y: frame.height * 2/3, width: 100, height: 50))
+        var doneBtn = UIButton(frame: CGRect(x: frame.width/2 - 50, y: frame.height * 3/4, width: 100, height: 50))
         var doneBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: doneBtn.frame.width, height: doneBtn.frame.height))
         doneBtnLabel.font = UIFont(name: "AppleSDGothicNeo-Semibold", size: 25)
         doneBtnLabel.text = "Done"
@@ -172,7 +177,6 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
                                 }, completion: { (complete) -> Void in
                             })
                     })
-                    
                 }
                 else{
                     self.inputField.placeholder = "Field is empty!"

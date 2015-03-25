@@ -16,6 +16,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     private var dimLayer: UIView!
     private var rowOfInterest: NSIndexPath?
     private var flashcardCoreDataObjs: Array<NSManagedObject>!
+    private var collectionsManager: CollectionsManager!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -68,6 +69,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         deleteCollectionPopup.delegate = self
         navigationController?.view.addSubview(deleteCollectionPopup)
         
+        // Collections Manager
+        collectionsManager = CollectionsManager()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -155,7 +158,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func addCollectionPopupDoneButtonDidPressedWithInput(input: String!) {
         closeAddColPopup()
         let newCollection = FlashCardCollection(collectionName: input, progress: 100, lastReviewed: "Never", numCards: 0)
-        self.saveCollection(newCollection)
+        collectionsManager.saveCollection(newCollection, completionHandler: { (success, newCollectionCDObject) -> Void in
+            if success{
+                self.flashcardCoreDataObjs.insert(newCollectionCDObject, atIndex: 0)
+                let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                })
+            }
+        })
     }
     
     // MARK: ConfirmDeletePopup
@@ -197,13 +208,15 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             //            println("Deleting row \(rowOfInterest); CDObjCount: \(flashcardCoreDataObjs.count); tableRowsCount: \(tableView.numberOfRowsInSection(0))")
             
             let collectionToBeDeleted = flashcardCoreDataObjs[rowOfInterest.row]
-            if(deleteCollectionWithName(collectionToBeDeleted.valueForKey("name") as? String!)){
-                flashcardCoreDataObjs.removeAtIndex(rowOfInterest.row)
-                tableView.deleteRowsAtIndexPaths([rowOfInterest], withRowAnimation: UITableViewRowAnimation.Automatic)
-            }
-            else{
-                println("Deletion Error")
-            }
+            collectionsManager.deleteCollectionWithName(collectionToBeDeleted.valueForKey("name") as? String!, completionHandler: { (success) -> Void in
+                if success{
+                    self.flashcardCoreDataObjs.removeAtIndex(rowOfInterest.row)
+                    self.tableView.deleteRowsAtIndexPaths([rowOfInterest], withRowAnimation: UITableViewRowAnimation.Automatic)
+                }
+                else{
+                    println("Deletion Error")
+                }
+            })
         }
         else{
             println("rowOfInterest NOT FOUND")
@@ -215,65 +228,5 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.setEditing(false, animated: true)
     }
     
-    private func saveCollection(collection: FlashCardCollection!){
-        println("Saving")
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-        let managedContext = appDelegate.managedObjectContext!
-        let entity = NSEntityDescription.entityForName("Collection", inManagedObjectContext: managedContext)
-        let newCollection = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
-        newCollection.setValue(collection.collectionName, forKey: "name")
-        newCollection.setValue(collection.progress, forKey: "progress")
-        newCollection.setValue(collection.lastReviewed, forKey: "lastReviewed")
-        newCollection.setValue(collection.numCards, forKey: "numCards")
-        var error: NSError?
-        if !managedContext.save(&error) {
-            println("Could not save \(error), \(error?.userInfo)")
-        }
-        else{
-            println("Saved successfully")
-        }
-        flashcardCoreDataObjs.insert(newCollection, atIndex: 0)
-        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-        })
-    }
-    
-    private func searchExistingCollectionsWithName(collectionName: String!)->NSManagedObject?{
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-        let managedContext = appDelegate.managedObjectContext!
-        let entity = NSEntityDescription.entityForName("Collection", inManagedObjectContext: managedContext)
-        let fetchRequest = NSFetchRequest()
-        fetchRequest.entity = entity
-        let predicate = NSPredicate(format: "name == '\(collectionName)'")
-        fetchRequest.predicate = predicate
-        /* sorting...
-        let sortDescriptor = NSSortDescriptor(key: "lastReviewed", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        */
-        var error: NSError?
-        var fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error)
-        if let results = fetchResults{
-            return (results[0] as NSManagedObject)
-        }
-        return nil
-    }
-    
-    private func deleteCollectionWithName(name: String!) -> Bool{
-        if let collectionCoreDataObj = searchExistingCollectionsWithName(name){
-            let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-            let managedContext = appDelegate.managedObjectContext!
-            managedContext.deleteObject(collectionCoreDataObj)
-            var error: NSError?
-            if !managedContext.save(&error) {
-                println("Could not save \(error), \(error?.userInfo)")
-            }
-            else{
-                println("Deleted successfully")
-            }
-            return true
-        }
-        return false
-    }
 }
 
