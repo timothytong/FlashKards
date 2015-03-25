@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  HomeController.swift
 //  FlashKards
 //
 //  Created by Timothy Tong on 2015-03-22.
@@ -7,15 +7,15 @@
 //
 
 import UIKit
-
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddCollectionPopupDelegate, ConfirmDeletePopupDelegate{
+import CoreData
+class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddCollectionPopupDelegate, ConfirmDeletePopupDelegate{
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private weak var addCardsButton: UIBarButtonItem!
-    private var flashcardCollections: Array<FlashCardCollection>!
     private var newCollectionPopup: AddCollectionPopup!
     private var deleteCollectionPopup: ConfirmDeletePopup!
     private var dimLayer: UIView!
     private var rowOfInterest: NSIndexPath?
+    private var flashcardCoreDataObjs: Array<NSManagedObject>!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -35,21 +35,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         addCardsButton.target = self
         
         // Body
-        view.backgroundColor = UIColor(red: 57/255, green: 57/255, blue: 57/255, alpha: 1)
+        tableView.backgroundColor = UIColor(red: 57/255, green: 57/255, blue: 57/255, alpha: 1)
         
         // TableView
         tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         var homePageCellNib = UINib(nibName: "FlashCardsOverviewCellTemplate", bundle: nil)
         tableView.registerNib(homePageCellNib, forCellReuseIdentifier: "homePageCell")
         tableView.allowsMultipleSelection = false
-        flashcardCollections = [];
         
-        // Test collections
-        let f1 = FlashCardCollection(collectionName: "Canadian French", progress: 40, lastReviewed: "2 days ago", numCards: 49)
-        let f2 = FlashCardCollection(collectionName: "ひらがな", progress: 15, lastReviewed: "4 days ago", numCards: 38)
-        let f3 = FlashCardCollection(collectionName: "Vocabularies", progress: 100, lastReviewed: "5 mins ago", numCards: 1)
-        let f4 = FlashCardCollection(collectionName: "漢字", progress: 70, lastReviewed: "2 days ago", numCards: 144)
-        flashcardCollections = [f1, f2, f3, f4]
+        // Core Data
+        flashcardCoreDataObjs = [NSManagedObject]()
+        
         
         // Dim layer
         dimLayer = UIView(frame: UIScreen.mainScreen().bounds)
@@ -71,7 +67,22 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         deleteCollectionPopup.transform = CGAffineTransformMakeScale(1.1, 1.1)
         deleteCollectionPopup.delegate = self
         navigationController?.view.addSubview(deleteCollectionPopup)
-
+        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let managedContext = appDelegate.managedObjectContext!
+        let fetchRequest = NSFetchRequest(entityName: "Collection")
+        var error:NSError?
+        let fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as [NSManagedObject]?
+        if let results = fetchResults{
+            flashcardCoreDataObjs = results
+        }
+        else {
+            println("Could not fetch \(error), \(error!.userInfo)")
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -82,11 +93,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // MARK: UITableView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:FlashCardsOverviewCell = tableView.dequeueReusableCellWithIdentifier("homePageCell") as FlashCardsOverviewCell
-        cell.populateCellWithCollection(flashcardCollections[indexPath.row])
+        let collectionCoreDataObj = flashcardCoreDataObjs[indexPath.row]
+        let flashCardCollection = FlashCardCollection(collectionName: collectionCoreDataObj.valueForKey("name")? as? String!, progress: collectionCoreDataObj.valueForKey("progress")? as? Int!, lastReviewed: collectionCoreDataObj.valueForKey("lastReviewed")? as? String!, numCards: collectionCoreDataObj.valueForKey("numCards")? as? Int!)
+        cell.populateCellWithCollection(flashCardCollection)
         return cell
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return flashcardCollections.count
+        return flashcardCoreDataObjs.count
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 100
@@ -96,7 +109,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete{
-            openConfirmDeletePopupWithCollectionName((flashcardCollections[indexPath.row] as FlashCardCollection).collectionName)
+            //            openConfirmDeletePopupWithCollectionName((flashcardCollections[indexPath.row] as FlashCardCollection).collectionName)
+            let collectionCoreDataObj = flashcardCoreDataObjs[indexPath.row]
+            openConfirmDeletePopupWithCollectionName(collectionCoreDataObj.valueForKey("name") as? String!)
             rowOfInterest = indexPath
         }
     }
@@ -139,12 +154,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func addCollectionPopupDoneButtonDidPressedWithInput(input: String!) {
         closeAddColPopup()
-        let newCollection = FlashCardCollection(collectionName: input, progress: 0, lastReviewed: "Never", numCards: 0)
-        flashcardCollections.insert(newCollection, atIndex: 0)
-        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
-        })
+        let newCollection = FlashCardCollection(collectionName: input, progress: 100, lastReviewed: "Never", numCards: 0)
+        self.saveCollection(newCollection)
     }
     
     // MARK: ConfirmDeletePopup
@@ -183,7 +194,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func confirmDeletePopupConfirmDidTapped() {
         closeConfirmDeletePopup()
         if let rowOfInterest = self.rowOfInterest{
-            flashcardCollections.removeAtIndex(rowOfInterest.row)
+            //            println("Deleting row \(rowOfInterest); CDObjCount: \(flashcardCoreDataObjs.count); tableRowsCount: \(tableView.numberOfRowsInSection(0))")
+            flashcardCoreDataObjs.removeAtIndex(rowOfInterest.row)
             tableView.deleteRowsAtIndexPaths([rowOfInterest], withRowAnimation: UITableViewRowAnimation.Automatic)
         }
         else{
@@ -194,6 +206,54 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func confirmDeletePopupCancelDidTapped() {
         closeConfirmDeletePopup()
         tableView.setEditing(false, animated: true)
+    }
+    
+    private func saveCollection(collection: FlashCardCollection!){
+        println("Saving")
+        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let managedContext = appDelegate.managedObjectContext!
+        let entity = NSEntityDescription.entityForName("Collection", inManagedObjectContext: managedContext)
+        let newCollection = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+        newCollection.setValue(collection.collectionName, forKey: "name")
+        newCollection.setValue(collection.progress, forKey: "progress")
+        newCollection.setValue(collection.lastReviewed, forKey: "lastReviewed")
+        newCollection.setValue(collection.numCards, forKey: "numCards")
+        var error: NSError?
+        if !managedContext.save(&error) {
+            println("Could not save \(error), \(error?.userInfo)")
+        }
+        else{
+            println("Saved successfully")
+        }
+        flashcardCoreDataObjs.insert(newCollection, atIndex: 0)
+        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+        })
+    }
+    
+    private func searchExistingCollectionsWithName(collectionName: String!)->NSManagedObject?{
+        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        let managedContext = appDelegate.managedObjectContext!
+        let entity = NSEntityDescription.entityForName("Collection", inManagedObjectContext: managedContext)
+        let fetchRequest = NSFetchRequest()
+        fetchRequest.entity = entity
+        let predicate = NSPredicate(format: "name == \(collectionName)")
+        fetchRequest.predicate = predicate
+        /* sorting...
+        let sortDescriptor = NSSortDescriptor(key: "lastReviewed", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        */
+        var error: NSError?
+        var fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error)
+        if let results = fetchResults{
+            return (results[0] as NSManagedObject)
+        }
+        return nil
+    }
+    
+    private func deleteCollection(collection: FlashCardCollection){
+        
     }
 }
 
