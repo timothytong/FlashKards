@@ -25,10 +25,48 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="4th-gh-8wD"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="of7-Rv-InO">
+                                <rect key="frame" x="41" y="150" width="518" height="300"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Error" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bBa-ev-Ebh">
+                                        <rect key="frame" x="240" y="8" width="38" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z93-kD-OmW">
+                                        <rect key="frame" x="8" y="257" width="243" height="35"/>
+                                        <state key="normal" title="Send">
+                                            <color key="titleColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GOq-Nw-xld">
+                                        <rect key="frame" x="259" y="257" width="251" height="35"/>
+                                        <state key="normal" title="Don't send">
+                                            <color key="titleColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hi, an unexpected error occurred. I'd apprecitate if you could tell me about it. Press send to report." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Ga-7j-XY1">
+                                        <rect key="frame" x="22" y="37" width="488" height="217"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.22352941179999999" green="0.22352941179999999" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="N00-KA-Kbv"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="centerY" secondItem="of7-Rv-InO" secondAttribute="centerY" id="EIh-Nu-aBT"/>
+                            <constraint firstItem="of7-Rv-InO" firstAttribute="leading" secondItem="TA5-q0-wFI" secondAttribute="leadingMargin" constant="25" id="FXJ-zx-GAp"/>
                             <constraint firstItem="J8x-q4-y5Y" firstAttribute="leading" secondItem="TA5-q0-wFI" secondAttribute="leadingMargin" constant="-16" id="Jta-lP-tek"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="of7-Rv-InO" secondAttribute="trailing" constant="25" id="Qrx-A8-9H2"/>
                             <constraint firstItem="J8x-q4-y5Y" firstAttribute="top" secondItem="N6G-bb-exw" secondAttribute="bottom" constant="-64" id="aXa-wc-hjZ"/>
                             <constraint firstAttribute="height" secondItem="J8x-q4-y5Y" secondAttribute="height" id="qDI-95-3UW"/>
                             <constraint firstAttribute="width" secondItem="J8x-q4-y5Y" secondAttribute="width" id="wvN-Lf-VC0"/>
