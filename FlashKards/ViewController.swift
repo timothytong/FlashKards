@@ -8,12 +8,14 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddCollectionPopupDelegate {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddCollectionPopupDelegate, ConfirmDeletePopupDelegate{
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private weak var addCardsButton: UIBarButtonItem!
     private var flashcardCollections: Array<FlashCardCollection>!
     private var newCollectionPopup: AddCollectionPopup!
+    private var deleteCollectionPopup: ConfirmDeletePopup!
     private var dimLayer: UIView!
+    private var rowOfInterest: NSIndexPath?
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -63,6 +65,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         newCollectionPopup.delegate = self
         navigationController?.view.addSubview(newCollectionPopup)
         
+        // Delete collection confirmation popup
+        deleteCollectionPopup = ConfirmDeletePopup(frame: CGRect(x: 35, y: view.frame.height/5, width: view.frame.width - 70, height: view.frame.height * 3/5))
+        deleteCollectionPopup.alpha = 0
+        deleteCollectionPopup.transform = CGAffineTransformMakeScale(1.1, 1.1)
+        deleteCollectionPopup.delegate = self
+        navigationController?.view.addSubview(deleteCollectionPopup)
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -87,8 +96,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete{
-            flashcardCollections.removeAtIndex(indexPath.row)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            openConfirmDeletePopupWithCollectionName((flashcardCollections[indexPath.row] as FlashCardCollection).collectionName)
+            rowOfInterest = indexPath
         }
     }
     
@@ -112,7 +121,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         })
     }
     
-    func closeAddColPopup(){
+    private func closeAddColPopup(){
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
                 self.dimLayer.alpha = 0
@@ -136,6 +145,55 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
         })
+    }
+    
+    // MARK: ConfirmDeletePopup
+    private func openConfirmDeletePopupWithCollectionName(collectionName: String!){
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.deleteCollectionPopup.collectionName = collectionName
+            UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+                self.dimLayer.alpha = 1
+                }, completion: { (complete) -> Void in
+            })
+            UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                self.deleteCollectionPopup.alpha = 0.5
+                self.deleteCollectionPopup.transform = CGAffineTransformMakeScale(1.2, 1.2)
+                }, completion: { (complete) -> Void in
+                    UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                        self.deleteCollectionPopup.alpha = 1
+                        self.deleteCollectionPopup.transform = CGAffineTransformIdentity
+                        }, completion: { (complete) -> Void in
+                    })
+            })
+        })
+    }
+    
+    private func closeConfirmDeletePopup(){
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+                self.dimLayer.alpha = 0
+                self.deleteCollectionPopup.transform = CGAffineTransformMakeScale(0.8, 0.8)
+                self.deleteCollectionPopup.alpha = 0
+                }, completion: { (complete) -> Void in
+                    self.deleteCollectionPopup.transform = CGAffineTransformMakeScale(1.1, 1.1)
+            })
+        })
+    }
+    
+    func confirmDeletePopupConfirmDidTapped() {
+        closeConfirmDeletePopup()
+        if let rowOfInterest = self.rowOfInterest{
+            flashcardCollections.removeAtIndex(rowOfInterest.row)
+            tableView.deleteRowsAtIndexPaths([rowOfInterest], withRowAnimation: UITableViewRowAnimation.Automatic)
+        }
+        else{
+            println("Deletion error")
+        }
+    }
+    
+    func confirmDeletePopupCancelDidTapped() {
+        closeConfirmDeletePopup()
+        tableView.setEditing(false, animated: true)
     }
 }
 

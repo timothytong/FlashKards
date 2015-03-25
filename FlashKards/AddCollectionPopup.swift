@@ -23,7 +23,7 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         backgroundColor = UIColor(red: 53/255, green: 53/255, blue: 53/255, alpha: 1)
         
         layer.cornerRadius = 10
-        layer.borderWidth = 2
+        layer.borderWidth = 1
         layer.borderColor = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 0.7).CGColor
         
         // Instruction label
@@ -85,7 +85,7 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         inputField.text = ""
     }
     
-    func checkInputValidity() -> Bool{
+    private func checkInputValidity() -> Bool{
         let textFieldText = inputField.text
         if textFieldText.utf16Count == 0{
             showTextFieldWarning(1)
@@ -102,25 +102,30 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
     func cancelBtnTapped(){
         dismissKeyboard()
         clearTxt()
-        self.delegate?.addCollectionPopupWillClose()
+        closePopup()
     }
     
     func doneBtnTapped(){
         dismissKeyboard()
         if checkInputValidity(){
             let newCollectionName = inputField.text
-            self.delegate?.addCollectionPopupDoneButtonDidPressedWithInput(newCollectionName)
+            delegate?.addCollectionPopupDoneButtonDidPressedWithInput(newCollectionName)
+            clearTxt()
         }
         
     }
     
-    func resetInputPlaceHolder(){
+    private func closePopup(){
+        delegate?.addCollectionPopupWillClose()
+    }
+    
+    private func resetInputPlaceHolder(){
         let attrs = [NSForegroundColorAttributeName: UIColor(red: 128/255, green: 132/255, blue: 131/255, alpha: 1)]
-        if self.inputField.respondsToSelector("setAttributedPlaceholder:"){
-            self.inputField.attributedPlaceholder = NSAttributedString(string: "Name here.", attributes: attrs)
+        if inputField.respondsToSelector("setAttributedPlaceholder:"){
+            inputField.attributedPlaceholder = NSAttributedString(string: "Name here.", attributes: attrs)
         }
         else{
-            self.inputField.placeholder = "Name here."
+            inputField.placeholder = "Name here."
         }
     }
     
@@ -143,7 +148,7 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         checkInputValidity()
     }
     
-    func showTextFieldWarning(errCode: Int){
+    private func showTextFieldWarning(errCode: Int){
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             switch errCode{
             case 0:
@@ -189,7 +194,7 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         dismissKeyboard()
     }
     
-    func dismissKeyboard(){
+    private func dismissKeyboard(){
         if inputField.isFirstResponder(){ inputField.resignFirstResponder() }
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
