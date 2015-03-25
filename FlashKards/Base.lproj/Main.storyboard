@@ -2,27 +2,44 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14D105g" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="osD-1S-xje">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Home View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="FlashKards" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="PFU-hA-jzV">
+                <viewController id="BYZ-38-t0r" customClass="HomeViewController" customModule="FlashKards" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="N6G-bb-exw"/>
+                        <viewControllerLayoutGuide type="bottom" id="rhz-Gn-Fhm"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TA5-q0-wFI">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="J8x-q4-y5Y">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="pq4-gp-n9x"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="4th-gh-8wD"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="BYZ-38-t0r" id="9ta-nQ-X6Q"/>
-                            <outlet property="delegate" destination="BYZ-38-t0r" id="Yze-7w-f8k"/>
-                        </connections>
-                    </tableView>
+                        <constraints>
+                            <constraint firstItem="J8x-q4-y5Y" firstAttribute="leading" secondItem="TA5-q0-wFI" secondAttribute="leadingMargin" constant="-16" id="Jta-lP-tek"/>
+                            <constraint firstItem="J8x-q4-y5Y" firstAttribute="top" secondItem="N6G-bb-exw" secondAttribute="bottom" constant="-64" id="aXa-wc-hjZ"/>
+                            <constraint firstAttribute="height" secondItem="J8x-q4-y5Y" secondAttribute="height" id="qDI-95-3UW"/>
+                            <constraint firstAttribute="width" secondItem="J8x-q4-y5Y" secondAttribute="width" id="wvN-Lf-VC0"/>
+                        </constraints>
+                    </view>
                     <navigationItem key="navigationItem" id="Nlq-bv-LzC">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="lg3-Uq-4Qa"/>
                     </navigationItem>
                     <connections>
                         <outlet property="addCardsButton" destination="lg3-Uq-4Qa" id="jyl-OP-fW8"/>
-                        <outlet property="tableView" destination="PFU-hA-jzV" id="tDH-D8-2jK"/>
+                        <outlet property="tableView" destination="J8x-q4-y5Y" id="hgL-Ab-5ZS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
