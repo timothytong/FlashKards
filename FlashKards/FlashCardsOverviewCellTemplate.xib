@@ -50,7 +50,7 @@
                         <color key="textColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ieu-Cq-4V3" userLabel="SepLine">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ieu-Cq-4V3" userLabel="SepLine">
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" id="Pgv-os-UfX"/>
@@ -97,6 +97,7 @@
             <connections>
                 <outlet property="collectionLabel" destination="zGi-DK-Nr5" id="5hS-4G-nZi"/>
                 <outlet property="collectionProgressLabel" destination="Sha-Jc-mGN" id="oeb-DU-hZQ"/>
+                <outlet property="kardLabel" destination="8xX-Ou-m3Z" id="H9L-N8-cu7"/>
                 <outlet property="lastReviewedLabel" destination="c1J-2j-xBr" id="jPp-2i-VKn"/>
                 <outlet property="numCardsLabel" destination="Nme-Aa-3OM" id="y2F-o7-ysR"/>
                 <outlet property="sepLineWidthConstraint" destination="Pgv-os-UfX" id="zLz-iZ-ZC9"/>

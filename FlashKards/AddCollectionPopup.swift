@@ -109,6 +109,7 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         dismissKeyboard()
         if checkInputValidity(){
             let newCollectionName = inputField.text
+            self.delegate?.addCollectionPopupDoneButtonDidPressedWithInput(newCollectionName)
         }
         
     }
@@ -165,7 +166,6 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
                                 self.inputField.attributedPlaceholder = NSAttributedString(string: "Name here.", attributes: attrs)
                                 }, completion: { (complete) -> Void in
                             })
-                            
                     })
                     
                 }

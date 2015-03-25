@@ -39,13 +39,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.separatorStyle = UITableViewCellSeparatorStyle.None
         var homePageCellNib = UINib(nibName: "FlashCardsOverviewCellTemplate", bundle: nil)
         tableView.registerNib(homePageCellNib, forCellReuseIdentifier: "homePageCell")
+        tableView.allowsMultipleSelection = false
         flashcardCollections = [];
         
         // Test collections
-        let f1 = FlashCardCollection(collectionName: "漢字", progress: 40, lastReviewed: "2 days ago", numCards: 49)
+        let f1 = FlashCardCollection(collectionName: "Canadian French", progress: 40, lastReviewed: "2 days ago", numCards: 49)
         let f2 = FlashCardCollection(collectionName: "ひらがな", progress: 15, lastReviewed: "4 days ago", numCards: 38)
-        let f3 = FlashCardCollection(collectionName: "Vocabularies", progress: 98, lastReviewed: "5 mins ago", numCards: 9)
-        let f4 = FlashCardCollection(collectionName: "Korean", progress: 70, lastReviewed: "2 days ago", numCards: 144)
+        let f3 = FlashCardCollection(collectionName: "Vocabularies", progress: 100, lastReviewed: "5 mins ago", numCards: 1)
+        let f4 = FlashCardCollection(collectionName: "漢字", progress: 70, lastReviewed: "2 days ago", numCards: 144)
         flashcardCollections = [f1, f2, f3, f4]
         
         // Dim layer
@@ -63,6 +64,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         navigationController?.view.addSubview(newCollectionPopup)
         
     }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    // MARK: UITableView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:FlashCardsOverviewCell = tableView.dequeueReusableCellWithIdentifier("homePageCell") as FlashCardsOverviewCell
         cell.populateCellWithCollection(flashcardCollections[indexPath.row])
@@ -74,11 +82,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 100
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.Delete{
+            flashcardCollections.removeAtIndex(indexPath.row)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+        }
     }
     
+    // MARK: AddCollectionPopup
     func openAddColPopup(){
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
@@ -115,7 +129,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func addCollectionPopupDoneButtonDidPressedWithInput(input: String!) {
-        
+        closeAddColPopup()
+        let newCollection = FlashCardCollection(collectionName: input, progress: 0, lastReviewed: "Never", numCards: 0)
+        flashcardCollections.insert(newCollection, atIndex: 0)
+        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+        })
     }
 }
 
