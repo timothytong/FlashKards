@@ -19,7 +19,7 @@
 		33402CEF1AC09B5E00265F70 /* FlashCardsOverviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CED1AC09B5E00265F70 /* FlashCardsOverviewCell.swift */; };
 		33402CF01AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33402CEE1AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib */; };
 		33402CF31AC0ABD000265F70 /* FlashCardCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CF21AC0ABD000265F70 /* FlashCardCollection.swift */; };
-		33402CF91AC0C1F400265F70 /* InputPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CF81AC0C1F400265F70 /* InputPopup.swift */; };
+		33402CF91AC0C1F400265F70 /* AddCollectionPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CF81AC0C1F400265F70 /* AddCollectionPopup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +49,7 @@
 		33402CED1AC09B5E00265F70 /* FlashCardsOverviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardsOverviewCell.swift; sourceTree = "<group>"; };
 		33402CEE1AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlashCardsOverviewCellTemplate.xib; sourceTree = "<group>"; };
 		33402CF21AC0ABD000265F70 /* FlashCardCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardCollection.swift; sourceTree = "<group>"; };
-		33402CF81AC0C1F400265F70 /* InputPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputPopup.swift; sourceTree = "<group>"; };
+		33402CF81AC0C1F400265F70 /* AddCollectionPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCollectionPopup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,7 +167,7 @@
 		33402CFA1AC0C20700265F70 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				33402CF81AC0C1F400265F70 /* InputPopup.swift */,
+				33402CF81AC0C1F400265F70 /* AddCollectionPopup.swift */,
 				33402CF11AC09CB800265F70 /* HomePageCell */,
 			);
 			name = Views;
@@ -277,7 +277,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3320C5C71ABF807B00A90CD4 /* ViewController.swift in Sources */,
-				33402CF91AC0C1F400265F70 /* InputPopup.swift in Sources */,
+				33402CF91AC0C1F400265F70 /* AddCollectionPopup.swift in Sources */,
 				33402CF31AC0ABD000265F70 /* FlashCardCollection.swift in Sources */,
 				33402CEF1AC09B5E00265F70 /* FlashCardsOverviewCell.swift in Sources */,
 				3320C5C51ABF807B00A90CD4 /* FlashKards.xcdatamodeld in Sources */,

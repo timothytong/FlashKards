@@ -7,15 +7,15 @@
 //
 
 import UIKit
-@objc protocol InputPopupDelegate{
-    func inputPopupWillClose()
+@objc protocol AddCollectionPopupDelegate{
+    func addCollectionPopupWillClose()
+    func addCollectionPopupDoneButtonDidPressedWithInput(input:String!)
 }
-class InputPopup: UIView, UITextFieldDelegate {
+class AddCollectionPopup: UIView, UITextFieldDelegate {
     private var inputField: UITextField!
     var delegate: AnyObject?
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
     }
     
     override init(frame: CGRect){
@@ -27,7 +27,7 @@ class InputPopup: UIView, UITextFieldDelegate {
         layer.borderColor = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 0.7).CGColor
         
         // Instruction label
-        var instrucLabel = UILabel(frame: CGRectMake(0, 25, frame.width, frame.height/3))
+        var instrucLabel = UILabel(frame: CGRectMake(10, 25, frame.width - 20, frame.height/3))
         instrucLabel.text = "Name your new collection."
         instrucLabel.font = UIFont(name: "AvenirNextCondensed-Ultralight", size: 35)
         instrucLabel.textColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
@@ -36,20 +36,12 @@ class InputPopup: UIView, UITextFieldDelegate {
         instrucLabel.transform = CGAffineTransformMakeScale(1, 0.8)
         addSubview(instrucLabel)
         
-        // Input field & it's border.
+        // Input field & its border.
         inputField = UITextField(frame: CGRectMake(frame.width/8, frame.height/2 - 20, frame.width*3/4, 40))
         inputField.layer.borderWidth = 0
         inputField.backgroundColor = UIColor(red: 53/255, green: 53/255, blue: 53/255, alpha: 1)
         inputField.font = UIFont(name: "AvenirNextCondensed-Regular", size: 25)
         inputField.textColor = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha:1)
-        let attrs = [NSForegroundColorAttributeName: UIColor(red: 128/255, green: 132/255, blue: 131/255, alpha: 1)]
-        if inputField.respondsToSelector("setAttributedPlaceholder:"){
-            inputField.attributedPlaceholder = NSAttributedString(string: "Name here.", attributes: attrs)
-        }
-        else{
-             inputField.placeholder = "Name here."
-        }
-
         inputField.textAlignment = NSTextAlignment.Center
         inputField.returnKeyType = UIReturnKeyType.Done
         inputField.delegate = self
@@ -68,6 +60,7 @@ class InputPopup: UIView, UITextFieldDelegate {
         inputField.layer.addSublayer(border)
         inputField.layer.masksToBounds = true
         addSubview(inputField)
+        resetInputPlaceHolder()
         
         // Done Btn
         var doneBtn = UIButton(frame: CGRect(x: frame.width/2 - 50, y: frame.height * 2/3, width: 100, height: 50))
@@ -76,6 +69,7 @@ class InputPopup: UIView, UITextFieldDelegate {
         doneBtnLabel.text = "DONE"
         doneBtnLabel.textAlignment = NSTextAlignment.Center
         doneBtnLabel.textColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
+        doneBtn.addTarget(self, action: "doneBtnTapped", forControlEvents: UIControlEvents.TouchUpInside)
         doneBtn.addSubview(doneBtnLabel)
         addSubview(doneBtn)
         
@@ -85,52 +79,110 @@ class InputPopup: UIView, UITextFieldDelegate {
         cancelBtn.setImage(cancelImg_hilighted, forState: .Highlighted)
         cancelBtn.addTarget(self, action: "cancelBtnTapped", forControlEvents: UIControlEvents.TouchUpInside)
         addSubview(cancelBtn)
-        
-        
     }
     
     func clearTxt(){
         inputField.text = ""
     }
     
+    func checkInputValidity() -> Bool{
+        let textFieldText = inputField.text
+        if textFieldText.utf16Count == 0{
+            showTextFieldWarning(1)
+            return false
+        }
+        else if textFieldText.utf16Count > 20{
+            inputField.text = (textFieldText as NSString).substringToIndex(20)
+            showTextFieldWarning(0)
+            return false
+        }
+        return true
+    }
+    
     func cancelBtnTapped(){
-        self.delegate?.inputPopupWillClose()
+        dismissKeyboard()
+        clearTxt()
+        self.delegate?.addCollectionPopupWillClose()
+    }
+    
+    func doneBtnTapped(){
+        dismissKeyboard()
+        if checkInputValidity(){
+            let newCollectionName = inputField.text
+        }
+        
+    }
+    
+    func resetInputPlaceHolder(){
+        let attrs = [NSForegroundColorAttributeName: UIColor(red: 128/255, green: 132/255, blue: 131/255, alpha: 1)]
+        if self.inputField.respondsToSelector("setAttributedPlaceholder:"){
+            self.inputField.attributedPlaceholder = NSAttributedString(string: "Name here.", attributes: attrs)
+        }
+        else{
+            self.inputField.placeholder = "Name here."
+        }
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "textFieldTextDidChange:", name: UITextFieldTextDidChangeNotification, object: inputField)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.resetInputPlaceHolder()
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
                 self.transform = CGAffineTransformMakeTranslation(0, -50)
                 }) { (complete) -> Void in
             }
+            UIView.transitionWithView(self.inputField, duration: 0.4, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                self.inputField.textColor = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 1)
+                }, completion: { (complete) -> Void in
+            })
         })
     }
     
     func textFieldTextDidChange(notification: NSNotification){
-        let textFieldText = inputField.text
-        if textFieldText.utf16Count > 20{
-            inputField.text = (textFieldText as NSString).substringToIndex(20)
-            showTextFieldWarning()
-        }
+        checkInputValidity()
     }
     
-    func showTextFieldWarning(){
+    func showTextFieldWarning(errCode: Int){
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            UIView.transitionWithView(self.inputField, duration: 0.1, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-                self.inputField.textColor = UIColor(red: 247/255, green: 230/255, blue: 0, alpha: 1)
-            }, completion: { (complete) -> Void in
-                UIView.transitionWithView(self.inputField, duration: 0.4, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-                    self.inputField.textColor = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 1)
+            switch errCode{
+            case 0:
+                UIView.transitionWithView(self.inputField, duration: 0.1, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                    self.inputField.textColor = UIColor(red: 247/255, green: 230/255, blue: 0, alpha: 1)
                     }, completion: { (complete) -> Void in
+                        UIView.transitionWithView(self.inputField, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                            self.inputField.textColor = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 1)
+                            }, completion: { (complete) -> Void in
+                        })
                 })
-            })
+            default:
+                if self.inputField.respondsToSelector("setAttributedPlaceholder:"){
+                    var attrs = [NSForegroundColorAttributeName: UIColor(red: 247/255, green: 230/255, blue: 0, alpha: 1)]
+                    UIView.transitionWithView(self.inputField, duration: 0.1, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                        self.inputField.attributedPlaceholder = NSAttributedString(string: "Name here.", attributes: attrs)
+                        }, completion: { (complete) -> Void in
+                            attrs = [NSForegroundColorAttributeName: UIColor(red: 128/255, green: 132/255, blue: 131/255, alpha: 1)]
+                            UIView.transitionWithView(self.inputField, duration: 0.1, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                                self.inputField.attributedPlaceholder = NSAttributedString(string: "Name here.", attributes: attrs)
+                                }, completion: { (complete) -> Void in
+                            })
+                            
+                    })
+                    
+                }
+                else{
+                    self.inputField.placeholder = "Field is empty!"
+                }
+            }
         })
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         dismissKeyboard()
         return true
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        NSNotificationCenter.defaultCenter().removeObserver(UITextFieldTextDidChangeNotification)
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
@@ -145,7 +197,7 @@ class InputPopup: UIView, UITextFieldDelegate {
                 }) { (complete) -> Void in
             }
             UIView.transitionWithView(self.inputField, duration: 0.4, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-                self.inputField.textColor = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 1)
+                self.inputField.textColor = UIColor(red: 0, green: 247/255, blue: 21/255, alpha: 1)
                 }, completion: { (complete) -> Void in
             })
         })

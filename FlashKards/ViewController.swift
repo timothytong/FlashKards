@@ -8,11 +8,11 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, InputPopupDelegate {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddCollectionPopupDelegate {
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private weak var addCardsButton: UIBarButtonItem!
     private var flashcardCollections: Array<FlashCardCollection>!
-    private var newCollectionPopup: InputPopup!
+    private var newCollectionPopup: AddCollectionPopup!
     private var dimLayer: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +56,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         navigationController?.view.addSubview(dimLayer)
         
         // New collection popup
-        newCollectionPopup = InputPopup(frame: CGRect(x: 35, y: view.frame.height/5, width: view.frame.width - 70, height: view.frame.height * 3/5))
+        newCollectionPopup = AddCollectionPopup(frame: CGRect(x: 35, y: view.frame.height/5, width: view.frame.width - 70, height: view.frame.height * 3/5))
         newCollectionPopup.alpha = 0
         newCollectionPopup.transform = CGAffineTransformMakeScale(1.1, 1.1)
         newCollectionPopup.delegate = self
@@ -110,8 +110,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         })
     }
     
-    func inputPopupWillClose() {
+    func addCollectionPopupWillClose() {
         closeAddColPopup()
+    }
+    
+    func addCollectionPopupDoneButtonDidPressedWithInput(input: String!) {
+        
     }
 }
 
