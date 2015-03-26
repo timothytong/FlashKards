@@ -48,8 +48,8 @@ class ConfirmDeletePopup: UIView {
         // Confirm Btn
         var confirmBtn = UIButton(frame: CGRect(x: 10, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50))
         var confirmBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: confirmBtn.frame.width, height: confirmBtn.frame.height))
-        confirmBtnLabel.font = UIFont(name: "AppleSDGothicNeo-Semibold", size: 25)
-        confirmBtnLabel.text = "Delete"
+        confirmBtnLabel.font = UIFont(name: "Avenir-Roman", size: 22)
+        confirmBtnLabel.text = "DELETE"
         confirmBtnLabel.textAlignment = NSTextAlignment.Center
         confirmBtnLabel.textColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
         confirmBtn.addTarget(self, action: "confirmBtnTapped", forControlEvents: UIControlEvents.TouchUpInside)
@@ -59,8 +59,8 @@ class ConfirmDeletePopup: UIView {
         // Cancel Btn
         var cancelBtn = UIButton(frame: CGRect(x: frame.width/2 + 5, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50))
         var cancelBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: confirmBtn.frame.width, height: confirmBtn.frame.height))
-        cancelBtnLabel.font = UIFont(name: "AppleSDGothicNeo-Semibold", size: 25)
-        cancelBtnLabel.text = "Cancel"
+        cancelBtnLabel.font = UIFont(name: "Avenir-Roman", size: 22)
+        cancelBtnLabel.text = "CANCEL"
         cancelBtnLabel.textAlignment = NSTextAlignment.Center
         cancelBtnLabel.textColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
         cancelBtn.addTarget(self, action: "cancelBtnTapped", forControlEvents: UIControlEvents.TouchUpInside)

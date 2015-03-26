@@ -76,8 +76,8 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         // Done Btn
         var doneBtn = UIButton(frame: CGRect(x: frame.width/2 - 50, y: frame.height * 3/4, width: 100, height: 50))
         var doneBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: doneBtn.frame.width, height: doneBtn.frame.height))
-        doneBtnLabel.font = UIFont(name: "AppleSDGothicNeo-Semibold", size: 25)
-        doneBtnLabel.text = "Done"
+        doneBtnLabel.font = UIFont(name: "Avenir-Roman", size: 22)
+        doneBtnLabel.text = "DONE"
         doneBtnLabel.textAlignment = NSTextAlignment.Center
         doneBtnLabel.textColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
         doneBtn.addTarget(self, action: "doneBtnTapped", forControlEvents: UIControlEvents.TouchUpInside)

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14D105g" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="summaryCell" rowHeight="64" id="KGk-i7-Jjw" customClass="CollectionSummaryCell" customModule="FlashKards" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="256" height="64"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HUg-ZR-WZv">
+                        <rect key="frame" x="0.0" y="8" width="90" height="48"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="90" id="MDL-g6-Rep"/>
+                            <constraint firstAttribute="height" constant="48" id="rwH-7e-ekf"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="50"/>
+                        <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtext 2" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="55b-ST-m92">
+                        <rect key="frame" x="98" y="33" width="150" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="Wbd-qJ-Roj"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Thin" family="Apple SD Gothic Neo" pointSize="22"/>
+                        <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SUBTEXT1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CZq-g0-Sx1">
+                        <rect key="frame" x="98" y="12" width="150" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="ZG3-f4-ZYN"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Thin" family="Apple SD Gothic Neo" pointSize="22"/>
+                        <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" red="0.22352941179999999" green="0.22352941179999999" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
+                <constraints>
+                    <constraint firstItem="HUg-ZR-WZv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="Fct-K7-cZ3"/>
+                    <constraint firstItem="CZq-g0-Sx1" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="aVz-bW-p8W"/>
+                    <constraint firstItem="55b-ST-m92" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="agS-dp-gaH"/>
+                    <constraint firstItem="55b-ST-m92" firstAttribute="leading" secondItem="HUg-ZR-WZv" secondAttribute="trailing" constant="8" id="elp-X8-9Wd"/>
+                    <constraint firstItem="HUg-ZR-WZv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="-8" id="iHb-DF-3ri"/>
+                    <constraint firstItem="55b-ST-m92" firstAttribute="top" secondItem="CZq-g0-Sx1" secondAttribute="bottom" id="mP1-gf-8wq"/>
+                    <constraint firstItem="CZq-g0-Sx1" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="4" id="qRT-dq-uwS"/>
+                    <constraint firstItem="CZq-g0-Sx1" firstAttribute="leading" secondItem="HUg-ZR-WZv" secondAttribute="trailing" constant="8" id="x8E-IV-BBI"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="numberLabel" destination="HUg-ZR-WZv" id="CIh-iS-CLC"/>
+                <outlet property="subtext1Label" destination="CZq-g0-Sx1" id="3it-ve-RQ0"/>
+                <outlet property="subtext2Label" destination="55b-ST-m92" id="a1j-D3-45F"/>
+            </connections>
+            <point key="canvasLocation" x="105" y="381"/>
+        </tableViewCell>
+    </objects>
+</document>
