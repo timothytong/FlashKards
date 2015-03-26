@@ -15,7 +15,7 @@ import UIKit
 class AddCollectionPopup: UIView, UITextFieldDelegate {
     private var inputField: UITextField!
     var delegate: AnyObject?
-    private var acceptedCharset = " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    private var bannedCharset = "<>?;@$%^&\\'`"
     private var errMsgLabel: UILabel!
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -76,8 +76,8 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         // Done Btn
         var doneBtn = UIButton(frame: CGRect(x: frame.width/2 - 50, y: frame.height * 3/4, width: 100, height: 50))
         var doneBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: doneBtn.frame.width, height: doneBtn.frame.height))
-        doneBtnLabel.font = UIFont(name: "AppleSDGothicNeo-Semibold", size: 25)
-        doneBtnLabel.text = "Done"
+        doneBtnLabel.font = UIFont(name: "Avenir-Roman", size: 22)
+        doneBtnLabel.text = "DONE"
         doneBtnLabel.textAlignment = NSTextAlignment.Center
         doneBtnLabel.textColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
         doneBtn.addTarget(self, action: "doneBtnTapped", forControlEvents: UIControlEvents.TouchUpInside)
@@ -164,15 +164,17 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let charset = NSCharacterSet(charactersInString: acceptedCharset).invertedSet
+        let charset = NSCharacterSet(charactersInString: bannedCharset).invertedSet
         let components = string.componentsSeparatedByCharactersInSet(charset)
         let filteredText = join("", components)
-        let allowedInput = (string == filteredText) ? true : false
-        if !allowedInput{
+        println("STRING: \(string), FILTERED: \(filteredText)")
+        var allowedInput = (string == filteredText) ? false : true
+        if !allowedInput && string.utf16Count > 0{
             showTextFieldWarning(0)
-            errMsgLabel.text = "Invalid character \"\((string as NSString).substringFromIndex(string.utf16Count - 1))\"\nAlphabets only."
+            errMsgLabel.text = "Invalid character \"\((string as NSString).substringFromIndex(string.utf16Count - 1))\""
         }
         else{
+            if string.utf16Count == 0{ allowedInput = true } // This is a backspace
             errMsgLabel.text = ""
         }
         return allowedInput

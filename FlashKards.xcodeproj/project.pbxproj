@@ -16,6 +16,12 @@
 		3320C5DB1ABF807C00A90CD4 /* FlashKardsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5DA1ABF807C00A90CD4 /* FlashKardsTests.swift */; };
 		33213C391AC1E44700CF1B38 /* cancel-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 33213C381AC1E44700CF1B38 /* cancel-white.png */; };
 		33213C3B1AC20D6A00CF1B38 /* cancel-white-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 33213C3A1AC20D6A00CF1B38 /* cancel-white-highlighted.png */; };
+		333439301AC444A500A808F9 /* FlashcardsSummaryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3334392E1AC444A500A808F9 /* FlashcardsSummaryController.swift */; };
+		333439331AC44EDC00A808F9 /* add-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 333439321AC44EDC00A808F9 /* add-white.png */; };
+		333439351AC44F6F00A808F9 /* edit-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 333439341AC44F6F00A808F9 /* edit-white.png */; };
+		333439371AC450F300A808F9 /* go-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 333439361AC450F300A808F9 /* go-white.png */; };
+		3334393A1AC46FF400A808F9 /* CollectionSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333439381AC46FF400A808F9 /* CollectionSummaryCell.swift */; };
+		3334393B1AC46FF400A808F9 /* CollectionSummaryCellTemplate.xib in Resources */ = {isa = PBXBuildFile; fileRef = 333439391AC46FF400A808F9 /* CollectionSummaryCellTemplate.xib */; };
 		33402CEF1AC09B5E00265F70 /* FlashCardsOverviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CED1AC09B5E00265F70 /* FlashCardsOverviewCell.swift */; };
 		33402CF01AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33402CEE1AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib */; };
 		33402CF31AC0ABD000265F70 /* FlashCardCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CF21AC0ABD000265F70 /* FlashCardCollection.swift */; };
@@ -48,6 +54,12 @@
 		3320C5DA1ABF807C00A90CD4 /* FlashKardsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashKardsTests.swift; sourceTree = "<group>"; };
 		33213C381AC1E44700CF1B38 /* cancel-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cancel-white.png"; path = "Images/cancel-white.png"; sourceTree = "<group>"; };
 		33213C3A1AC20D6A00CF1B38 /* cancel-white-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cancel-white-highlighted.png"; path = "Images/cancel-white-highlighted.png"; sourceTree = "<group>"; };
+		3334392E1AC444A500A808F9 /* FlashcardsSummaryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashcardsSummaryController.swift; sourceTree = "<group>"; };
+		333439321AC44EDC00A808F9 /* add-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "add-white.png"; path = "Images/add-white.png"; sourceTree = "<group>"; };
+		333439341AC44F6F00A808F9 /* edit-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "edit-white.png"; path = "Images/edit-white.png"; sourceTree = "<group>"; };
+		333439361AC450F300A808F9 /* go-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "go-white.png"; path = "Images/go-white.png"; sourceTree = "<group>"; };
+		333439381AC46FF400A808F9 /* CollectionSummaryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionSummaryCell.swift; sourceTree = "<group>"; };
+		333439391AC46FF400A808F9 /* CollectionSummaryCellTemplate.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionSummaryCellTemplate.xib; sourceTree = "<group>"; };
 		33402CED1AC09B5E00265F70 /* FlashCardsOverviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardsOverviewCell.swift; sourceTree = "<group>"; };
 		33402CEE1AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlashCardsOverviewCellTemplate.xib; sourceTree = "<group>"; };
 		33402CF21AC0ABD000265F70 /* FlashCardCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardCollection.swift; sourceTree = "<group>"; };
@@ -95,12 +107,10 @@
 		3320C5BE1ABF807B00A90CD4 /* FlashKards */ = {
 			isa = PBXGroup;
 			children = (
+				3334392D1AC4443600A808F9 /* UI */,
 				3375E2331AC362B300C39472 /* Utilities */,
-				33402CF71AC0B7F300265F70 /* ViewControllers */,
 				33402CF61AC0B7DA00265F70 /* Models */,
 				3320C5C11ABF807B00A90CD4 /* AppDelegate.swift */,
-				33402CFA1AC0C20700265F70 /* Views */,
-				3320C5C81ABF807B00A90CD4 /* Main.storyboard */,
 				3320C5CB1ABF807B00A90CD4 /* Images.xcassets */,
 				3320C5CD1ABF807B00A90CD4 /* LaunchScreen.xib */,
 				3320C5C31ABF807B00A90CD4 /* FlashKards.xcdatamodeld */,
@@ -138,10 +148,32 @@
 		33213C371AC1E43900CF1B38 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				333439361AC450F300A808F9 /* go-white.png */,
+				333439341AC44F6F00A808F9 /* edit-white.png */,
+				333439321AC44EDC00A808F9 /* add-white.png */,
 				33213C3A1AC20D6A00CF1B38 /* cancel-white-highlighted.png */,
 				33213C381AC1E44700CF1B38 /* cancel-white.png */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		3334392D1AC4443600A808F9 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				3320C5C81ABF807B00A90CD4 /* Main.storyboard */,
+				33402CFA1AC0C20700265F70 /* AuxiliaryViews */,
+				33402CF71AC0B7F300265F70 /* ViewControllers */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		3334393C1AC4703C00A808F9 /* CollectionSummaryCell */ = {
+			isa = PBXGroup;
+			children = (
+				333439381AC46FF400A808F9 /* CollectionSummaryCell.swift */,
+				333439391AC46FF400A808F9 /* CollectionSummaryCellTemplate.xib */,
+			);
+			name = CollectionSummaryCell;
 			sourceTree = "<group>";
 		};
 		33402CF11AC09CB800265F70 /* HomePageCell */ = {
@@ -165,18 +197,20 @@
 			isa = PBXGroup;
 			children = (
 				3320C5C61ABF807B00A90CD4 /* HomeViewController.swift */,
+				3334392E1AC444A500A808F9 /* FlashcardsSummaryController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
 		};
-		33402CFA1AC0C20700265F70 /* Views */ = {
+		33402CFA1AC0C20700265F70 /* AuxiliaryViews */ = {
 			isa = PBXGroup;
 			children = (
 				33A53ECE1AC2F0C0001815FA /* ConfirmDeletePopup.swift */,
 				33402CF81AC0C1F400265F70 /* AddCollectionPopup.swift */,
 				33402CF11AC09CB800265F70 /* HomePageCell */,
+				3334393C1AC4703C00A808F9 /* CollectionSummaryCell */,
 			);
-			name = Views;
+			name = AuxiliaryViews;
 			sourceTree = "<group>";
 		};
 		3375E2331AC362B300C39472 /* Utilities */ = {
@@ -267,10 +301,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				333439331AC44EDC00A808F9 /* add-white.png in Resources */,
+				3334393B1AC46FF400A808F9 /* CollectionSummaryCellTemplate.xib in Resources */,
 				33213C391AC1E44700CF1B38 /* cancel-white.png in Resources */,
 				3320C5CA1ABF807B00A90CD4 /* Main.storyboard in Resources */,
+				333439371AC450F300A808F9 /* go-white.png in Resources */,
 				33402CF01AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib in Resources */,
 				33213C3B1AC20D6A00CF1B38 /* cancel-white-highlighted.png in Resources */,
+				333439351AC44F6F00A808F9 /* edit-white.png in Resources */,
 				3320C5CF1ABF807B00A90CD4 /* LaunchScreen.xib in Resources */,
 				3320C5CC1ABF807B00A90CD4 /* Images.xcassets in Resources */,
 			);
@@ -291,9 +329,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3320C5C71ABF807B00A90CD4 /* HomeViewController.swift in Sources */,
+				333439301AC444A500A808F9 /* FlashcardsSummaryController.swift in Sources */,
 				33402CF91AC0C1F400265F70 /* AddCollectionPopup.swift in Sources */,
 				33402CF31AC0ABD000265F70 /* FlashCardCollection.swift in Sources */,
 				33402CEF1AC09B5E00265F70 /* FlashCardsOverviewCell.swift in Sources */,
+				3334393A1AC46FF400A808F9 /* CollectionSummaryCell.swift in Sources */,
 				33A53ECF1AC2F0C0001815FA /* ConfirmDeletePopup.swift in Sources */,
 				3375E2351AC3642B00C39472 /* CollectionsManager.swift in Sources */,
 				3320C5C51ABF807B00A90CD4 /* FlashKards.xcdatamodeld in Sources */,

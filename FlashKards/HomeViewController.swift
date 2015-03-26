@@ -22,6 +22,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Do any additional setup after loading the view, typically from a nib.
         // NavBar
         if let navbar = navigationController?.navigationBar{
+            navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.Plain, target:nil, action:nil)
             navbar.topItem!.title = "FLASHKARDS"
             navbar.barStyle = UIBarStyle.BlackTranslucent
             navbar.barTintColor = UIColor(red: 43/255, green: 43/255, blue: 43/255, alpha: 1)
@@ -118,6 +119,26 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             rowOfInterest = indexPath
         }
     }
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        performSegueWithIdentifier("showSummary", sender: indexPath)
+    }
+    // MARK: Segue
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showSummary"{
+            let indexPath: NSIndexPath = sender! as NSIndexPath
+            let flashcardsSummaryVC: FlashcardsSummaryController = segue.destinationViewController as FlashcardsSummaryController
+            let targetFlashcardCollectionCDObj = flashcardCoreDataObjs[indexPath.row]
+            let targetCollection = FlashCardCollection(
+                collectionName: targetFlashcardCollectionCDObj.valueForKey("name")? as String!,
+                progress: targetFlashcardCollectionCDObj.valueForKey("progress")? as Int,
+                lastReviewed: targetFlashcardCollectionCDObj.valueForKey("lastReviewed")? as String!,
+                numCards: targetFlashcardCollectionCDObj.valueForKey("numCards")? as Int!
+            )
+            flashcardsSummaryVC.configureWithCollection(targetCollection)
+        }
+    }
+    
     
     // MARK: AddCollectionPopup
     func openAddColPopup(){
