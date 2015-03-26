@@ -15,7 +15,7 @@ import UIKit
 class AddCollectionPopup: UIView, UITextFieldDelegate {
     private var inputField: UITextField!
     var delegate: AnyObject?
-    private var acceptedCharset = " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    private var bannedCharset = "<>?;@$%^&\\'`"
     private var errMsgLabel: UILabel!
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -164,15 +164,17 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let charset = NSCharacterSet(charactersInString: acceptedCharset).invertedSet
+        let charset = NSCharacterSet(charactersInString: bannedCharset).invertedSet
         let components = string.componentsSeparatedByCharactersInSet(charset)
         let filteredText = join("", components)
-        let allowedInput = (string == filteredText) ? true : false
-        if !allowedInput{
+        println("STRING: \(string), FILTERED: \(filteredText)")
+        var allowedInput = (string == filteredText) ? false : true
+        if !allowedInput && string.utf16Count > 0{
             showTextFieldWarning(0)
-            errMsgLabel.text = "Invalid character \"\((string as NSString).substringFromIndex(string.utf16Count - 1))\"\nAlphabets only."
+            errMsgLabel.text = "Invalid character \"\((string as NSString).substringFromIndex(string.utf16Count - 1))\""
         }
         else{
+            if string.utf16Count == 0{ allowedInput = true } // This is a backspace
             errMsgLabel.text = ""
         }
         return allowedInput
