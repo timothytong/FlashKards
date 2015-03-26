@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14D105g" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="osD-1S-xje">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Home View Controller-->
@@ -175,10 +176,10 @@
             </objects>
             <point key="canvasLocation" x="1860" y="1031"/>
         </scene>
-        <!--Add FlashKards-->
+        <!--Customize FlashKard-->
         <scene sceneID="57Q-jI-LNZ">
             <objects>
-                <viewController id="lHj-od-9Ab" sceneMemberID="viewController">
+                <viewController id="lHj-od-9Ab" customClass="CustomizeCardController" customModule="FlashKards" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ld1-Ya-Xxv"/>
                         <viewControllerLayoutGuide type="bottom" id="w1a-AY-FGu"/>
@@ -186,11 +187,98 @@
                     <view key="view" contentMode="scaleToFill" id="MaO-CZ-4EZ">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mTJ-59-Q9J" userLabel="Container">
+                                <rect key="frame" x="26" y="104" width="548" height="370"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ELC-mh-i8S" userLabel="Back">
+                                        <rect key="frame" x="0.0" y="0.0" width="548" height="370"/>
+                                        <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lab-fK-CwS" userLabel="Front">
+                                        <rect key="frame" x="0.0" y="0.0" width="548" height="370"/>
+                                        <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstItem="ELC-mh-i8S" firstAttribute="height" secondItem="mTJ-59-Q9J" secondAttribute="height" id="BMt-pM-qn9"/>
+                                    <constraint firstItem="Lab-fK-CwS" firstAttribute="top" secondItem="mTJ-59-Q9J" secondAttribute="top" id="BnK-LV-Zsd"/>
+                                    <constraint firstAttribute="height" constant="370" id="N94-Tu-0zX"/>
+                                    <constraint firstItem="Lab-fK-CwS" firstAttribute="leading" secondItem="mTJ-59-Q9J" secondAttribute="leading" id="Pnn-lF-d5u"/>
+                                    <constraint firstItem="Lab-fK-CwS" firstAttribute="width" secondItem="mTJ-59-Q9J" secondAttribute="width" id="S4z-KK-11t"/>
+                                    <constraint firstItem="ELC-mh-i8S" firstAttribute="leading" secondItem="mTJ-59-Q9J" secondAttribute="leading" id="VSi-CQ-9md"/>
+                                    <constraint firstItem="Lab-fK-CwS" firstAttribute="height" secondItem="mTJ-59-Q9J" secondAttribute="height" id="jfR-5s-uWc"/>
+                                    <constraint firstItem="ELC-mh-i8S" firstAttribute="width" secondItem="mTJ-59-Q9J" secondAttribute="width" id="oBw-Vi-Swn"/>
+                                    <constraint firstItem="ELC-mh-i8S" firstAttribute="top" secondItem="mTJ-59-Q9J" secondAttribute="top" id="vvb-aY-w54"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Gsg-T1-f9f" appends="YES" id="r5L-1T-pdV"/>
+                                    <outletCollection property="gestureRecognizers" destination="OyI-To-ppP" appends="YES" id="wPs-MN-CQZ"/>
+                                    <outletCollection property="gestureRecognizers" destination="YwW-rL-hz5" appends="YES" id="CaI-RT-26g"/>
+                                </connections>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fe5-EW-pKX">
+                                <rect key="frame" x="235" y="497" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Rji-i9-4ce"/>
+                                    <constraint firstAttribute="width" constant="50" id="q6Y-os-xjs"/>
+                                </constraints>
+                                <state key="normal" image="text-white.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KMO-1Z-EtY">
+                                <rect key="frame" x="315" y="497" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="EiZ-DU-ZLu"/>
+                                    <constraint firstAttribute="width" constant="50" id="dxb-MU-30L"/>
+                                </constraints>
+                                <state key="normal" image="newImg-white.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vdz-Go-63w">
+                                <rect key="frame" x="549" y="482" width="25" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="25" id="KaH-VY-sfn"/>
+                                    <constraint firstAttribute="height" constant="25" id="oXi-Ae-gZg"/>
+                                </constraints>
+                                <state key="normal" image="flip-white.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.22352941179999999" green="0.22352941179999999" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="mTJ-59-Q9J" firstAttribute="leading" secondItem="MaO-CZ-4EZ" secondAttribute="leadingMargin" constant="10" id="Nlk-yJ-IrK"/>
+                            <constraint firstItem="mTJ-59-Q9J" firstAttribute="trailing" secondItem="MaO-CZ-4EZ" secondAttribute="trailingMargin" constant="-10" id="Qkn-8s-Rsb"/>
+                            <constraint firstItem="mTJ-59-Q9J" firstAttribute="centerX" secondItem="Fe5-EW-pKX" secondAttribute="centerX" constant="40" id="Vc7-AC-nH9"/>
+                            <constraint firstItem="Fe5-EW-pKX" firstAttribute="top" secondItem="mTJ-59-Q9J" secondAttribute="bottom" constant="23" id="b84-tH-icl"/>
+                            <constraint firstItem="vdz-Go-63w" firstAttribute="trailing" secondItem="Lab-fK-CwS" secondAttribute="trailing" id="eV9-33-wOM"/>
+                            <constraint firstItem="vdz-Go-63w" firstAttribute="top" secondItem="Lab-fK-CwS" secondAttribute="bottom" constant="8" id="fT4-HM-1Fj"/>
+                            <constraint firstItem="KMO-1Z-EtY" firstAttribute="centerX" secondItem="mTJ-59-Q9J" secondAttribute="centerX" constant="40" id="kfV-UV-HOE"/>
+                            <constraint firstItem="KMO-1Z-EtY" firstAttribute="top" secondItem="mTJ-59-Q9J" secondAttribute="bottom" constant="23" id="qj6-m7-O0N"/>
+                            <constraint firstItem="mTJ-59-Q9J" firstAttribute="top" secondItem="ld1-Ya-Xxv" secondAttribute="bottom" constant="40" id="ubc-VD-SND"/>
+                            <constraint firstAttribute="centerX" secondItem="mTJ-59-Q9J" secondAttribute="centerX" id="v17-MR-zO5"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Add FlashKards" id="IVV-Hg-Mgh"/>
+                    <navigationItem key="navigationItem" title="Customize FlashKard" id="IVV-Hg-Mgh"/>
+                    <connections>
+                        <outlet property="addImgBtn" destination="KMO-1Z-EtY" id="32C-21-QWa"/>
+                        <outlet property="addTextBtn" destination="Fe5-EW-pKX" id="71p-Qq-JbR"/>
+                        <outlet property="backView" destination="ELC-mh-i8S" id="wU7-xH-fTv"/>
+                        <outlet property="cardHeightConstraint" destination="N94-Tu-0zX" id="u3Q-UU-1Ht"/>
+                        <outlet property="flashcardContainerView" destination="mTJ-59-Q9J" id="uBh-xo-hFg"/>
+                        <outlet property="flipBtn" destination="vdz-Go-63w" id="OYI-mv-ksR"/>
+                        <outlet property="frontView" destination="Lab-fK-CwS" id="WFl-5K-eoN"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hJm-2T-sO3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="left" id="OyI-To-ppP"/>
+                <swipeGestureRecognizer direction="right" id="Gsg-T1-f9f"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" maximumNumberOfTouches="1" id="YwW-rL-hz5"/>
             </objects>
             <point key="canvasLocation" x="2668" y="480"/>
         </scene>
@@ -216,6 +304,9 @@
     <resources>
         <image name="add-white.png" width="128" height="128"/>
         <image name="edit-white.png" width="128" height="128"/>
+        <image name="flip-white.png" width="128" height="128"/>
         <image name="go-white.png" width="128" height="128"/>
+        <image name="newImg-white.png" width="128" height="128"/>
+        <image name="text-white.png" width="128" height="128"/>
     </resources>
 </document>
