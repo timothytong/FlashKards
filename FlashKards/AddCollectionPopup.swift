@@ -10,10 +10,13 @@ import UIKit
 @objc protocol AddCollectionPopupDelegate{
     func addCollectionPopupWillClose()
     func addCollectionPopupDoneButtonDidPressedWithInput(input:String!)
+    func addCollectionInputAlreadyExists(input: String!)->Bool
 }
 class AddCollectionPopup: UIView, UITextFieldDelegate {
     private var inputField: UITextField!
     var delegate: AnyObject?
+    private var acceptedCharset = " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    private var errMsgLabel: UILabel!
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -33,7 +36,6 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         instrucLabel.textColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
         instrucLabel.numberOfLines = 2
         instrucLabel.textAlignment = NSTextAlignment.Center
-//        instrucLabel.transform = CGAffineTransformMakeScale(1, 0.8)
         addSubview(instrucLabel)
         
         // Input field & its border.
@@ -63,8 +65,12 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         resetInputPlaceHolder()
         
         // Error Message
-        var errMsgLabel = UILabel(frame: CGRect(x: frame.width/8, y: inputField.frame.origin.y + inputField.frame.height + 15, width: frame.width * 3/4, height: 25))
-        
+        errMsgLabel = UILabel(frame: CGRect(x: frame.width/8, y: inputField.frame.origin.y + inputField.frame.height + 15, width: frame.width * 3/4, height: 35))
+        errMsgLabel.textColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
+        errMsgLabel.font = UIFont(name: "AppleSDGothicNeo-Light", size: 12)
+        errMsgLabel.textAlignment = NSTextAlignment.Center
+        errMsgLabel.numberOfLines = 2
+        errMsgLabel.text = ""
         addSubview(errMsgLabel)
         
         // Done Btn
@@ -98,6 +104,7 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         }
         else if textFieldText.utf16Count > 20{
             inputField.text = (textFieldText as NSString).substringToIndex(20)
+            errMsgLabel.text = "Maximum 20 characters."
             showTextFieldWarning(0)
             return false
         }
@@ -114,8 +121,10 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         dismissKeyboard()
         if checkInputValidity(){
             let newCollectionName = inputField.text
-            delegate?.addCollectionPopupDoneButtonDidPressedWithInput(newCollectionName)
-            clearTxt()
+            if delegate?.addCollectionInputAlreadyExists(newCollectionName) == false{
+                delegate?.addCollectionPopupDoneButtonDidPressedWithInput(newCollectionName)
+                clearTxt()
+            }
         }
         
     }
@@ -137,6 +146,7 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
     func textFieldDidBeginEditing(textField: UITextField) {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "textFieldTextDidChange:", name: UITextFieldTextDidChangeNotification, object: inputField)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.errMsgLabel.text = ""
             self.resetInputPlaceHolder()
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
                 self.transform = CGAffineTransformMakeTranslation(0, -50)
@@ -151,6 +161,21 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
     
     func textFieldTextDidChange(notification: NSNotification){
         checkInputValidity()
+    }
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let charset = NSCharacterSet(charactersInString: acceptedCharset).invertedSet
+        let components = string.componentsSeparatedByCharactersInSet(charset)
+        let filteredText = join("", components)
+        let allowedInput = (string == filteredText) ? true : false
+        if !allowedInput{
+            showTextFieldWarning(0)
+            errMsgLabel.text = "Invalid character \"\((string as NSString).substringFromIndex(string.utf16Count - 1))\"\nAlphabets only."
+        }
+        else{
+            errMsgLabel.text = ""
+        }
+        return allowedInput
     }
     
     private func showTextFieldWarning(errCode: Int){
@@ -205,10 +230,17 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
                 self.transform = CGAffineTransformIdentity
                 }) { (complete) -> Void in
             }
-            UIView.transitionWithView(self.inputField, duration: 0.4, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-                self.inputField.textColor = UIColor(red: 0, green: 247/255, blue: 21/255, alpha: 1)
-                }, completion: { (complete) -> Void in
-            })
+            let newCollectionName = self.inputField.text
+            if self.delegate?.addCollectionInputAlreadyExists(newCollectionName) == true{
+                self.showTextFieldWarning(0)
+                self.errMsgLabel.text = "This collection already exists."
+            }
+            else{
+                UIView.transitionWithView(self.inputField, duration: 0.4, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                    self.inputField.textColor = UIColor(red: 0, green: 247/255, blue: 21/255, alpha: 1)
+                    }, completion: { (complete) -> Void in
+                })
+            }
         })
     }
     /*

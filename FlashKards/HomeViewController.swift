@@ -155,7 +155,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         closeAddColPopup()
     }
     
-    func addCollectionPopupDoneButtonDidPressedWithInput(input: String!) {
+    func addCollectionInputAlreadyExists(input: String!)->Bool{
+        if let collectionOfSameName = collectionsManager.searchExistingCollectionsWithName(input){
+            return true
+        }
+        return false
+    }
+    
+    func addCollectionPopupDoneButtonDidPressedWithInput(input: String!){
         closeAddColPopup()
         let newCollection = FlashCardCollection(collectionName: input, progress: 100, lastReviewed: "Never", numCards: 0)
         collectionsManager.saveCollection(newCollection, completionHandler: { (success, newCollectionCDObject) -> Void in

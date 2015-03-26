@@ -47,7 +47,9 @@ class CollectionsManager: NSObject {
         var error: NSError?
         var fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error)
         if let results = fetchResults{
-            return (results[0] as NSManagedObject)
+            if results.count > 0{
+                return (results[0] as NSManagedObject)
+            }
         }
         return nil
     }

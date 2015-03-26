@@ -45,7 +45,6 @@ class ConfirmDeletePopup: UIView {
         instrucLabel.minimumScaleFactor = 0.7
         addSubview(instrucLabel)
         
-        
         // Confirm Btn
         var confirmBtn = UIButton(frame: CGRect(x: 10, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50))
         var confirmBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: confirmBtn.frame.width, height: confirmBtn.frame.height))
