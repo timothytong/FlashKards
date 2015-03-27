@@ -205,6 +205,7 @@
                                 <constraints>
                                     <constraint firstItem="ELC-mh-i8S" firstAttribute="height" secondItem="mTJ-59-Q9J" secondAttribute="height" id="BMt-pM-qn9"/>
                                     <constraint firstItem="Lab-fK-CwS" firstAttribute="top" secondItem="mTJ-59-Q9J" secondAttribute="top" id="BnK-LV-Zsd"/>
+                                    <constraint firstAttribute="width" constant="548" id="FzD-Ly-ssu"/>
                                     <constraint firstAttribute="height" constant="370" id="N94-Tu-0zX"/>
                                     <constraint firstItem="Lab-fK-CwS" firstAttribute="leading" secondItem="mTJ-59-Q9J" secondAttribute="leading" id="Pnn-lF-d5u"/>
                                     <constraint firstItem="Lab-fK-CwS" firstAttribute="width" secondItem="mTJ-59-Q9J" secondAttribute="width" id="S4z-KK-11t"/>
@@ -270,6 +271,7 @@
                         <outlet property="addTextBtn" destination="Fe5-EW-pKX" id="71p-Qq-JbR"/>
                         <outlet property="backView" destination="ELC-mh-i8S" id="wU7-xH-fTv"/>
                         <outlet property="cardHeightConstraint" destination="N94-Tu-0zX" id="u3Q-UU-1Ht"/>
+                        <outlet property="cardWidthConstraint" destination="FzD-Ly-ssu" id="IIo-w2-uQG"/>
                         <outlet property="flashcardContainerView" destination="mTJ-59-Q9J" id="uBh-xo-hFg"/>
                         <outlet property="flipBtn" destination="vdz-Go-63w" id="OYI-mv-ksR"/>
                         <outlet property="frontView" destination="Lab-fK-CwS" id="WFl-5K-eoN"/>

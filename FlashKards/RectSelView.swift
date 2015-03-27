@@ -60,8 +60,8 @@ class RectSelView: UIView {
             pan.maximumNumberOfTouches = 1
             pan.minimumNumberOfTouches = 1
             addSubview(panArea)
+            panArea.backgroundColor = UIColor.clearColor()
             panArea.addGestureRecognizer(pan)
-            panArea.layer.borderWidth = 1
             panAreas[i] = panArea
         }
         
@@ -110,18 +110,40 @@ class RectSelView: UIView {
         changeInHeight : CGFloat = 0
         
         switch sender.view!.tag{
-        case 0: //Top left, Bottom left
+        case 0: // Top left
             changeInX = translation.x
             changeInY = translation.y
             if frame.origin.x + changeInX < 0 { changeInX = -frame.origin.x } // Edge case on x-axis
             else if changeInX + MIN_WIDTH >= frame.width { changeInX = 0 }    // Check if width is still > MIN_WIDTH
             
-            if frame.origin.y + changeInY < 0 { changeInY = -frame.origin.y } // Edge case on x-axis
+            if frame.origin.y + changeInY < 0 { changeInY = -frame.origin.y } // Edge case on y-axis
             else if changeInY + MIN_HEIGHT >= frame.height { changeInY = 0 }  // Check if width is still > MIN_HEIGHT
             changeInWidth = frame.width - changeInX
             changeInHeight = frame.height - changeInY
-            println("changeInX: \(changeInX), changeInY: \(changeInY), frame.x: \(frame.origin.x)")
             frame = CGRect(x: frame.origin.x + changeInX, y: frame.origin.y + changeInY, width: changeInWidth, height: changeInHeight)
+        case 1: // Top Right
+            changeInWidth = translation.x
+            changeInY = translation.y
+            if frame.origin.x + frame.width + changeInWidth > superview!.frame.width {
+                changeInWidth = superview!.frame.width - frame.origin.x - frame.width // Edge case on x-axis
+            }
+            else if frame.width + changeInWidth < MIN_WIDTH { changeInWidth = 0 }  // Check if width is still > MIN_WIDTH
+            
+            if frame.origin.y + changeInY < 0 { changeInY = -frame.origin.y } // Edge case on y-axis
+            else if changeInY + MIN_HEIGHT >= frame.height { changeInY = 0 }  // Check if width is still > MIN_HEIGHT
+            changeInHeight = frame.height - changeInY
+            frame = CGRect(x: frame.origin.x, y: frame.origin.y + changeInY, width: frame.width + changeInWidth, height: changeInHeight)
+        case 2:
+            changeInX = translation.x
+            changeInHeight = translation.y
+            if frame.origin.x + changeInX < 0 { changeInX = -frame.origin.x } // Edge case on x-axis
+            else if changeInX + MIN_WIDTH >= frame.width { changeInX = 0 }    // Check if width is still > MIN_WIDTH
+            if frame.origin.y + frame.height + changeInHeight > superview!.frame.height {
+                changeInHeight = superview!.frame.height - frame.origin.y - frame.height // Edge case on y-axis
+            }
+            else if frame.height + changeInHeight < MIN_HEIGHT { changeInHeight = 0 }  // Check if height is still > MIN_HEIGHT
+            changeInWidth = frame.width - changeInX
+            frame = CGRect(x: frame.origin.x + changeInX, y: frame.origin.y, width: changeInWidth, height: frame.height + changeInHeight)
         case 3:
             changeInWidth = translation.x
             changeInHeight = translation.y

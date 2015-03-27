@@ -9,6 +9,8 @@
 import UIKit
 
 class CustomizeCardController: UIViewController {
+    
+    @IBOutlet weak var cardWidthConstraint: NSLayoutConstraint!
     @IBOutlet private weak var cardHeightConstraint: NSLayoutConstraint! // If iPhone 4 decrease, if 6/6+ increase!
     @IBOutlet private weak var flashcardContainerView: UIView!
     @IBOutlet private weak var flipBtn: UIButton!
@@ -23,7 +25,7 @@ class CustomizeCardController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         flipBtn.addTarget(self, action: "flip", forControlEvents: UIControlEvents.TouchUpInside)
-        rectSel = RectSelView(frame: CGRect(x: 40, y: 40, width: flashcardContainerView.frame.width - 80, height: flashcardContainerView.frame.height - 100))
+        rectSel = RectSelView(frame: CGRect(x: 40, y: 40, width: 100, height: 100))
         flashcardContainerView.addSubview(rectSel)
         flashcardContainerView.bringSubviewToFront(rectSel)
         frontView.userInteractionEnabled = false
