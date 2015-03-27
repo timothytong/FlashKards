@@ -73,6 +73,8 @@ class CustomizeCardController: UIViewController {
     
     func back(sender: UIBarButtonItem) {
         // Ask user if they really want to quit without saving.
+        var backConfirmPopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
+        backConfirmPopup.message = "Are you sure you want to quit without saving?"
         self.navigationController?.popViewControllerAnimated(true)
     }
 
