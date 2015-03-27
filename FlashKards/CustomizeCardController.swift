@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CustomizeCardController: UIViewController {
+class CustomizeCardController: UIViewController, PopupDelegate {
     @IBOutlet private weak var sideLabel: UILabel!
     @IBOutlet private weak var cardHeightConstraint: NSLayoutConstraint! // If iPhone 4 decrease, if 6/6+ increase!
     @IBOutlet private weak var flashcardContainerView: UIView!
@@ -18,22 +18,29 @@ class CustomizeCardController: UIViewController {
     @IBOutlet private weak var addTextBtn: UIButton!
     @IBOutlet private weak var addImgBtn: UIButton!
     @IBOutlet private weak var rectSelView: RectSelView!
+    @IBOutlet private weak var deleteBtn: UIButton!
+    private var dimLayer: UIView!
     private var frontShowing = true
     private var isAnimating = false
     private var rectSel: RectSelView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Do any additional setup after loading the view.
         flipBtn.addTarget(self, action: "flip", forControlEvents: UIControlEvents.TouchUpInside)
         rectSel = RectSelView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
         flashcardContainerView.addSubview(rectSel)
         flashcardContainerView.bringSubviewToFront(rectSel)
         frontView.userInteractionEnabled = false
         backView.userInteractionEnabled = false
-        if let backButton = navigationItem.backBarButtonItem{
-            backButton.action = "back:"
-        }
+        navigationItem.hidesBackButton = true
+        deleteBtn.addTarget(self, action: "back:", forControlEvents: UIControlEvents.TouchUpInside)
         
-        // Do any additional setup after loading the view.
+        // Dim layer
+        dimLayer = UIView(frame: UIScreen.mainScreen().bounds)
+        dimLayer.backgroundColor = UIColor(white: 0, alpha: 0.6)
+        dimLayer.userInteractionEnabled = true
+        dimLayer.alpha = 0
+        navigationController?.view.addSubview(dimLayer)
     }
     
     override func didReceiveMemoryWarning() {
@@ -71,13 +78,35 @@ class CustomizeCardController: UIViewController {
         })
     }
     
-    func back(sender: UIBarButtonItem) {
+    func back(sender: UIButton) {
         // Ask user if they really want to quit without saving.
         var backConfirmPopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
         backConfirmPopup.message = "Are you sure you want to quit without saving?"
-        self.navigationController?.popViewControllerAnimated(true)
+        backConfirmPopup.confirmButtonText = "YES"
+        backConfirmPopup.delegate = self
+        backConfirmPopup.instructionLabelFontSize = 25
+        navigationController?.view.addSubview(backConfirmPopup)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+                self.dimLayer.alpha = 1
+                }, completion: { (complete) -> Void in
+            })
+        })
+        backConfirmPopup.show()
     }
-
+    
+    func popupConfirmBtnDidTapped() {
+        navigationController?.popViewControllerAnimated(true)
+    }
+    
+    func popupCancelBtnDidTapped() {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+                self.dimLayer.alpha = 0
+                }, completion: { (complete) -> Void in
+            })
+        })
+    }
     /*
     // MARK: - Navigation
     

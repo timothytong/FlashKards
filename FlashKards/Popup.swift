@@ -28,7 +28,16 @@ class Popup: UIView {
             instrucLabel.font = instrucLabel.font.fontWithSize(newFontSize)
         }
     }
+    var confirmButtonText: String!{
+        get{
+            return ""
+        }
+        set(newText){
+            confirmBtnLabel.text = newText
+        }
+    }
     var delegate: AnyObject?
+    private var confirmBtnLabel : UILabel!
     private var instrucLabel: UILabel!
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -57,7 +66,7 @@ class Popup: UIView {
         
         // Confirm Btn
         var confirmBtn = UIButton(frame: CGRect(x: 10, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50))
-        var confirmBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: confirmBtn.frame.width, height: confirmBtn.frame.height))
+        confirmBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: confirmBtn.frame.width, height: confirmBtn.frame.height))
         confirmBtnLabel.font = UIFont(name: "Avenir-Roman", size: 22)
         confirmBtnLabel.text = "DELETE"
         confirmBtnLabel.textAlignment = NSTextAlignment.Center

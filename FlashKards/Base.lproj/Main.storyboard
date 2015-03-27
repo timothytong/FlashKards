@@ -255,6 +255,12 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fpA-Aw-N9N">
+                                <rect key="frame" x="26" y="72" width="24" height="22"/>
+                                <state key="normal" image="delete-white.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.22352941179999999" green="0.22352941179999999" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -280,6 +286,7 @@
                         <outlet property="addTextBtn" destination="Fe5-EW-pKX" id="71p-Qq-JbR"/>
                         <outlet property="backView" destination="ELC-mh-i8S" id="wU7-xH-fTv"/>
                         <outlet property="cardHeightConstraint" destination="N94-Tu-0zX" id="u3Q-UU-1Ht"/>
+                        <outlet property="deleteBtn" destination="fpA-Aw-N9N" id="f3X-yk-Mea"/>
                         <outlet property="flashcardContainerView" destination="mTJ-59-Q9J" id="uBh-xo-hFg"/>
                         <outlet property="flipBtn" destination="vdz-Go-63w" id="OYI-mv-ksR"/>
                         <outlet property="frontView" destination="Lab-fK-CwS" id="WFl-5K-eoN"/>
@@ -314,6 +321,7 @@
     </scenes>
     <resources>
         <image name="add-white.png" width="128" height="128"/>
+        <image name="delete-white.png" width="128" height="128"/>
         <image name="edit-white.png" width="128" height="128"/>
         <image name="flip-white.png" width="128" height="128"/>
         <image name="go-white.png" width="128" height="128"/>
