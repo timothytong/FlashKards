@@ -32,6 +32,7 @@
 		33CB73691AC49C6900B72A6A /* newImg-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 33CB73681AC49C6900B72A6A /* newImg-white.png */; };
 		33CB736B1AC49D1400B72A6A /* CustomizeCardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CB736A1AC49D1400B72A6A /* CustomizeCardController.swift */; };
 		33CB73711AC4A65000B72A6A /* flip-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 33CB73701AC4A65000B72A6A /* flip-white.png */; };
+		33CB73731AC4B65600B72A6A /* RectSelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CB73721AC4B65600B72A6A /* RectSelView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,19 @@
 			remoteInfo = FlashKards;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		33010B6A1AC4DC7F00C3F283 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		3320C5BC1ABF807B00A90CD4 /* FlashKards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlashKards.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,6 +88,7 @@
 		33CB73681AC49C6900B72A6A /* newImg-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "newImg-white.png"; path = "Images/newImg-white.png"; sourceTree = "<group>"; };
 		33CB736A1AC49D1400B72A6A /* CustomizeCardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomizeCardController.swift; sourceTree = "<group>"; };
 		33CB73701AC4A65000B72A6A /* flip-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "flip-white.png"; path = "Images/flip-white.png"; sourceTree = "<group>"; };
+		33CB73721AC4B65600B72A6A /* RectSelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectSelView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,6 +232,7 @@
 		33402CFA1AC0C20700265F70 /* AuxiliaryViews */ = {
 			isa = PBXGroup;
 			children = (
+				33CB73721AC4B65600B72A6A /* RectSelView.swift */,
 				33A53ECE1AC2F0C0001815FA /* ConfirmDeletePopup.swift */,
 				33402CF81AC0C1F400265F70 /* AddCollectionPopup.swift */,
 				33402CF11AC09CB800265F70 /* HomePageCell */,
@@ -243,6 +259,7 @@
 				3320C5B81ABF807B00A90CD4 /* Sources */,
 				3320C5B91ABF807B00A90CD4 /* Frameworks */,
 				3320C5BA1ABF807B00A90CD4 /* Resources */,
+				33010B6A1AC4DC7F00C3F283 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -352,6 +369,7 @@
 				33A53ECF1AC2F0C0001815FA /* ConfirmDeletePopup.swift in Sources */,
 				3375E2351AC3642B00C39472 /* CollectionsManager.swift in Sources */,
 				3320C5C51ABF807B00A90CD4 /* FlashKards.xcdatamodeld in Sources */,
+				33CB73731AC4B65600B72A6A /* RectSelView.swift in Sources */,
 				3320C5C21ABF807B00A90CD4 /* AppDelegate.swift in Sources */,
 				33CB736B1AC49D1400B72A6A /* CustomizeCardController.swift in Sources */,
 			);

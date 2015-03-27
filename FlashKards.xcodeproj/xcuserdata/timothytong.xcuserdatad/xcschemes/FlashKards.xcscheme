@@ -34,6 +34,20 @@
                ReferencedContainer = "container:FlashKards.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "33010B571AC4DC7F00C3F283"
+               BuildableName = "CustomViewsTests.xctest"
+               BlueprintName = "CustomViewsTests"
+               ReferencedContainer = "container:FlashKards.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -49,6 +63,16 @@
                BlueprintIdentifier = "3320C5D31ABF807C00A90CD4"
                BuildableName = "FlashKardsTests.xctest"
                BlueprintName = "FlashKardsTests"
+               ReferencedContainer = "container:FlashKards.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "33010B571AC4DC7F00C3F283"
+               BuildableName = "CustomViewsTests.xctest"
+               BlueprintName = "CustomViewsTests"
                ReferencedContainer = "container:FlashKards.xcodeproj">
             </BuildableReference>
          </TestableReference>

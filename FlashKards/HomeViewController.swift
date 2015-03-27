@@ -83,6 +83,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as [NSManagedObject]?
         if let results = fetchResults{
             flashcardCoreDataObjs = results
+            tableView.reloadData()
         }
         else {
             println("Could not fetch \(error), \(error!.userInfo)")
