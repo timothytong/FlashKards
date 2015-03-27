@@ -205,6 +205,7 @@
                                 <constraints>
                                     <constraint firstItem="ELC-mh-i8S" firstAttribute="height" secondItem="mTJ-59-Q9J" secondAttribute="height" id="BMt-pM-qn9"/>
                                     <constraint firstItem="Lab-fK-CwS" firstAttribute="top" secondItem="mTJ-59-Q9J" secondAttribute="top" id="BnK-LV-Zsd"/>
+                                    <constraint firstAttribute="width" constant="548" id="FzD-Ly-ssu"/>
                                     <constraint firstAttribute="height" constant="370" id="N94-Tu-0zX"/>
                                     <constraint firstItem="Lab-fK-CwS" firstAttribute="leading" secondItem="mTJ-59-Q9J" secondAttribute="leading" id="Pnn-lF-d5u"/>
                                     <constraint firstItem="Lab-fK-CwS" firstAttribute="width" secondItem="mTJ-59-Q9J" secondAttribute="width" id="S4z-KK-11t"/>
@@ -249,10 +250,19 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FRONT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xmq-55-N6z">
+                                <rect key="frame" x="26" y="72" width="548" height="24"/>
+                                <fontDescription key="fontDescription" name="AppleSDGothicNeo-Thin" family="Apple SD Gothic Neo" pointSize="20"/>
+                                <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.22352941179999999" green="0.22352941179999999" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="xmq-55-N6z" firstAttribute="trailing" secondItem="Lab-fK-CwS" secondAttribute="trailing" id="HMr-m9-Akg"/>
                             <constraint firstItem="mTJ-59-Q9J" firstAttribute="leading" secondItem="MaO-CZ-4EZ" secondAttribute="leadingMargin" constant="10" id="Nlk-yJ-IrK"/>
+                            <constraint firstItem="xmq-55-N6z" firstAttribute="top" secondItem="ld1-Ya-Xxv" secondAttribute="bottom" constant="8" id="OJ4-mx-AsD"/>
+                            <constraint firstItem="xmq-55-N6z" firstAttribute="leading" secondItem="Lab-fK-CwS" secondAttribute="leading" id="QHG-47-chb"/>
                             <constraint firstItem="mTJ-59-Q9J" firstAttribute="trailing" secondItem="MaO-CZ-4EZ" secondAttribute="trailingMargin" constant="-10" id="Qkn-8s-Rsb"/>
                             <constraint firstItem="mTJ-59-Q9J" firstAttribute="centerX" secondItem="Fe5-EW-pKX" secondAttribute="centerX" constant="40" id="Vc7-AC-nH9"/>
                             <constraint firstItem="Fe5-EW-pKX" firstAttribute="top" secondItem="mTJ-59-Q9J" secondAttribute="bottom" constant="23" id="b84-tH-icl"/>
@@ -262,6 +272,7 @@
                             <constraint firstItem="KMO-1Z-EtY" firstAttribute="top" secondItem="mTJ-59-Q9J" secondAttribute="bottom" constant="23" id="qj6-m7-O0N"/>
                             <constraint firstItem="mTJ-59-Q9J" firstAttribute="top" secondItem="ld1-Ya-Xxv" secondAttribute="bottom" constant="40" id="ubc-VD-SND"/>
                             <constraint firstAttribute="centerX" secondItem="mTJ-59-Q9J" secondAttribute="centerX" id="v17-MR-zO5"/>
+                            <constraint firstItem="Lab-fK-CwS" firstAttribute="top" secondItem="xmq-55-N6z" secondAttribute="bottom" constant="8" id="wzw-d9-gXO"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Customize FlashKard" id="IVV-Hg-Mgh"/>
@@ -270,9 +281,11 @@
                         <outlet property="addTextBtn" destination="Fe5-EW-pKX" id="71p-Qq-JbR"/>
                         <outlet property="backView" destination="ELC-mh-i8S" id="wU7-xH-fTv"/>
                         <outlet property="cardHeightConstraint" destination="N94-Tu-0zX" id="u3Q-UU-1Ht"/>
+                        <outlet property="cardWidthConstraint" destination="FzD-Ly-ssu" id="IIo-w2-uQG"/>
                         <outlet property="flashcardContainerView" destination="mTJ-59-Q9J" id="uBh-xo-hFg"/>
                         <outlet property="flipBtn" destination="vdz-Go-63w" id="OYI-mv-ksR"/>
                         <outlet property="frontView" destination="Lab-fK-CwS" id="WFl-5K-eoN"/>
+                        <outlet property="sideLabel" destination="xmq-55-N6z" id="cd6-Sq-ry4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hJm-2T-sO3" userLabel="First Responder" sceneMemberID="firstResponder"/>

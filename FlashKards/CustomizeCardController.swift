@@ -9,7 +9,8 @@
 import UIKit
 
 class CustomizeCardController: UIViewController {
-    
+    @IBOutlet private weak var sideLabel: UILabel!
+    @IBOutlet private weak var cardWidthConstraint: NSLayoutConstraint!
     @IBOutlet private weak var cardHeightConstraint: NSLayoutConstraint! // If iPhone 4 decrease, if 6/6+ increase!
     @IBOutlet private weak var flashcardContainerView: UIView!
     @IBOutlet private weak var flipBtn: UIButton!
@@ -17,12 +18,18 @@ class CustomizeCardController: UIViewController {
     @IBOutlet private weak var backView: UIView!
     @IBOutlet private weak var addTextBtn: UIButton!
     @IBOutlet private weak var addImgBtn: UIButton!
+    @IBOutlet private weak var rectSelView: RectSelView!
     private var frontShowing = true
     private var isAnimating = false
+    private var rectSel: RectSelView!
     override func viewDidLoad() {
         super.viewDidLoad()
         flipBtn.addTarget(self, action: "flip", forControlEvents: UIControlEvents.TouchUpInside)
-        
+        rectSel = RectSelView(frame: CGRect(x: 40, y: 40, width: 100, height: 100))
+        flashcardContainerView.addSubview(rectSel)
+        flashcardContainerView.bringSubviewToFront(rectSel)
+        frontView.userInteractionEnabled = false
+        backView.userInteractionEnabled = false
         // Do any additional setup after loading the view.
     }
     
@@ -35,6 +42,17 @@ class CustomizeCardController: UIViewController {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             if !self.isAnimating{
                 self.isAnimating = true
+                let newLabel = self.frontShowing ? "BACK" : "FRONT"
+                UIView.animateWithDuration(0.35, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                    self.sideLabel.alpha = 0
+                    }, completion: { (complete) -> Void in
+                        self.sideLabel.text = newLabel
+                        UIView.animateWithDuration(0.35, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                            self.sideLabel.alpha = 1
+                            }, completion: { (complete) -> Void in
+                                
+                        })
+                })
                 UIView.transitionWithView(self.flashcardContainerView, duration: 0.7, options: UIViewAnimationOptions.TransitionFlipFromLeft, animations: { () -> Void in
                     if self.frontShowing{
                         self.frontView.hidden = true
