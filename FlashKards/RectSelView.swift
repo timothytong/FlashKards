@@ -32,6 +32,7 @@ class RectSelView: UIView {
         clipsToBounds = false
         backgroundColor = UIColor.clearColor()
         
+        // Dashed border
         dashedBorder = CAShapeLayer()
         dashedBorder.strokeColor = UIColor(red: 53/255, green: 53/255, blue: 53/255, alpha: 0.6).CGColor
         dashedBorder.fillColor = nil
@@ -39,6 +40,11 @@ class RectSelView: UIView {
         dashedBorder.lineWidth = 1
         layer.addSublayer(dashedBorder)
         
+        // Pan gesture (drag move) for the view itself
+        var dragPan = UIPanGestureRecognizer(target: self, action: "selRectPanned:")
+        self.addGestureRecognizer(dragPan)
+        
+        // The 4 resize grippers.
         topLeftPanArea = UIView()
         topRightPanArea = UIView()
         bottomLeftPanArea = UIView()
@@ -49,6 +55,8 @@ class RectSelView: UIView {
         bottomRightCircle = UIView()
         
         prevTranslation = CGPointMake(0, 0)
+
+        // Invisible pannable areas
         panAreas = [topLeftPanArea, topRightPanArea, bottomLeftPanArea, bottomRightPanArea]
         for(var i = 0; i < panAreas.count; i++){
             var panArea = panAreas[i]
@@ -64,7 +72,7 @@ class RectSelView: UIView {
             panArea.addGestureRecognizer(pan)
             panAreas[i] = panArea
         }
-        
+        // Circles
         circles = [topLeftCircle, topRightCircle, bottomLeftCircle, bottomRightCircle]
         for(var i = 0; i < circles.count; i++){
             var circle = circles[i]
@@ -87,23 +95,60 @@ class RectSelView: UIView {
         dashedBorder.path = UIBezierPath(rect: bounds).CGPath
         dashedBorder.frame = bounds
     }
-    func resizeDotPanned(sender: UIPanGestureRecognizer!){
-        if sender.state == UIGestureRecognizerState.Began{
-            println("BEGAN with tag: \(sender.view!.tag)")
-        }
-        else if sender.state == .Ended || sender.state == .Cancelled || sender.state == .Failed{
-            print("ENDED/CANCELLED/FAILED")
+    
+    // MARK: Pan Gestures
+    func selRectPanned(sender: UIPanGestureRecognizer!){
+        if sender.state == .Ended || sender.state == .Cancelled || sender.state == .Failed{
             prevTranslation.x = 0
             prevTranslation.y = 0
             return
         }
-        var translation = sender.translationInView(self.superview!)
+        var translation = sender.translationInView(self)
         var temp = translation
         println("\(translation.x), \(translation.y)")
         translation.x -= prevTranslation.x
         translation.y -= prevTranslation.y
         prevTranslation = temp
-        println("Adjusted: \(translation.x), \(translation.y)")
+        var newX: CGFloat = 0,
+        newY: CGFloat = 0
+        if frame.origin.x + translation.x >= 0{
+            if frame.origin.x + translation.x + frame.width <= superview!.frame.width{
+                newX = center.x + translation.x
+            }
+            else{
+                newX = superview!.frame.width - frame.width/2
+            }
+        }
+        else{
+            newX = frame.width / 2
+        }
+
+        if frame.origin.y + translation.y >= 0{
+            if frame.origin.y + translation.y + frame.height <= superview!.frame.height{
+                newY = center.y + translation.y
+            }
+            else{
+                newY = superview!.frame.height - frame.height/2
+            }
+        }
+        else{
+            newY = frame.height / 2
+        }
+        center = CGPointMake(newX, newY)
+    }
+    
+    func resizeDotPanned(sender: UIPanGestureRecognizer!){
+        if sender.state == .Ended || sender.state == .Cancelled || sender.state == .Failed{
+            prevTranslation.x = 0
+            prevTranslation.y = 0
+            return
+        }
+        var translation = sender.translationInView(self)
+        var temp = translation
+        println("\(translation.x), \(translation.y)")
+        translation.x -= prevTranslation.x
+        translation.y -= prevTranslation.y
+        prevTranslation = temp
         var changeInX : CGFloat = 0,
         changeInY : CGFloat = 0,
         changeInWidth : CGFloat = 0,
