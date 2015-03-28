@@ -7,6 +7,10 @@
 //
 
 import UIKit
+enum EditMode{
+    case AddTextMode
+    case AddImgMode
+}
 
 class CustomizeCardController: UIViewController, PopupDelegate {
     @IBOutlet weak var confirmBtnsContainerView: UIView!
@@ -31,6 +35,7 @@ class CustomizeCardController: UIViewController, PopupDelegate {
     private var frontShowing = true
     private var isAnimating = false
     private var rectSel: RectSelView!
+    private var editMode: EditMode?
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -49,11 +54,32 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         // Buttons
         cancelBtn.alpha = 0
         okBtn.hidden = true
-        addImgBtn.addTarget(self, action: "imgIconTapped:", forControlEvents: .TouchUpInside)
-        addTextBtn.addTarget(self, action: "textIconTapped:", forControlEvents: .TouchUpInside)
+        addImgBtn.tag = 0
+        addTextBtn.tag = 1
+        
+        addImgBtn.addTarget(self, action: "buttonTapped:", forControlEvents: .TouchUpInside)
+        addTextBtn.addTarget(self, action: "buttonTapped:", forControlEvents: .TouchUpInside)
+        addImgBtn.addTarget(self, action: "touchDownGlow:", forControlEvents: .TouchDown)
+        addTextBtn.addTarget(self, action: "touchDownGlow:", forControlEvents: .TouchDown)
+        addImgBtn.addTarget(self, action: "removeTouchDownGlow:", forControlEvents: .TouchUpOutside)
+        addTextBtn.addTarget(self, action: "removeTouchDownGlow:", forControlEvents: .TouchUpOutside)
         flipBtn.addTarget(self, action: "flip", forControlEvents: .TouchUpInside)
         deleteBtn.addTarget(self, action: "back:", forControlEvents: .TouchUpInside)
         cancelBtn.addTarget(self, action: "exitEditMode", forControlEvents: .TouchUpInside)
+        
+        // Glow
+        var color = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1);
+        addImgBtn.layer.shadowColor = color.CGColor;
+        addImgBtn.layer.shadowRadius = 0;
+        addImgBtn.layer.shadowOpacity = 0.9;
+        addImgBtn.layer.shadowOffset = CGSizeZero;
+        addImgBtn.layer.masksToBounds = false;
+        
+        addTextBtn.layer.shadowColor = color.CGColor;
+        addTextBtn.layer.shadowRadius = 0;
+        addTextBtn.layer.shadowOpacity = 0.9;
+        addTextBtn.layer.shadowOffset = CGSizeZero;
+        addTextBtn.layer.masksToBounds = false;
     }
     
     override func didReceiveMemoryWarning() {
@@ -61,8 +87,23 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func enterEditMode(){
-        self.isInEditMode = true
+    func touchDownGlow(sender: UIButton!){
+        UIView.transitionWithView(sender, duration: 0.15, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+            sender.layer.shadowRadius = 4
+            }) { (complete) -> Void in
+        }
+    }
+    
+    func removeTouchDownGlow(sender: UIButton!){
+        UIView.transitionWithView(sender, duration: 0.15, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+            sender.layer.shadowRadius = 0
+            }) { (complete) -> Void in
+        }
+    }
+    
+    func enterEditMode(mode: EditMode!){
+        isInEditMode = true
+        editMode = mode
         rectSel = RectSelView(frame: CGRect(x: 5, y: 5, width: 100, height: 100))
         rectSel.alpha = 0
         flashcardContainerView.addSubview(rectSel)
@@ -129,15 +170,7 @@ class CustomizeCardController: UIViewController, PopupDelegate {
                 
                 }, completion: nil)
         })
-        UIView.transitionWithView(self.addTextBtn, duration: 0.4, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-            self.addTextBtn.setImage(UIImage(named: "text-white.png"), forState: UIControlState.Normal)
-            }) { (complete) -> Void in
-        }
-        UIView.transitionWithView(self.addImgBtn, duration: 0.4, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-            self.addImgBtn.setImage(UIImage(named: "newImg-white.png"), forState: UIControlState.Normal)
-            }) { (complete) -> Void in
-        }
-        
+        removeActiveGlow()
     }
     
     func flip(){
@@ -170,8 +203,8 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         })
     }
     
+    // Ask user if they really want to quit without saving.
     func back(sender: UIButton) {
-        // Ask user if they really want to quit without saving.
         var backConfirmPopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
         backConfirmPopup.message = "Are you sure you want to quit without saving?"
         backConfirmPopup.confirmButtonText = "YES"
@@ -206,22 +239,43 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         })
     }
     
-    func textIconTapped(sender: UIButton!){
+    func buttonTapped(sender: UIButton!){
         if !isInEditMode{
-            UIView.transitionWithView(self.addTextBtn, duration: 0.4, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-                self.addTextBtn.setImage(UIImage(named: "text-blue.png"), forState: UIControlState.Normal)
-                }) { (complete) -> Void in
-                    
-            }
-            enterEditMode()
+            sender.layer.shadowRadius = 0;
+            addActiveGlow(sender)
+            let editingMode : EditMode = (sender.tag == 0) ? .AddImgMode : .AddTextMode
+            enterEditMode(editingMode)
         }
     }
     
-    func imgIconTapped(sender: UIButton!){
-        if !isInEditMode{
-            enterEditMode()
+    func addActiveGlow(sender: UIButton!){
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            UIView.transitionWithView(sender, duration: 0.4, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                let newImgString = (sender.tag == 0) ? "newImg-blue.png" : "text-blue.png"
+                sender.setImage(UIImage(named: newImgString), forState: UIControlState.Normal)
+                var color = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1);
+                sender.layer.shadowColor = color.CGColor;
+                sender.layer.shadowRadius = 4.0;
+                sender.layer.shadowOpacity = 0.9;
+                sender.layer.shadowOffset = CGSizeZero;
+                sender.layer.masksToBounds = false;
+                }) { (complete) -> Void in
+            }
+        })
+    }
+    
+    func removeActiveGlow(){
+        let newImgString = (editMode == .AddImgMode) ? "newImg-white.png" : "text-white.png"
+        let button = (editMode == .AddImgMode) ? addImgBtn : addTextBtn
+        UIView.transitionWithView(button, duration: 0.4, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+            button.setImage(UIImage(named: newImgString), forState: UIControlState.Normal)
+            button.layer.shadowRadius = 0
+            }) { (complete) -> Void in
+                self.editMode = nil
         }
     }
+    
+    
     /*
     // MARK: - Navigation
     
