@@ -55,7 +55,7 @@ class RectSelView: UIView {
         bottomRightCircle = UIView()
         
         prevTranslation = CGPointMake(0, 0)
-
+        
         // Invisible pannable areas
         panAreas = [topLeftPanArea, topRightPanArea, bottomLeftPanArea, bottomRightPanArea]
         for(var i = 0; i < panAreas.count; i++){
@@ -105,7 +105,7 @@ class RectSelView: UIView {
         }
         var translation = sender.translationInView(self)
         var temp = translation
-        println("\(translation.x), \(translation.y)")
+        //        println("\(translation.x), \(translation.y)")
         translation.x -= prevTranslation.x
         translation.y -= prevTranslation.y
         prevTranslation = temp
@@ -122,7 +122,7 @@ class RectSelView: UIView {
         else{
             newX = frame.width / 2
         }
-
+        
         if frame.origin.y + translation.y >= 0{
             if frame.origin.y + translation.y + frame.height <= superview!.frame.height{
                 newY = center.y + translation.y
@@ -145,7 +145,7 @@ class RectSelView: UIView {
         }
         var translation = sender.translationInView(self)
         var temp = translation
-        println("\(translation.x), \(translation.y)")
+        //        println("\(translation.x), \(translation.y)")
         translation.x -= prevTranslation.x
         translation.y -= prevTranslation.y
         prevTranslation = temp
