@@ -66,7 +66,6 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Delete collection confirmation popup
         deleteCollectionPopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
         deleteCollectionPopup.delegate = self
-        navigationController?.view.addSubview(deleteCollectionPopup)
         
         // Collections Manager
         collectionsManager = CollectionsManager()
@@ -116,6 +115,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             let collectionCoreDataObj = flashcardCoreDataObjs[indexPath.row]
             let collectionName = collectionCoreDataObj.valueForKey("name") as String!
             deleteCollectionPopup.message = "Confirm delete:\n\(collectionName)?"
+            navigationController?.view.addSubview(deleteCollectionPopup)
             deleteCollectionPopup.show()
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
@@ -205,11 +205,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     // MARK: ConfirmDeletePopup
-    func popupConfirmBtnDidTapped() {
+    func popupConfirmBtnDidTapped(popup: Popup) {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
                 self.dimLayer.alpha = 0
                 }, completion: { (complete) -> Void in
+                    self.deleteCollectionPopup.removeFromSuperview()
             })
         })
         if let rowOfInterest = self.rowOfInterest{
@@ -230,7 +231,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    func popupCancelBtnDidTapped() {
+    func popupCancelBtnDidTapped(popup: Popup) {
+        println("CANCEL")
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
                 self.dimLayer.alpha = 0

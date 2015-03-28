@@ -13,6 +13,7 @@ enum EditMode{
 }
 
 class CustomizeCardController: UIViewController, PopupDelegate {
+    // MARK: Variables
     @IBOutlet weak var confirmBtnsContainerView: UIView!
     @IBOutlet private weak var cancelBtn: UIButton!
     @IBOutlet private weak var saveBtn: UIButton!
@@ -27,6 +28,7 @@ class CustomizeCardController: UIViewController, PopupDelegate {
     @IBOutlet private weak var addImgBtn: UIButton!
     @IBOutlet private weak var rectSelView: RectSelView!
     @IBOutlet private weak var deleteBtn: UIButton!
+    private var backConfirmPopup: Popup!
     private var elementsExists = false
     private var isInEditMode = false
     private var numElementsFront = 0
@@ -36,6 +38,10 @@ class CustomizeCardController: UIViewController, PopupDelegate {
     private var isAnimating = false
     private var rectSel: RectSelView!
     private var editMode: EditMode?
+    private var activeButton: UIButton?
+    private var savePopup: Popup!
+    
+    // MARK: Functions
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -66,6 +72,7 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         flipBtn.addTarget(self, action: "flip", forControlEvents: .TouchUpInside)
         deleteBtn.addTarget(self, action: "back:", forControlEvents: .TouchUpInside)
         cancelBtn.addTarget(self, action: "exitEditMode", forControlEvents: .TouchUpInside)
+        saveBtn.addTarget(self, action: "saveBtnTapped:", forControlEvents: .TouchUpInside)
         
         // Glow
         var color = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1);
@@ -80,6 +87,16 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         addTextBtn.layer.shadowOpacity = 0.9;
         addTextBtn.layer.shadowOffset = CGSizeZero;
         addTextBtn.layer.masksToBounds = false;
+        
+        // Back confirm popup
+        backConfirmPopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
+        backConfirmPopup.message = "Are you sure you want to quit without saving?"
+        backConfirmPopup.confirmButtonText = "YES"
+        backConfirmPopup.delegate = self
+        backConfirmPopup.instructionLabelFontSize = 25
+        
+        // Save popup
+        savePopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
     }
     
     override func didReceiveMemoryWarning() {
@@ -88,17 +105,23 @@ class CustomizeCardController: UIViewController, PopupDelegate {
     }
     
     func touchDownGlow(sender: UIButton!){
-        UIView.transitionWithView(sender, duration: 0.15, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-            sender.layer.shadowRadius = 4
-            }) { (complete) -> Void in
-        }
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            UIView.transitionWithView(sender, duration: 0.15, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                sender.layer.shadowRadius = 4
+                }) { (complete) -> Void in
+            }
+        })
     }
     
     func removeTouchDownGlow(sender: UIButton!){
-        UIView.transitionWithView(sender, duration: 0.15, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-            sender.layer.shadowRadius = 0
-            }) { (complete) -> Void in
-        }
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            if self.isInEditMode{
+                UIView.transitionWithView(sender, duration: 0.15, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                    sender.layer.shadowRadius = 0
+                    }) { (complete) -> Void in
+                }
+            }
+        })
     }
     
     func enterEditMode(mode: EditMode!){
@@ -205,46 +228,50 @@ class CustomizeCardController: UIViewController, PopupDelegate {
     
     // Ask user if they really want to quit without saving.
     func back(sender: UIButton) {
-        var backConfirmPopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
-        backConfirmPopup.message = "Are you sure you want to quit without saving?"
-        backConfirmPopup.confirmButtonText = "YES"
-        backConfirmPopup.delegate = self
-        backConfirmPopup.instructionLabelFontSize = 25
         navigationController?.view.addSubview(backConfirmPopup)
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-                self.dimLayer.alpha = 1
-                }, completion: { (complete) -> Void in
-            })
-        })
+        showDimLayer()
         backConfirmPopup.show()
     }
     
-    func popupConfirmBtnDidTapped() {
+    // MARK: Popup delegation methods
+    func popupConfirmBtnDidTapped(popup: Popup) {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
                 self.dimLayer.alpha = 0
                 }, completion: { (complete) -> Void in
+                    popup.removeFromSuperview()
             })
         })
         navigationController?.popViewControllerAnimated(true)
     }
     
-    func popupCancelBtnDidTapped() {
+    func popupCancelBtnDidTapped(popup: Popup) {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
                 self.dimLayer.alpha = 0
                 }, completion: { (complete) -> Void in
+                    popup.removeFromSuperview()
             })
         })
     }
     
+    // MARK:
+    // Button interactions
     func buttonTapped(sender: UIButton!){
         if !isInEditMode{
             sender.layer.shadowRadius = 0;
             addActiveGlow(sender)
             let editingMode : EditMode = (sender.tag == 0) ? .AddImgMode : .AddTextMode
             enterEditMode(editingMode)
+            activeButton = sender
+        }
+        else{
+            if let activeBtn = activeButton{
+                
+                if sender != activeBtn{
+                    removeTouchDownGlow(sender)
+                }
+            }
         }
     }
     
@@ -275,6 +302,36 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         }
     }
     
+    func saveBtnTapped(sender: UIButton!){
+        if numElementsBack == 0 || numElementsFront == 0 {
+            savePopup.oneOptionOnly = true
+            savePopup.cancelBtnText = "OK"
+            var message = ""
+            if numElementsFront == 0 && numElementsBack == 0{
+                message = "Error:\nEmpty Kard."
+            }
+            else if numElementsFront == 0{
+                message = "Error:\nFront side is empty."
+            }
+            else{
+                message = "Errpr:\nBack side is empty."
+            }
+            savePopup.message = message
+            savePopup.delegate = self
+            navigationController?.view.addSubview(savePopup)
+            showDimLayer()
+            savePopup.show()
+        }
+    }
+    
+    func showDimLayer(){
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+                self.dimLayer.alpha = 1
+                }, completion: { (complete) -> Void in
+            })
+        })
+    }
     
     /*
     // MARK: - Navigation

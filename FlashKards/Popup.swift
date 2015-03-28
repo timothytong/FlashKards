@@ -8,8 +8,8 @@
 
 import UIKit
 @objc protocol PopupDelegate{
-    optional func popupConfirmBtnDidTapped()
-    optional func popupCancelBtnDidTapped()
+    optional func popupConfirmBtnDidTapped(popup: Popup)
+    optional func popupCancelBtnDidTapped(popup: Popup)
 }
 class Popup: UIView {
     var message:String!{
@@ -30,15 +30,39 @@ class Popup: UIView {
     }
     var confirmButtonText: String!{
         get{
-            return ""
+            return confirmBtnLabel.text
         }
         set(newText){
             confirmBtnLabel.text = newText
         }
     }
+    var oneOptionOnly: Bool!{
+        get{
+            return !confirmBtn.isDescendantOfView(self)
+        }
+        set(newBool){
+            if newBool == true{
+                confirmBtn.removeFromSuperview()
+                cancelBtn.frame = CGRect(x: instrucLabel.frame.origin.x, y: cancelBtn.frame.origin.y, width: instrucLabel.frame.width, height: cancelBtn.frame.height)
+                cancelBtnLabel.frame = CGRect(x: 0, y: cancelBtnLabel.frame.origin.y, width: instrucLabel.frame.width, height: cancelBtn.frame.height)
+            }
+        }
+    }
+    var cancelBtnText: String!{
+        get{
+            return cancelBtnLabel.text
+        }
+        set(newText){
+            cancelBtnLabel.text = newText
+        }
+    }
     var delegate: AnyObject?
-    private var confirmBtnLabel : UILabel!
+    private var confirmBtnLabel: UILabel!
     private var instrucLabel: UILabel!
+    private var confirmBtn: UIButton!
+    private var cancelBtn: UIButton!
+    private var cancelBtnLabel: UILabel!
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -65,7 +89,7 @@ class Popup: UIView {
         addSubview(instrucLabel)
         
         // Confirm Btn
-        var confirmBtn = UIButton(frame: CGRect(x: 10, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50))
+        confirmBtn = UIButton(frame: CGRect(x: 10, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50))
         confirmBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: confirmBtn.frame.width, height: confirmBtn.frame.height))
         confirmBtnLabel.font = UIFont(name: "Avenir-Roman", size: 22)
         confirmBtnLabel.text = "DELETE"
@@ -76,8 +100,8 @@ class Popup: UIView {
         addSubview(confirmBtn)
         
         // Cancel Btn
-        var cancelBtn = UIButton(frame: CGRect(x: frame.width/2 + 5, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50))
-        var cancelBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: confirmBtn.frame.width, height: confirmBtn.frame.height))
+        cancelBtn = UIButton(frame: CGRect(x: frame.width/2 + 5, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50))
+        cancelBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: confirmBtn.frame.width, height: confirmBtn.frame.height))
         cancelBtnLabel.font = UIFont(name: "Avenir-Roman", size: 22)
         cancelBtnLabel.text = "CANCEL"
         cancelBtnLabel.textAlignment = NSTextAlignment.Center
@@ -89,15 +113,16 @@ class Popup: UIView {
     
     func confirmBtnTapped(){
         hide()
-        if (self.delegate?.respondsToSelector(Selector("popupConfirmBtnDidTapped")) == true){
-            self.delegate!.popupConfirmBtnDidTapped!()
+        if (self.delegate?.respondsToSelector(Selector("popupConfirmBtnDidTapped:")) == true){
+            self.delegate!.popupConfirmBtnDidTapped!(self)
         }
         
     }
     func cancelBtnTapped(){
         hide()
-        if (self.delegate?.respondsToSelector(Selector("popupCancelBtnDidTapped")) == true){
-            self.delegate!.popupCancelBtnDidTapped!()
+        if (self.delegate?.respondsToSelector(Selector("popupCancelBtnDidTapped:")) == true){
+            println("Calling delegate...")
+            self.delegate!.popupCancelBtnDidTapped!(self)
         }
     }
     
