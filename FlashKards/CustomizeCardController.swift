@@ -14,12 +14,18 @@ enum EditMode{
 
 class CustomizeCardController: UIViewController, PopupDelegate {
     // MARK: Variables
-    @IBOutlet weak var confirmBtnsContainerView: UIView!
-    @IBOutlet private weak var cancelBtn: UIButton!
+    @IBOutlet private weak var imgOptionsViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var imgOptionsView: UIView!
+    @IBOutlet private weak var importImgBtn: UIButton!
+    @IBOutlet private weak var enterURLBtn: UIButton!
+    @IBOutlet private weak var confirmBtnsContainerView: UIView!
+    @IBOutlet private weak var exitEditBtn: UIButton!
     @IBOutlet private weak var saveBtn: UIButton!
-    @IBOutlet private weak var okBtn: UIButton!
+    @IBOutlet private weak var confirmAddElementBtn: UIButton!
     @IBOutlet private weak var sideLabel: UILabel!
     @IBOutlet private weak var cardHeightConstraint: NSLayoutConstraint! // If iPhone 4 decrease, if 6/6+ increase!
+    @IBOutlet private weak var imgOptionsViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var dismissImportImgViewBtn: UIButton!
     @IBOutlet private weak var flashcardContainerView: UIView!
     @IBOutlet private weak var flipBtn: UIButton!
     @IBOutlet private weak var frontView: UIView!
@@ -58,21 +64,36 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         navigationController?.view.addSubview(dimLayer)
         
         // Buttons
-        cancelBtn.alpha = 0
-        okBtn.hidden = true
+        exitEditBtn.alpha = 0
+        confirmAddElementBtn.hidden = true
         addImgBtn.tag = 0
         addTextBtn.tag = 1
         
-        addImgBtn.addTarget(self, action: "buttonTapped:", forControlEvents: .TouchUpInside)
-        addTextBtn.addTarget(self, action: "buttonTapped:", forControlEvents: .TouchUpInside)
+        // -- Glowing effects
         addImgBtn.addTarget(self, action: "touchDownGlow:", forControlEvents: .TouchDown)
         addTextBtn.addTarget(self, action: "touchDownGlow:", forControlEvents: .TouchDown)
         addImgBtn.addTarget(self, action: "removeTouchDownGlow:", forControlEvents: .TouchUpOutside)
         addTextBtn.addTarget(self, action: "removeTouchDownGlow:", forControlEvents: .TouchUpOutside)
-        flipBtn.addTarget(self, action: "flip", forControlEvents: .TouchUpInside)
-        deleteBtn.addTarget(self, action: "back:", forControlEvents: .TouchUpInside)
-        cancelBtn.addTarget(self, action: "exitEditMode", forControlEvents: .TouchUpInside)
-        saveBtn.addTarget(self, action: "saveBtnTapped:", forControlEvents: .TouchUpInside)
+        
+        // -- Tags
+        addImgBtn.tag = 0
+        addTextBtn.tag = 1
+        flipBtn.tag = 2
+        deleteBtn.tag = 3
+        exitEditBtn.tag = 4
+        saveBtn.tag = 5
+        confirmAddElementBtn.tag = 6
+        dismissImportImgViewBtn.tag = 7
+        
+        // -- Actual presses
+        addImgBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        addTextBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        flipBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        deleteBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        exitEditBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        saveBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        confirmAddElementBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        dismissImportImgViewBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         
         // Glow
         var color = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1);
@@ -88,6 +109,12 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         addTextBtn.layer.shadowOffset = CGSizeZero;
         addTextBtn.layer.masksToBounds = false;
         
+        imgOptionsView.layer.shadowColor = color.CGColor;
+        imgOptionsView.layer.shadowRadius = 8;
+        imgOptionsView.layer.shadowOpacity = 0.9;
+        imgOptionsView.layer.shadowOffset = CGSizeMake(0, 3);
+        imgOptionsView.layer.masksToBounds = false;
+        
         // Back confirm popup
         backConfirmPopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
         backConfirmPopup.message = "Are you sure you want to quit without saving?"
@@ -97,6 +124,9 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         
         // Save popup
         savePopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
+        
+        // ImgOptionsPopup (prompts user to choose either import / enter URL)
+        imgOptionsViewBottomConstraint.constant = -imgOptionsViewHeightConstraint.constant
     }
     
     override func didReceiveMemoryWarning() {
@@ -134,7 +164,7 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.transitionWithView(self.confirmBtnsContainerView, duration: 0.6, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: { () -> Void in
                 self.saveBtn.hidden = true
-                self.okBtn.hidden = false
+                self.confirmAddElementBtn.hidden = false
                 }) { (complete) -> Void in
             }
             UIView.animateWithDuration(0.6, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
@@ -143,22 +173,19 @@ class CustomizeCardController: UIViewController, PopupDelegate {
             }
             UIView.animateKeyframesWithDuration(0.6, delay: 0, options: UIViewKeyframeAnimationOptions.CalculationModePaced, animations: {
                 UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
-                    self.cancelBtn.alpha = 1
-                    self.cancelBtn.transform = CGAffineTransformMakeRotation(1/3 * CGFloat(M_PI))
+                    self.exitEditBtn.alpha = 1
+                    self.exitEditBtn.transform = CGAffineTransformMakeRotation(1/3 * CGFloat(M_PI))
                 })
                 
                 UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
-                    self.cancelBtn.transform = CGAffineTransformMakeRotation(2/3 * CGFloat(M_PI))
+                    self.exitEditBtn.transform = CGAffineTransformMakeRotation(2/3 * CGFloat(M_PI))
                 })
                 
                 UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
-                    self.cancelBtn.transform = CGAffineTransformMakeRotation(3/3 * CGFloat(M_PI))
+                    self.exitEditBtn.transform = CGAffineTransformMakeRotation(3/3 * CGFloat(M_PI))
                 })
                 }, completion: nil)
         })
-        
-        
-        
     }
     
     func exitEditMode(){
@@ -173,22 +200,22 @@ class CustomizeCardController: UIViewController, PopupDelegate {
             }
             UIView.transitionWithView(self.confirmBtnsContainerView, duration: 0.4, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: { () -> Void in
                 self.saveBtn.hidden = false
-                self.okBtn.hidden = true
+                self.confirmAddElementBtn.hidden = true
                 }) { (complete) -> Void in
                     self.isInEditMode = false
             }
             UIView.animateKeyframesWithDuration(0.4, delay: 0, options: UIViewKeyframeAnimationOptions.CalculationModePaced, animations: {
                 UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
-                    self.cancelBtn.transform = CGAffineTransformMakeRotation(1/3 * CGFloat(M_PI))
+                    self.exitEditBtn.transform = CGAffineTransformMakeRotation(1/3 * CGFloat(M_PI))
                 })
                 
                 UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
-                    self.cancelBtn.transform = CGAffineTransformMakeRotation(2/3 * CGFloat(M_PI))
+                    self.exitEditBtn.transform = CGAffineTransformMakeRotation(2/3 * CGFloat(M_PI))
                 })
                 
                 UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
-                    self.cancelBtn.transform = CGAffineTransformMakeRotation(3/3 * CGFloat(M_PI))
-                    self.cancelBtn.alpha = 0
+                    self.exitEditBtn.transform = CGAffineTransformMakeRotation(3/3 * CGFloat(M_PI))
+                    self.exitEditBtn.alpha = 0
                 })
                 
                 }, completion: nil)
@@ -227,7 +254,7 @@ class CustomizeCardController: UIViewController, PopupDelegate {
     }
     
     // Ask user if they really want to quit without saving.
-    func back(sender: UIButton) {
+    func back() {
         navigationController?.view.addSubview(backConfirmPopup)
         showDimLayer()
         backConfirmPopup.show()
@@ -255,9 +282,8 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         })
     }
     
-    // MARK:
-    // Button interactions
-    func buttonTapped(sender: UIButton!){
+    // MARK: Button interactions
+    func addElementBtnsTapped(sender: UIButton!){
         if !isInEditMode{
             sender.layer.shadowRadius = 0;
             addActiveGlow(sender)
@@ -267,7 +293,6 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         }
         else{
             if let activeBtn = activeButton{
-                
                 if sender != activeBtn{
                     removeTouchDownGlow(sender)
                 }
@@ -302,7 +327,30 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         }
     }
     
-    func saveBtnTapped(sender: UIButton!){
+    // MARK: Buttons processing
+    func buttonPressed(sender:UIButton!){
+        switch(sender.tag){
+        case 0,1:
+            addElementBtnsTapped(sender)
+        case 2:
+            flip()
+        case 3:
+            back()
+        case 4:
+            exitEditMode()
+        case 5:
+            save()
+        case 6:
+            confirmAddElement()
+        case 7:
+            dismissImportImgView()
+        default:
+            break
+        }
+    }
+    
+    
+    func save(){
         if numElementsBack == 0 || numElementsFront == 0 {
             savePopup.oneOptionOnly = true
             savePopup.cancelBtnText = "OK"
@@ -324,6 +372,19 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         }
     }
     
+    func confirmAddElement(){
+        if let eMode = editMode{
+            if eMode == EditMode.AddImgMode{
+                showImgOptionsView()
+            }
+        }
+    }
+    
+    func dismissImportImgView(){
+        hideImgOptionsView()
+        exitEditMode()
+    }
+    
     func showDimLayer(){
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
@@ -331,6 +392,35 @@ class CustomizeCardController: UIViewController, PopupDelegate {
                 }, completion: { (complete) -> Void in
             })
         })
+    }
+    
+    func showImgOptionsView(){
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            if self.imgOptionsViewBottomConstraint.constant != 0{ // it is NOT open
+                self.imgOptionsViewBottomConstraint.constant = 0
+                UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+                    self.view.layoutIfNeeded()
+                    }, completion: { (complete) -> Void in
+                })
+            }
+        })
+    }
+    
+    func hideImgOptionsView(){
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            if self.imgOptionsViewBottomConstraint.constant == 0{ // it is NOT open
+                self.imgOptionsViewBottomConstraint.constant = -self.imgOptionsViewHeightConstraint.constant
+                UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
+                    self.view.layoutIfNeeded()
+                    }, completion: { (complete) -> Void in
+                })
+            }
+        })
+    }
+    
+    
+    func importImage(){
+        
     }
     
     /*

@@ -23,6 +23,7 @@
 		3334393A1AC46FF400A808F9 /* CollectionSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333439381AC46FF400A808F9 /* CollectionSummaryCell.swift */; };
 		3334393B1AC46FF400A808F9 /* CollectionSummaryCellTemplate.xib in Resources */ = {isa = PBXBuildFile; fileRef = 333439391AC46FF400A808F9 /* CollectionSummaryCellTemplate.xib */; };
 		3334393E1AC495CF00A808F9 /* text-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 3334393D1AC495CF00A808F9 /* text-white.png */; };
+		333D95811AC902BA0028337D /* down-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 333D95801AC902BA0028337D /* down-white.png */; };
 		33402CEF1AC09B5E00265F70 /* FlashCardsOverviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CED1AC09B5E00265F70 /* FlashCardsOverviewCell.swift */; };
 		33402CF01AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33402CEE1AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib */; };
 		33402CF31AC0ABD000265F70 /* FlashCardCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CF21AC0ABD000265F70 /* FlashCardCollection.swift */; };
@@ -86,6 +87,7 @@
 		333439381AC46FF400A808F9 /* CollectionSummaryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionSummaryCell.swift; sourceTree = "<group>"; };
 		333439391AC46FF400A808F9 /* CollectionSummaryCellTemplate.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollectionSummaryCellTemplate.xib; sourceTree = "<group>"; };
 		3334393D1AC495CF00A808F9 /* text-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "text-white.png"; path = "Images/text-white.png"; sourceTree = "<group>"; };
+		333D95801AC902BA0028337D /* down-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "down-white.png"; path = "Images/down-white.png"; sourceTree = "<group>"; };
 		33402CED1AC09B5E00265F70 /* FlashCardsOverviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardsOverviewCell.swift; sourceTree = "<group>"; };
 		33402CEE1AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlashCardsOverviewCellTemplate.xib; sourceTree = "<group>"; };
 		33402CF21AC0ABD000265F70 /* FlashCardCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardCollection.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				33BF1DCA1AC600A700031C69 /* delete-white.png */,
 				33BF1DC21AC5DB2B00031C69 /* newImg-blue.png */,
 				33BF1DCC1AC624DC00031C69 /* cancel-red.png */,
+				333D95801AC902BA0028337D /* down-white.png */,
 				33BF1DCD1AC624DC00031C69 /* ok-green.png */,
 				33BF1DC31AC5DB2B00031C69 /* text-blue.png */,
 				33CB73701AC4A65000B72A6A /* flip-white.png */,
@@ -362,6 +365,7 @@
 				33402CF01AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib in Resources */,
 				33213C3B1AC20D6A00CF1B38 /* cancel-white-highlighted.png in Resources */,
 				333439351AC44F6F00A808F9 /* edit-white.png in Resources */,
+				333D95811AC902BA0028337D /* down-white.png in Resources */,
 				33BF1DC41AC5DB2B00031C69 /* newImg-blue.png in Resources */,
 				33CB73691AC49C6900B72A6A /* newImg-white.png in Resources */,
 				33CB73711AC4A65000B72A6A /* flip-white.png in Resources */,

@@ -308,6 +308,65 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6L4-IT-Lyf" userLabel="Import/URLOptionsView">
+                                <rect key="frame" x="0.0" y="500" width="600" height="100"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oc2-C5-M4E">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="2"/>
+                                        <color key="backgroundColor" red="0.0078431372549019607" green="0.82352941176470584" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="2" id="eOx-Ew-iIo"/>
+                                        </constraints>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i57-4z-A2O" userLabel="downBtn">
+                                        <rect key="frame" x="569" y="8" width="23" height="23"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="23" id="D4c-ji-cRj"/>
+                                            <constraint firstAttribute="width" constant="23" id="GJl-Qk-O2s"/>
+                                        </constraints>
+                                        <state key="normal" image="down-white.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vvm-Bq-oJG">
+                                        <rect key="frame" x="253" y="59" width="95" height="37"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="37" id="T13-Jc-s1h"/>
+                                            <constraint firstAttribute="width" constant="95" id="Wi8-e7-o8O"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Light" family="Apple SD Gothic Neo" pointSize="22"/>
+                                        <state key="normal" title="Enter URL">
+                                            <color key="titleColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iYB-dL-7gZ">
+                                        <rect key="frame" x="263" y="12" width="75" height="39"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="75" id="Hzg-5D-JaQ"/>
+                                            <constraint firstAttribute="height" constant="39" id="oeP-2q-M20"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Light" family="Apple SD Gothic Neo" pointSize="22"/>
+                                        <state key="normal" title="Import">
+                                            <color key="titleColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.24313725490196078" green="0.24313725490196078" blue="0.24313725490196078" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="i57-4z-A2O" secondAttribute="trailing" constant="8" id="9n6-aH-cfB"/>
+                                    <constraint firstAttribute="centerX" secondItem="iYB-dL-7gZ" secondAttribute="centerX" id="Hs2-Qb-W7H"/>
+                                    <constraint firstItem="i57-4z-A2O" firstAttribute="top" secondItem="6L4-IT-Lyf" secondAttribute="top" constant="8" id="MkT-hl-GFQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="oc2-C5-M4E" secondAttribute="trailing" id="NaG-dO-4Mv"/>
+                                    <constraint firstAttribute="height" constant="100" id="Rsd-Zi-e7F"/>
+                                    <constraint firstItem="vvm-Bq-oJG" firstAttribute="top" secondItem="iYB-dL-7gZ" secondAttribute="bottom" constant="8" id="SYS-yK-Vkt"/>
+                                    <constraint firstAttribute="centerX" secondItem="vvm-Bq-oJG" secondAttribute="centerX" constant="-0.5" id="heJ-t7-3A1"/>
+                                    <constraint firstItem="oc2-C5-M4E" firstAttribute="leading" secondItem="6L4-IT-Lyf" secondAttribute="leading" id="lcD-xX-53l"/>
+                                    <constraint firstItem="oc2-C5-M4E" firstAttribute="top" secondItem="6L4-IT-Lyf" secondAttribute="top" id="siT-uw-ibb"/>
+                                    <constraint firstAttribute="bottom" secondItem="vvm-Bq-oJG" secondAttribute="bottom" constant="4" id="tgy-Rd-a3V"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.22352941179999999" green="0.22352941179999999" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -324,28 +383,38 @@
                             <constraint firstItem="mTJ-59-Q9J" firstAttribute="centerX" secondItem="Fe5-EW-pKX" secondAttribute="centerX" constant="40" id="Vc7-AC-nH9"/>
                             <constraint firstItem="OPy-Kk-prF" firstAttribute="top" secondItem="Lab-fK-CwS" secondAttribute="bottom" constant="25" id="Xgo-ij-jHc"/>
                             <constraint firstItem="Fe5-EW-pKX" firstAttribute="top" secondItem="mTJ-59-Q9J" secondAttribute="bottom" constant="23" id="b84-tH-icl"/>
+                            <constraint firstItem="6L4-IT-Lyf" firstAttribute="leading" secondItem="MaO-CZ-4EZ" secondAttribute="leadingMargin" constant="-16" id="iHe-eL-rU0"/>
                             <constraint firstItem="KMO-1Z-EtY" firstAttribute="centerX" secondItem="mTJ-59-Q9J" secondAttribute="centerX" constant="40" id="kfV-UV-HOE"/>
+                            <constraint firstItem="w1a-AY-FGu" firstAttribute="top" secondItem="6L4-IT-Lyf" secondAttribute="bottom" id="oka-XL-SEN"/>
                             <constraint firstItem="YK3-nh-gjM" firstAttribute="top" secondItem="mTJ-59-Q9J" secondAttribute="bottom" constant="25" id="qFR-rr-acy"/>
                             <constraint firstItem="KMO-1Z-EtY" firstAttribute="top" secondItem="mTJ-59-Q9J" secondAttribute="bottom" constant="23" id="qj6-m7-O0N"/>
                             <constraint firstItem="YK3-nh-gjM" firstAttribute="leading" secondItem="KMO-1Z-EtY" secondAttribute="trailing" constant="25" id="tGP-EY-ebO"/>
                             <constraint firstItem="mTJ-59-Q9J" firstAttribute="top" secondItem="ld1-Ya-Xxv" secondAttribute="bottom" constant="40" id="ubc-VD-SND"/>
                             <constraint firstAttribute="centerX" secondItem="mTJ-59-Q9J" secondAttribute="centerX" id="v17-MR-zO5"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="6L4-IT-Lyf" secondAttribute="trailing" constant="-16" id="vT1-7J-GhU"/>
                             <constraint firstItem="Lab-fK-CwS" firstAttribute="top" secondItem="xmq-55-N6z" secondAttribute="bottom" constant="8" id="wzw-d9-gXO"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Customize FlashKard" id="IVV-Hg-Mgh"/>
                     <connections>
+                        <outlet property="ImgOptionsViewBottomConstraint" destination="oka-XL-SEN" id="AaI-XI-Mjj"/>
                         <outlet property="addImgBtn" destination="KMO-1Z-EtY" id="32C-21-QWa"/>
                         <outlet property="addTextBtn" destination="Fe5-EW-pKX" id="71p-Qq-JbR"/>
                         <outlet property="backView" destination="ELC-mh-i8S" id="wU7-xH-fTv"/>
-                        <outlet property="cancelBtn" destination="OPy-Kk-prF" id="KJV-oV-eyY"/>
                         <outlet property="cardHeightConstraint" destination="N94-Tu-0zX" id="u3Q-UU-1Ht"/>
+                        <outlet property="confirmAddElementBtn" destination="Sat-XM-M1n" id="q9X-Qx-BSp"/>
                         <outlet property="confirmBtnsContainerView" destination="YK3-nh-gjM" id="uvp-Fb-k1f"/>
                         <outlet property="deleteBtn" destination="fpA-Aw-N9N" id="f3X-yk-Mea"/>
+                        <outlet property="dismissImportImgViewBtn" destination="i57-4z-A2O" id="qIJ-y3-hv7"/>
+                        <outlet property="enterURLBtn" destination="vvm-Bq-oJG" id="Kk4-fa-P67"/>
+                        <outlet property="exitEditBtn" destination="OPy-Kk-prF" id="wyv-IS-mec"/>
                         <outlet property="flashcardContainerView" destination="mTJ-59-Q9J" id="uBh-xo-hFg"/>
                         <outlet property="flipBtn" destination="vdz-Go-63w" id="OYI-mv-ksR"/>
                         <outlet property="frontView" destination="Lab-fK-CwS" id="WFl-5K-eoN"/>
-                        <outlet property="okBtn" destination="Sat-XM-M1n" id="JSA-ZZ-5OP"/>
+                        <outlet property="imgOptionsView" destination="6L4-IT-Lyf" id="lfE-5w-hF7"/>
+                        <outlet property="imgOptionsViewBottomConstraint" destination="oka-XL-SEN" id="5Gk-qj-4WD"/>
+                        <outlet property="imgOptionsViewHeightConstraint" destination="Rsd-Zi-e7F" id="HcS-bv-bQs"/>
+                        <outlet property="importImgBtn" destination="iYB-dL-7gZ" id="C13-F0-Hlf"/>
                         <outlet property="saveBtn" destination="0uQ-gR-uKx" id="hhB-Dp-jje"/>
                         <outlet property="sideLabel" destination="xmq-55-N6z" id="cd6-Sq-ry4"/>
                     </connections>
@@ -380,6 +449,7 @@
         <image name="add-white.png" width="128" height="128"/>
         <image name="cancel-red.png" width="75" height="75"/>
         <image name="delete-white.png" width="128" height="128"/>
+        <image name="down-white.png" width="128" height="128"/>
         <image name="edit-white.png" width="128" height="128"/>
         <image name="flip-white.png" width="128" height="128"/>
         <image name="go-white.png" width="128" height="128"/>
