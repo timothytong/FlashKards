@@ -308,13 +308,13 @@ class CustomizeCardController: UIViewController, PopupDelegate {
             savePopup.cancelBtnText = "OK"
             var message = ""
             if numElementsFront == 0 && numElementsBack == 0{
-                message = "Error:\nEmpty Kard."
+                message = "Save Error:\nEmpty Kard."
             }
             else if numElementsFront == 0{
-                message = "Error:\nFront side is empty."
+                message = "Save Error:\nFront side is empty."
             }
             else{
-                message = "Errpr:\nBack side is empty."
+                message = "Save Error:\nBack side is empty."
             }
             savePopup.message = message
             savePopup.delegate = self
