@@ -30,6 +30,7 @@
 		33402CF91AC0C1F400265F70 /* AddCollectionPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CF81AC0C1F400265F70 /* AddCollectionPopup.swift */; };
 		3375E2351AC3642B00C39472 /* CollectionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3375E2341AC3642B00C39472 /* CollectionsManager.swift */; };
 		338B575A1AC634D6000A3CD3 /* FlashCardTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338B57591AC634D6000A3CD3 /* FlashCardTemplate.swift */; };
+		339D3BCF1ACB048500E4A6EE /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339D3BCD1ACB048500E4A6EE /* CollectionViewCell.swift */; };
 		33A53ECF1AC2F0C0001815FA /* Popup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A53ECE1AC2F0C0001815FA /* Popup.swift */; };
 		33BF1DC41AC5DB2B00031C69 /* newImg-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 33BF1DC21AC5DB2B00031C69 /* newImg-blue.png */; };
 		33BF1DC51AC5DB2B00031C69 /* text-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 33BF1DC31AC5DB2B00031C69 /* text-blue.png */; };
@@ -94,6 +95,7 @@
 		33402CF81AC0C1F400265F70 /* AddCollectionPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCollectionPopup.swift; sourceTree = "<group>"; };
 		3375E2341AC3642B00C39472 /* CollectionsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionsManager.swift; sourceTree = "<group>"; };
 		338B57591AC634D6000A3CD3 /* FlashCardTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardTemplate.swift; sourceTree = "<group>"; };
+		339D3BCD1ACB048500E4A6EE /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		33A53ECE1AC2F0C0001815FA /* Popup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Popup.swift; sourceTree = "<group>"; };
 		33BF1DC21AC5DB2B00031C69 /* newImg-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "newImg-blue.png"; path = "Images/newImg-blue.png"; sourceTree = "<group>"; };
 		33BF1DC31AC5DB2B00031C69 /* text-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "text-blue.png"; path = "Images/text-blue.png"; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 				33CB73721AC4B65600B72A6A /* RectSelView.swift */,
 				33A53ECE1AC2F0C0001815FA /* Popup.swift */,
 				33402CF81AC0C1F400265F70 /* AddCollectionPopup.swift */,
+				339D3BCC1ACB046100E4A6EE /* ImageCollectionCell */,
 				33402CF11AC09CB800265F70 /* HomePageCell */,
 				3334393C1AC4703C00A808F9 /* CollectionSummaryCell */,
 			);
@@ -271,6 +274,14 @@
 				3375E2341AC3642B00C39472 /* CollectionsManager.swift */,
 			);
 			name = Utilities;
+			sourceTree = "<group>";
+		};
+		339D3BCC1ACB046100E4A6EE /* ImageCollectionCell */ = {
+			isa = PBXGroup;
+			children = (
+				339D3BCD1ACB048500E4A6EE /* CollectionViewCell.swift */,
+			);
+			name = ImageCollectionCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -401,6 +412,7 @@
 				33A53ECF1AC2F0C0001815FA /* Popup.swift in Sources */,
 				3375E2351AC3642B00C39472 /* CollectionsManager.swift in Sources */,
 				3320C5C51ABF807B00A90CD4 /* FlashKards.xcdatamodeld in Sources */,
+				339D3BCF1ACB048500E4A6EE /* CollectionViewCell.swift in Sources */,
 				33CB73731AC4B65600B72A6A /* RectSelView.swift in Sources */,
 				3320C5C21ABF807B00A90CD4 /* AppDelegate.swift in Sources */,
 				33CB736B1AC49D1400B72A6A /* CustomizeCardController.swift in Sources */,

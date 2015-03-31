@@ -7,13 +7,19 @@
 //
 
 import UIKit
+import AssetsLibrary
 enum EditMode{
     case AddTextMode
     case AddImgMode
 }
 
-class CustomizeCardController: UIViewController, PopupDelegate {
+class CustomizeCardController: UIViewController, PopupDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
     // MARK: Variables
+    
+    @IBOutlet private weak var spinner: UIActivityIndicatorView!
+    @IBOutlet private weak var galleryCollectionView: UICollectionView!
+    @IBOutlet private weak var cancelImportBtn: UIButton!
+    @IBOutlet private weak var dissmissImportImgViewBtnTrailingConstraint: NSLayoutConstraint!
     @IBOutlet private weak var imgOptionsViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var imgOptionsView: UIView!
     @IBOutlet private weak var importImgBtn: UIButton!
@@ -46,6 +52,13 @@ class CustomizeCardController: UIViewController, PopupDelegate {
     private var editMode: EditMode?
     private var activeButton: UIButton?
     private var savePopup: Popup!
+    private var imgOptionsViewIsExpanded = false
+    private var imgOptionsHeightInitialHeight: CGFloat!
+    private var library: ALAssetsLibrary!
+    private var assetThumbnails: Array<UIImage>!
+    private var alreadyEnumerated = false
+    // ALAssets.
+    private var alAssets: Array<ALAssetRepresentation>?
     
     // MARK: Functions
     override func viewDidLoad() {
@@ -53,7 +66,7 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         // Do any additional setup after loading the view.
         frontView.userInteractionEnabled = false
         backView.userInteractionEnabled = false
-        //        navigationItem.hidesBackButton = true
+        navigationItem.hidesBackButton = true
         
         
         // Dim layer
@@ -84,6 +97,8 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         saveBtn.tag = 5
         confirmAddElementBtn.tag = 6
         dismissImportImgViewBtn.tag = 7
+        cancelImportBtn.tag = 7
+        importImgBtn.tag = 8
         
         // -- Actual presses
         addImgBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
@@ -94,6 +109,8 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         saveBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         confirmAddElementBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         dismissImportImgViewBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        importImgBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        cancelImportBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         
         // Glow
         var color = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1);
@@ -127,6 +144,11 @@ class CustomizeCardController: UIViewController, PopupDelegate {
         
         // ImgOptionsPopup (prompts user to choose either import / enter URL)
         imgOptionsViewBottomConstraint.constant = -imgOptionsViewHeightConstraint.constant
+        imgOptionsHeightInitialHeight = imgOptionsViewHeightConstraint.constant
+        
+        assetThumbnails = Array<UIImage>()
+        
+        // CollectionView
     }
     
     override func didReceiveMemoryWarning() {
@@ -344,6 +366,10 @@ class CustomizeCardController: UIViewController, PopupDelegate {
             confirmAddElement()
         case 7:
             dismissImportImgView()
+        case 8:
+            importImageAction()
+        case 9:
+            cancelImportImageAction()
         default:
             break
         }
@@ -381,6 +407,7 @@ class CustomizeCardController: UIViewController, PopupDelegate {
     }
     
     func dismissImportImgView(){
+        collapseImgOptionsView()
         hideImgOptionsView()
         exitEditMode()
     }
@@ -419,9 +446,132 @@ class CustomizeCardController: UIViewController, PopupDelegate {
     }
     
     
-    func importImage(){
-        
+    func importImageAction(){
+        if !alreadyEnumerated{
+            self.spinner.startAnimating()
+            UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                self.spinner.alpha = 1
+                }) { (complete) -> Void in
+                    
+            }
+            enumerateAssetsWithCompletionHandler { () -> () in
+                UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                    self.spinner.alpha = 0
+                    }) { (complete) -> Void in
+                        self.spinner.stopAnimating()
+                        self.expandImgOptionsView()
+                }
+            }
+        }
+        else{
+            self.expandImgOptionsView()
+        }    
     }
+    
+    func cancelImportImageAction(){
+        collapseImgOptionsView()
+    }
+    
+    func expandImgOptionsView(){
+        if !imgOptionsViewIsExpanded{
+            println("Expanding");
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.imgOptionsViewHeightConstraint.constant = self.navigationController!.view.frame.height - self.navigationController!.navigationBar.frame.height - UIApplication.sharedApplication().statusBarFrame.size.height
+                UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                    self.view.layoutIfNeeded()
+                    }, completion: { (complete) -> Void in
+                })
+                UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                    self.importImgBtn.alpha = 0
+                    self.enterURLBtn.alpha = 0
+                    }, completion: { (complete) -> Void in
+                        UIView.animateWithDuration(0.6, delay: 0.1, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                            self.dismissImportImgViewBtn.transform = CGAffineTransformMakeTranslation(-30, 0)
+                            self.cancelImportBtn.alpha = 1
+                            self.galleryCollectionView.alpha = 1
+                            }, completion: { (complete) -> Void in
+                                self.dismissImportImgViewBtn.tag = 9
+                                self.cancelImportBtn.tag = 7
+                                self.imgOptionsViewIsExpanded = true
+                        })
+                })
+            })
+        }
+    }
+    
+    func collapseImgOptionsView(){
+        if imgOptionsViewIsExpanded{
+            println("Collapsing");
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                    self.galleryCollectionView.alpha = 0
+                    self.dismissImportImgViewBtn.transform = CGAffineTransformIdentity
+                    self.cancelImportBtn.alpha = 0
+                    }, completion: { (complete) -> Void in
+                        self.dismissImportImgViewBtn.tag = 7
+                        self.imgOptionsViewHeightConstraint.constant = self.imgOptionsHeightInitialHeight
+                        UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                            self.view.layoutIfNeeded()
+                            }, completion: { (complete) -> Void in
+                        })
+                        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                            self.importImgBtn.alpha = 1
+                            self.enterURLBtn.alpha = 1
+                            }, completion: { (complete) -> Void in
+                                self.imgOptionsViewIsExpanded = false
+                                if self.library != nil{ self.library = nil }
+                                println("Setting self.library to nil")
+                        })
+                })
+            })
+        }
+    }
+    
+    // MARK: ALAssetsLibrary
+    func enumerateAssetsWithCompletionHandler(handler:()->()){
+        var url: NSURL?
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+            self.library = ALAssetsLibrary()
+            self.library.enumerateGroupsWithTypes(ALAssetsGroupType(ALAssetsGroupSavedPhotos), usingBlock: { (group: ALAssetsGroup?, stop) -> Void in
+                if group != nil{
+                    println("Group is not nil.")
+                    group!.setAssetsFilter(ALAssetsFilter.allPhotos())
+                    group!.enumerateAssetsUsingBlock({ (result: ALAsset?, index, stop) -> Void in
+                        println("Enumerating assets..")
+                        if result != nil{
+                            println("Result is not nil")
+                            
+                        }
+                    })
+                }
+                else{
+                    println("Enumeration complete")
+                    self.alreadyEnumerated = true
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        handler()
+                    })
+                    
+                }
+                }, failureBlock: { (error) -> Void in
+                    self.library = nil
+            })
+        })
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        var cell:CollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("imgCollectionCell", forIndexPath: indexPath) as CollectionViewCell
+        return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        //        return assetThumbnails.count
+        return 5
+    }
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
     
     /*
     // MARK: - Navigation
