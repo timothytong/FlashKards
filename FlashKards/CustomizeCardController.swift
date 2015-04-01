@@ -58,6 +58,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     private var fullImageView: UIView!
     private var fullUIImageView: UIImageView!
     private var hideStatusBar = false
+    private var completeImgImportBtn: UIButton!
     
     // ALAssets.
     private var library: ALAssetsLibrary!
@@ -66,6 +67,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     private var alreadyEnumerated = false
     private var urls: Array<NSURL>!
     
+    private var frontElementsDict: Dictionary<String, AnyObject>!
     // MARK: Functions
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,18 +107,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         dismissImportImgViewBtn.tag = 7
         cancelImportBtn.tag = 7
         importImgBtn.tag = 8
-        
-        // -- Actual presses
-        addImgBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
-        addTextBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
-        flipBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
-        deleteBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
-        exitEditBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
-        saveBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
-        confirmAddElementBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
-        dismissImportImgViewBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
-        importImgBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
-        cancelImportBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         
         // Glow
         var color = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1)
@@ -171,6 +161,34 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         fullImageView.addGestureRecognizer(hideFullViewTap)
         fullImageView.addSubview(fullUIImageView)
         navigationController?.view.addSubview(fullImageView)
+        
+        // Finish Image Import Process Button
+        completeImgImportBtn = UIButton(frame: CGRect(x: navigationController!.view.frame.width - 70, y: navigationController!.view.frame.height - 70, width: 55, height: 55))
+        let completeImgImportBtnImage = UIImage(named: "ok-white.png")
+        completeImgImportBtn.setImage(completeImgImportBtnImage, forState: .Normal)
+        completeImgImportBtn.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8)
+        completeImgImportBtn.backgroundColor = UIColor(red: 2/255, green: 142/255, blue: 232/255, alpha: 1)
+        completeImgImportBtn.layer.masksToBounds = false
+        completeImgImportBtn.layer.cornerRadius = 27.5
+        completeImgImportBtn.layer.shadowColor = UIColor(red: 53/255, green: 53/255, blue: 53/255, alpha: 1).CGColor
+        completeImgImportBtn.layer.shadowRadius = 5
+        completeImgImportBtn.layer.shadowOffset = CGSizeMake(0, 3)
+        completeImgImportBtn.layer.shadowOpacity = 1
+        completeImgImportBtn.tag = 10
+        fullImageView.addSubview(completeImgImportBtn)
+        
+        // -- Actual presses
+        addImgBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        addTextBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        flipBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        deleteBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        exitEditBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        saveBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        confirmAddElementBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        dismissImportImgViewBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        importImgBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        cancelImportBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        completeImgImportBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
     }
     
     override func didReceiveMemoryWarning() {
@@ -392,6 +410,8 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             importImageAction()
         case 9:
             cancelImportImageAction()
+        case 10:
+            completeImgImportProcess()
         default:
             break
         }
@@ -482,10 +502,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                         }) { (complete) -> Void in
                             self.spinner.stopAnimating()
                             self.expandImgOptionsView()
-                            //                            for i in 0 ..< self.assetThumbnails.count{
-                            //                                println("Inserting item \(i)")
-                            //
-                            //                            }
                     }
                 })
                 
@@ -502,7 +518,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     func expandImgOptionsView(){
         if !imgOptionsViewIsExpanded{
-            println("Expanding");
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 self.imgOptionsViewHeightConstraint.constant = self.navigationController!.view.frame.height - self.navigationController!.navigationBar.frame.height - UIApplication.sharedApplication().statusBarFrame.size.height
                 UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
@@ -538,7 +553,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     func collapseImgOptionsView(){
         if imgOptionsViewIsExpanded{
-            println("Collapsing");
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
                     self.galleryCollectionView.alpha = 0
@@ -558,7 +572,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                                 self.imgOptionsViewIsExpanded = false
                                 if self.library != nil{
                                     self.library = nil;
-                                    println("Setting self.library to nil")
                                 }
                         })
                 })
@@ -579,10 +592,10 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             self.library = ALAssetsLibrary()
             self.library.enumerateGroupsWithTypes(ALAssetsGroupType(ALAssetsGroupSavedPhotos), usingBlock: { (group: ALAssetsGroup?, stop) -> Void in
                 if group != nil{
-                    println("Group is not nil.")
+                    //                    println("Group is not nil.")
                     group!.setAssetsFilter(ALAssetsFilter.allPhotos())
                     group!.enumerateAssetsUsingBlock({ (result: ALAsset?, index, stop) -> Void in
-                        println("Enumerating assets..")
+                        //                        println("Enumerating assets..")
                         if result != nil{
                             let representation = result!.defaultRepresentation()
                             var tempImg = result!.aspectRatioThumbnail()
@@ -590,12 +603,12 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                             tempImg = nil
                             self.urls.append(representation.url())
                             numPics++
-                            println("Result is not nil")
+                            //                            println("Result is not nil")
                         }
                     })
                 }
                 else{
-                    println("Enumeration complete")
+                    //                    println("Enumeration complete")
                     for i in 0 ..< numPics{
                         self.animatedBools.append(false)
                     }
@@ -661,6 +674,15 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                     self.fullUIImageView.image = nil
             })
         })
+    }
+    
+    func completeImgImportProcess(){
+        // 1. Create an UIImageView..
+        // 2. Add pan gesture...
+        // 3. Store in a dictionary
+        // 4. Hide full img and exit edit mode
+        hideFullImage()
+        dismissImportImgView()
     }
     
     override func prefersStatusBarHidden() -> Bool {

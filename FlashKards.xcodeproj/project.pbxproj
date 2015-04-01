@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3311FED91ACB9CD8001C3693 /* ok-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 3311FED81ACB9CD8001C3693 /* ok-white.png */; };
 		3320C5C21ABF807B00A90CD4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5C11ABF807B00A90CD4 /* AppDelegate.swift */; };
 		3320C5C51ABF807B00A90CD4 /* FlashKards.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5C31ABF807B00A90CD4 /* FlashKards.xcdatamodeld */; };
 		3320C5C71ABF807B00A90CD4 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5C61ABF807B00A90CD4 /* HomeViewController.swift */; };
@@ -68,6 +69,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3311FED81ACB9CD8001C3693 /* ok-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ok-white.png"; path = "Images/ok-white.png"; sourceTree = "<group>"; };
 		3320C5BC1ABF807B00A90CD4 /* FlashKards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlashKards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3320C5C01ABF807B00A90CD4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3320C5C11ABF807B00A90CD4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 				33BF1DD01AC6297F00031C69 /* save-blue.png */,
 				33BF1DCA1AC600A700031C69 /* delete-white.png */,
 				33BF1DC21AC5DB2B00031C69 /* newImg-blue.png */,
+				3311FED81ACB9CD8001C3693 /* ok-white.png */,
 				33BF1DCC1AC624DC00031C69 /* cancel-red.png */,
 				333D95801AC902BA0028337D /* down-white.png */,
 				33BF1DCD1AC624DC00031C69 /* ok-green.png */,
@@ -381,6 +384,7 @@
 				33CB73691AC49C6900B72A6A /* newImg-white.png in Resources */,
 				33CB73711AC4A65000B72A6A /* flip-white.png in Resources */,
 				3320C5CF1ABF807B00A90CD4 /* LaunchScreen.xib in Resources */,
+				3311FED91ACB9CD8001C3693 /* ok-white.png in Resources */,
 				33BF1DCE1AC624DC00031C69 /* cancel-red.png in Resources */,
 				3320C5CC1ABF807B00A90CD4 /* Images.xcassets in Resources */,
 				3334393E1AC495CF00A808F9 /* text-white.png in Resources */,
