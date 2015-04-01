@@ -363,13 +363,13 @@
                                         </state>
                                     </button>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.0" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Ntv-iq-IaR">
-                                        <rect key="frame" x="8" y="39" width="584" height="53"/>
+                                        <rect key="frame" x="0.0" y="39" width="600" height="61"/>
                                         <color key="backgroundColor" red="0.24313725489999999" green="0.24313725489999999" blue="0.24313725489999999" alpha="0.0" colorSpace="calibratedRGB"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="kLn-A0-NnZ">
-                                            <size key="itemSize" width="85" height="85"/>
+                                            <size key="itemSize" width="90" height="90"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                            <inset key="sectionInset" minX="13" minY="0.0" maxX="13" maxY="0.0"/>
+                                            <inset key="sectionInset" minX="13" minY="0.0" maxX="13" maxY="5"/>
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="imgCollectionCell" id="qhK-YP-IY1" customClass="CollectionViewCell" customModule="FlashKards" customModuleProvider="target">
@@ -381,7 +381,7 @@
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UdN-xy-udj">
                                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
-                                                            <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <color key="backgroundColor" red="0.082352941176470587" green="0.082352941176470587" blue="0.082352941176470587" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -393,6 +393,9 @@
                                                     <constraint firstItem="UdN-xy-udj" firstAttribute="leading" secondItem="qhK-YP-IY1" secondAttribute="leadingMargin" constant="-8" id="yEN-ap-Wal"/>
                                                 </constraints>
                                                 <size key="customSize" width="100" height="100"/>
+                                                <connections>
+                                                    <outlet property="imgView" destination="UdN-xy-udj" id="JCC-RH-Xzi"/>
+                                                </connections>
                                             </collectionViewCell>
                                         </cells>
                                         <connections>
@@ -410,7 +413,7 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.24313725490196078" green="0.24313725490196078" blue="0.24313725490196078" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="Ntv-iq-IaR" secondAttribute="trailing" constant="8" id="5T7-aM-1Se"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ntv-iq-IaR" secondAttribute="trailing" id="5T7-aM-1Se"/>
                                     <constraint firstAttribute="trailing" secondItem="i57-4z-A2O" secondAttribute="trailing" constant="8" id="9n6-aH-cfB"/>
                                     <constraint firstItem="ume-la-Opv" firstAttribute="leading" secondItem="6L4-IT-Lyf" secondAttribute="leading" constant="8" id="Gjh-6f-KZk"/>
                                     <constraint firstAttribute="centerX" secondItem="iYB-dL-7gZ" secondAttribute="centerX" id="Hs2-Qb-W7H"/>
@@ -420,10 +423,10 @@
                                     <constraint firstAttribute="height" constant="100" id="Rsd-Zi-e7F"/>
                                     <constraint firstItem="vvm-Bq-oJG" firstAttribute="top" secondItem="iYB-dL-7gZ" secondAttribute="bottom" constant="8" id="SYS-yK-Vkt"/>
                                     <constraint firstAttribute="trailing" secondItem="nil-KT-Ysc" secondAttribute="trailing" constant="8" id="TLI-3y-Rip"/>
-                                    <constraint firstAttribute="bottom" secondItem="Ntv-iq-IaR" secondAttribute="bottom" constant="8" id="WN0-Qa-uNZ"/>
+                                    <constraint firstAttribute="bottom" secondItem="Ntv-iq-IaR" secondAttribute="bottom" id="WN0-Qa-uNZ"/>
                                     <constraint firstItem="Ntv-iq-IaR" firstAttribute="top" secondItem="nil-KT-Ysc" secondAttribute="bottom" constant="8" id="eQJ-bO-hwx"/>
                                     <constraint firstAttribute="centerX" secondItem="vvm-Bq-oJG" secondAttribute="centerX" constant="-0.5" id="heJ-t7-3A1"/>
-                                    <constraint firstItem="Ntv-iq-IaR" firstAttribute="leading" secondItem="6L4-IT-Lyf" secondAttribute="leading" constant="8" id="heW-XO-dCH"/>
+                                    <constraint firstItem="Ntv-iq-IaR" firstAttribute="leading" secondItem="6L4-IT-Lyf" secondAttribute="leading" id="heW-XO-dCH"/>
                                     <constraint firstItem="nil-KT-Ysc" firstAttribute="top" secondItem="6L4-IT-Lyf" secondAttribute="top" constant="8" id="hkV-qi-oK6"/>
                                     <constraint firstItem="oc2-C5-M4E" firstAttribute="leading" secondItem="6L4-IT-Lyf" secondAttribute="leading" id="lcD-xX-53l"/>
                                     <constraint firstItem="oc2-C5-M4E" firstAttribute="top" secondItem="6L4-IT-Lyf" secondAttribute="top" id="siT-uw-ibb"/>

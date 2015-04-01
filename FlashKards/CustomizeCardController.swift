@@ -54,11 +54,14 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     private var savePopup: Popup!
     private var imgOptionsViewIsExpanded = false
     private var imgOptionsHeightInitialHeight: CGFloat!
+    private var animatedBools: Array<Bool>!
+    
+    // ALAssets.
     private var library: ALAssetsLibrary!
     private var assetThumbnails: Array<UIImage>!
+    private var thumbnails: Array<UIImage>!
     private var alreadyEnumerated = false
-    // ALAssets.
-    private var alAssets: Array<ALAssetRepresentation>?
+    private var urls: Array<NSURL>!
     
     // MARK: Functions
     override func viewDidLoad() {
@@ -145,9 +148,10 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         // ImgOptionsPopup (prompts user to choose either import / enter URL)
         imgOptionsViewBottomConstraint.constant = -imgOptionsViewHeightConstraint.constant
         imgOptionsHeightInitialHeight = imgOptionsViewHeightConstraint.constant
-        
+        animatedBools = Array<Bool>()
         assetThumbnails = Array<UIImage>()
-        
+        thumbnails = Array<UIImage>()
+        urls = Array<NSURL>()
         // CollectionView
     }
     
@@ -452,20 +456,26 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                 self.spinner.alpha = 1
                 }) { (complete) -> Void in
-                    
             }
             enumerateAssetsWithCompletionHandler { () -> () in
-                UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                    self.spinner.alpha = 0
-                    }) { (complete) -> Void in
-                        self.spinner.stopAnimating()
-                        self.expandImgOptionsView()
-                }
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                        self.spinner.alpha = 0
+                        }) { (complete) -> Void in
+                            self.spinner.stopAnimating()
+                            self.expandImgOptionsView()
+                            //                            for i in 0 ..< self.assetThumbnails.count{
+                            //                                println("Inserting item \(i)")
+                            //
+                            //                            }
+                    }
+                })
+                
             }
         }
         else{
             self.expandImgOptionsView()
-        }    
+        }
     }
     
     func cancelImportImageAction(){
@@ -493,6 +503,15 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                                 self.dismissImportImgViewBtn.tag = 9
                                 self.cancelImportBtn.tag = 7
                                 self.imgOptionsViewIsExpanded = true
+                                if !self.alreadyEnumerated{
+                                    self.alreadyEnumerated = true
+                                    if let assetthumbs = self.assetThumbnails{
+                                        for i in 0 ..< assetthumbs.count{
+                                            self.convertAndAppendThumbnail(i)
+                                        }
+                                        self.assetThumbnails.removeAll(keepCapacity: false)
+                                    }
+                                }
                         })
                 })
             })
@@ -519,17 +538,25 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                             self.enterURLBtn.alpha = 1
                             }, completion: { (complete) -> Void in
                                 self.imgOptionsViewIsExpanded = false
-                                if self.library != nil{ self.library = nil }
-                                println("Setting self.library to nil")
+                                if self.library != nil{
+                                    self.library = nil;
+                                    println("Setting self.library to nil")
+                                }
                         })
                 })
             })
         }
     }
     
+    func convertAndAppendThumbnail(index: Int!){
+            let thumbnail = assetThumbnails[index]
+            thumbnails.append(thumbnail)
+            galleryCollectionView.insertItemsAtIndexPaths([NSIndexPath(forRow: thumbnails.count - 1, inSection: 0)])
+    }
+    
     // MARK: ALAssetsLibrary
     func enumerateAssetsWithCompletionHandler(handler:()->()){
-        var url: NSURL?
+        var numPics = 0
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
             self.library = ALAssetsLibrary()
             self.library.enumerateGroupsWithTypes(ALAssetsGroupType(ALAssetsGroupSavedPhotos), usingBlock: { (group: ALAssetsGroup?, stop) -> Void in
@@ -539,18 +566,24 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                     group!.enumerateAssetsUsingBlock({ (result: ALAsset?, index, stop) -> Void in
                         println("Enumerating assets..")
                         if result != nil{
+                            let representation = result!.defaultRepresentation()
+                            var tempImg = result!.aspectRatioThumbnail()
+                            self.assetThumbnails.append(UIImage(CGImage: tempImg.takeUnretainedValue())!)
+                            tempImg = nil
+                            self.urls.append(representation.url())
+                            numPics++
                             println("Result is not nil")
-                            
                         }
                     })
                 }
                 else{
                     println("Enumeration complete")
-                    self.alreadyEnumerated = true
+                    for i in 0 ..< numPics{
+                        self.animatedBools.append(false)
+                    }
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         handler()
                     })
-                    
                 }
                 }, failureBlock: { (error) -> Void in
                     self.library = nil
@@ -560,12 +593,14 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var cell:CollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("imgCollectionCell", forIndexPath: indexPath) as CollectionViewCell
+        cell.putImage(self.thumbnails[indexPath.row] as UIImage!, withAnimation: !animatedBools[indexPath.row])
+        if !animatedBools[indexPath.row]{ animatedBools[indexPath.row] = true }
         return cell
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //        return assetThumbnails.count
-        return 5
+        return thumbnails.count
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
