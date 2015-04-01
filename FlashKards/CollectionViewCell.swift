@@ -25,11 +25,9 @@ class CollectionViewCell: UICollectionViewCell {
             self.imgView.image = newImg
             if animate == true{
                 UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
-                    println("Animating")
                     self.alpha = 1
                     self.transform = CGAffineTransformIdentity
                     }) { (complete) -> Void in
-                        
                 }
             }
             else{

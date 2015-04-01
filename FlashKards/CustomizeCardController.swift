@@ -55,6 +55,9 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     private var imgOptionsViewIsExpanded = false
     private var imgOptionsHeightInitialHeight: CGFloat!
     private var animatedBools: Array<Bool>!
+    private var fullImageView: UIView!
+    private var fullUIImageView: UIImageView!
+    private var hideStatusBar = false
     
     // ALAssets.
     private var library: ALAssetsLibrary!
@@ -116,24 +119,24 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         cancelImportBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         
         // Glow
-        var color = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1);
-        addImgBtn.layer.shadowColor = color.CGColor;
-        addImgBtn.layer.shadowRadius = 0;
-        addImgBtn.layer.shadowOpacity = 0.9;
-        addImgBtn.layer.shadowOffset = CGSizeZero;
-        addImgBtn.layer.masksToBounds = false;
+        var color = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1)
+        addImgBtn.layer.shadowColor = color.CGColor
+        addImgBtn.layer.shadowRadius = 0
+        addImgBtn.layer.shadowOpacity = 0.9
+        addImgBtn.layer.shadowOffset = CGSizeZero
+        addImgBtn.layer.masksToBounds = false
         
-        addTextBtn.layer.shadowColor = color.CGColor;
-        addTextBtn.layer.shadowRadius = 0;
-        addTextBtn.layer.shadowOpacity = 0.9;
-        addTextBtn.layer.shadowOffset = CGSizeZero;
-        addTextBtn.layer.masksToBounds = false;
+        addTextBtn.layer.shadowColor = color.CGColor
+        addTextBtn.layer.shadowRadius = 0
+        addTextBtn.layer.shadowOpacity = 0.9
+        addTextBtn.layer.shadowOffset = CGSizeZero
+        addTextBtn.layer.masksToBounds = false
         
-        imgOptionsView.layer.shadowColor = color.CGColor;
-        imgOptionsView.layer.shadowRadius = 8;
-        imgOptionsView.layer.shadowOpacity = 0.9;
-        imgOptionsView.layer.shadowOffset = CGSizeMake(0, 3);
-        imgOptionsView.layer.masksToBounds = false;
+        imgOptionsView.layer.shadowColor = color.CGColor
+        imgOptionsView.layer.shadowRadius = 8
+        imgOptionsView.layer.shadowOpacity = 0.9
+        imgOptionsView.layer.shadowOffset = CGSizeMake(0, 3)
+        imgOptionsView.layer.masksToBounds = false
         
         // Back confirm popup
         backConfirmPopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
@@ -148,11 +151,26 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         // ImgOptionsPopup (prompts user to choose either import / enter URL)
         imgOptionsViewBottomConstraint.constant = -imgOptionsViewHeightConstraint.constant
         imgOptionsHeightInitialHeight = imgOptionsViewHeightConstraint.constant
+        
+        // CollectionView
         animatedBools = Array<Bool>()
         assetThumbnails = Array<UIImage>()
         thumbnails = Array<UIImage>()
         urls = Array<NSURL>()
-        // CollectionView
+        
+        // Full Image View
+        fullImageView = UIView(frame: navigationController!.view.bounds)
+        fullImageView.backgroundColor = UIColor(white: 0, alpha: 0.6)
+        fullImageView.alpha = 0
+        fullUIImageView = UIImageView(frame: navigationController!.view.bounds)
+        fullUIImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        fullUIImageView.backgroundColor = UIColor.clearColor()
+        fullUIImageView.userInteractionEnabled = false
+        
+        let hideFullViewTap = UITapGestureRecognizer(target: self, action: "hideFullImage")
+        fullImageView.addGestureRecognizer(hideFullViewTap)
+        fullImageView.addSubview(fullUIImageView)
+        navigationController?.view.addSubview(fullImageView)
     }
     
     override func didReceiveMemoryWarning() {
@@ -549,9 +567,9 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     }
     
     func convertAndAppendThumbnail(index: Int!){
-            let thumbnail = assetThumbnails[index]
-            thumbnails.append(thumbnail)
-            galleryCollectionView.insertItemsAtIndexPaths([NSIndexPath(forRow: thumbnails.count - 1, inSection: 0)])
+        let thumbnail = assetThumbnails[index]
+        thumbnails.append(thumbnail)
+        galleryCollectionView.insertItemsAtIndexPaths([NSIndexPath(forRow: thumbnails.count - 1, inSection: 0)])
     }
     
     // MARK: ALAssetsLibrary
@@ -591,6 +609,65 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         })
     }
     
+    func showFullImageWithURL(sender: NSIndexPath){
+        /*
+        var attrs = galleryCollectionView.layoutAttributesForItemAtIndexPath(sender)
+        var cellFrame = attrs?.frame;
+        if let frame = cellFrame{
+        fullUIImageView.center = CGPointMake(frame.origin.x + frame.width/2 + navigationController!.view.frame.width, frame.origin.y + frame.height/2 + navigationController!.view.frame.height - galleryCollectionView.contentOffset.y)
+        }
+        else{
+        */
+        fullUIImageView.center = CGPointMake(view.frame.width/2, view.frame.height/2)
+        // }
+        fullUIImageView.transform = CGAffineTransformMakeScale(90 / fullUIImageView.frame.width, 90 / fullUIImageView.frame.height)
+        
+        if library == nil{
+            library = ALAssetsLibrary()
+        }
+        let url = urls[sender.row]
+        library.assetForURL(url, resultBlock: { (asset: ALAsset?) -> Void in
+            if asset != nil{
+                let rep = asset!.defaultRepresentation()
+                var image = rep.fullScreenImage()
+                self.fullUIImageView.image = UIImage(CGImage: image.takeUnretainedValue())
+                image = nil
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.hideStatusBar = true
+                    UIView.animateWithDuration(0.3, animations: { () -> Void in
+                        self.setNeedsStatusBarAppearanceUpdate()
+                        self.fullUIImageView.transform = CGAffineTransformIdentity
+                        self.fullUIImageView.center = CGPointMake(self.view.frame.width / 2, self.view.frame.height / 2)
+                        self.fullImageView.alpha = 1
+                        }, completion: { (complete) -> Void in
+                            self.library = nil
+                    })
+                })
+            }
+            }) { (error) -> Void in
+                println("ERROR when fetching individual full image")
+        }
+        
+    }
+    
+    func hideFullImage(){
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.hideStatusBar = false
+            UIView.animateWithDuration(0.3, animations: { () -> Void in
+                self.setNeedsStatusBarAppearanceUpdate()
+                self.fullImageView.alpha = 0
+                self.fullUIImageView.transform = CGAffineTransformMakeScale(0.5, 0.5)
+                }, completion: { (complete) -> Void in
+                    self.fullUIImageView.image = nil
+            })
+        })
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return self.hideStatusBar
+    }
+    
+    // MARK: UICollectionView
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var cell:CollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("imgCollectionCell", forIndexPath: indexPath) as CollectionViewCell
         cell.putImage(self.thumbnails[indexPath.row] as UIImage!, withAnimation: !animatedBools[indexPath.row])
@@ -598,8 +675,11 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         return cell
     }
     
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        showFullImageWithURL(indexPath)
+    }
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //        return assetThumbnails.count
         return thumbnails.count
     }
     
