@@ -73,18 +73,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        let appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
-        let managedContext = appDelegate.managedObjectContext!
-        let fetchRequest = NSFetchRequest(entityName: "Collection")
-        var error:NSError?
-        let fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as [NSManagedObject]?
-        if let results = fetchResults{
-            flashcardCoreDataObjs = results
-            tableView.reloadData()
-        }
-        else {
-            println("Could not fetch \(error), \(error!.userInfo)")
-        }
+        flashcardCoreDataObjs = collectionsManager.fetchCollections()
+        tableView.reloadData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -96,7 +86,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:FlashCardsOverviewCell = tableView.dequeueReusableCellWithIdentifier("homePageCell") as FlashCardsOverviewCell
         let collectionCoreDataObj = flashcardCoreDataObjs[indexPath.row]
-        let flashCardCollection = FlashCardCollection(collectionName: collectionCoreDataObj.valueForKey("name")? as? String!, progress: collectionCoreDataObj.valueForKey("progress")? as? Int!, lastReviewed: collectionCoreDataObj.valueForKey("lastReviewed")? as? String!, numCards: collectionCoreDataObj.valueForKey("numCards")? as? Int!)
+        let flashCardCollection = FlashCardCollection(collectionName: collectionCoreDataObj.valueForKey("name")? as? String!, progress: collectionCoreDataObj.valueForKey("progress")? as? Int!, lastReviewed: collectionCoreDataObj.valueForKey("lastReviewed")? as? String!, numCards: collectionCoreDataObj.valueForKey("numCards")? as? Int!, id: nil)
         cell.populateCellWithCollection(flashCardCollection)
         return cell
     }
@@ -140,7 +130,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                 collectionName: targetFlashcardCollectionCDObj.valueForKey("name")? as String!,
                 progress: targetFlashcardCollectionCDObj.valueForKey("progress")? as Int,
                 lastReviewed: targetFlashcardCollectionCDObj.valueForKey("lastReviewed")? as String!,
-                numCards: targetFlashcardCollectionCDObj.valueForKey("numCards")? as Int!
+                numCards: targetFlashcardCollectionCDObj.valueForKey("numCards")? as Int!,
+                id: nil
             )
             flashcardsSummaryVC.configureWithCollection(targetCollection)
         }
@@ -192,8 +183,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func addCollectionPopupDoneButtonDidPressedWithInput(input: String!){
         closeAddColPopup()
-        let newCollection = FlashCardCollection(collectionName: input, progress: 100, lastReviewed: "Never", numCards: 0)
-        collectionsManager.saveCollection(newCollection, completionHandler: { (success, newCollectionCDObject) -> Void in
+        let newCollection = FlashCardCollection(collectionName: input, progress: 100, lastReviewed: "Never", numCards: 0, id: nil)
+        collectionsManager.addCollection(newCollection, completionHandler: { (success, newCollectionCDObject) -> Void in
             if success{
                 self.flashcardCoreDataObjs.insert(newCollectionCDObject, atIndex: 0)
                 let indexPath = NSIndexPath(forRow: 0, inSection: 0)

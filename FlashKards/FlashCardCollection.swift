@@ -9,5 +9,6 @@ struct FlashCardCollection {
     var collectionName: String!,
     progress: Int!,
     lastReviewed: String!,
-    numCards: Int!
+    numCards: Int!,
+    id: Int?
 }
