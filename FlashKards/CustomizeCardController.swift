@@ -193,6 +193,11 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        if !isInEditMode{
+            self.assetThumbnails.removeAll(keepCapacity: false)
+            self.thumbnails.removeAll(keepCapacity: false)
+            self.alreadyEnumerated = false
+        }
         // Dispose of any resources that can be recreated.
     }
     
