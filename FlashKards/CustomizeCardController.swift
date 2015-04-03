@@ -15,7 +15,7 @@ enum EditMode{
 
 class CustomizeCardController: UIViewController, PopupDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
     // MARK: Variables
-    
+    // IBOutlets
     @IBOutlet private weak var spinner: UIActivityIndicatorView!
     @IBOutlet private weak var galleryCollectionView: UICollectionView!
     @IBOutlet private weak var cancelImportBtn: UIButton!
@@ -38,27 +38,40 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     @IBOutlet private weak var backView: UIView!
     @IBOutlet private weak var addTextBtn: UIButton!
     @IBOutlet private weak var addImgBtn: UIButton!
-    @IBOutlet private weak var rectSelView: RectSelView!
     @IBOutlet private weak var deleteBtn: UIButton!
+    
+    // Additional UI's
     private var backConfirmPopup: Popup!
-    private var elementsExists = false
-    private var isInEditMode = false
-    private var numElementsFront = 0
-    private var numElementsBack = 0
     private var dimLayer: UIView!
-    private var frontShowing = true
-    private var isAnimating = false
     private var rectSel: RectSelView!
     private var editMode: EditMode?
     private var activeButton: UIButton?
     private var savePopup: Popup!
-    private var imgOptionsViewIsExpanded = false
-    private var imgOptionsHeightInitialHeight: CGFloat!
-    private var animatedBools: Array<Bool>!
     private var fullImageView: UIView!
     private var fullUIImageView: UIImageView!
-    private var hideStatusBar = false
     private var completeImgImportBtn: UIButton!
+    
+    // Flashcards & collection
+    private var numElementsFront = 0
+    private var numElementsBack = 0
+    private var numCardsInCollection: Int!
+    private var newElementTag = 20 // Reserve some tags for buttons
+    private var imgOptionsHeightInitialHeight: CGFloat!
+    private var collectionID: Int!
+    private var cardID: Int!
+    private var frontElementsDict: Dictionary<String, Any>!
+    private var backElementsDict: Dictionary<String, Any>!
+    private var frontUIDict: Dictionary<String, UIView>!
+    private var backUIDict: Dictionary<String, UIView>!
+    
+    // Flags
+    private var isInEditMode = false
+    private var frontShowing = true
+    private var isAnimating = false
+    private var imgOptionsViewIsExpanded = false
+    private var hideStatusBar = false
+    
+    private var animatedBools: Array<Bool>!
     
     // ALAssets.
     private var library: ALAssetsLibrary!
@@ -67,7 +80,9 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     private var alreadyEnumerated = false
     private var urls: Array<NSURL>!
     
-    private var frontElementsDict: Dictionary<String, AnyObject>!
+    private var documentsDir: String!
+    
+    
     // MARK: Functions
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -177,6 +192,12 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         completeImgImportBtn.tag = 10
         fullImageView.addSubview(completeImgImportBtn)
         
+        // Dictionaries
+        frontElementsDict = Dictionary<String, Any>()
+        backElementsDict = Dictionary<String, Any>()
+        frontUIDict = Dictionary<String, UIView>()
+        backUIDict = Dictionary<String, UIView>()
+        
         // -- Actual presses
         addImgBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         addTextBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
@@ -189,6 +210,15 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         importImgBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         cancelImportBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         completeImgImportBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        
+        // Misc
+        let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
+        documentsDir = paths[0] as? String
+    }
+    
+    func configureWithCollection(collection: FlashCardCollection!){
+        collectionID = collection.id
+        cardID = collection.numCards + 1
     }
     
     override func didReceiveMemoryWarning() {
@@ -372,7 +402,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             UIView.transitionWithView(sender, duration: 0.4, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
                 let newImgString = (sender.tag == 0) ? "newImg-blue.png" : "text-blue.png"
                 sender.setImage(UIImage(named: newImgString), forState: UIControlState.Normal)
-                var color = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1);
+                var color = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1)
                 sender.layer.shadowColor = color.CGColor;
                 sender.layer.shadowRadius = 4.0;
                 sender.layer.shadowOpacity = 0.9;
@@ -416,7 +446,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         case 9:
             cancelImportImageAction()
         case 10:
-            completeImgImportProcess()
+            completeImgImportProcessWithImage(fullUIImageView.image!)
         default:
             break
         }
@@ -425,7 +455,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     func save(){
         if numElementsBack == 0 || numElementsFront == 0 {
-            savePopup.oneOptionOnly = true
+            savePopup.numOptions = 1
             savePopup.cancelBtnText = "OK"
             var message = ""
             if numElementsFront == 0 && numElementsBack == 0{
@@ -442,7 +472,25 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             navigationController?.view.addSubview(savePopup)
             showDimLayer()
             savePopup.show()
+            return
         }
+        
+        savePopup.frame = CGRect(x: view.frame.width / 2 - 60, y: view.frame.height / 2 - 30, width: 120, height: 60)
+        savePopup.numOptions = 0
+        savePopup.alpha = 0
+        savePopup.message = "Saving..."
+        savePopup.transform = CGAffineTransformIdentity
+        navigationController?.view.addSubview(savePopup)
+        showDimLayer()
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            UIView.animateWithDuration(0.4, delay: 0, options: .CurveEaseIn, animations: { () -> Void in
+                self.savePopup.alpha = 1
+            }, completion: { (complete) -> Void in
+                // save... when complete..
+                self.savePopup.message = "Saved."
+            })
+        })
+        
     }
     
     func confirmAddElement(){
@@ -491,7 +539,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             }
         })
     }
-    
     
     func importImageAction(){
         if !alreadyEnumerated{
@@ -681,10 +728,58 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         })
     }
     
-    func completeImgImportProcess(){
-        // 1. Create an UIImageView..
-        // 2. Add pan gesture...
-        // 3. Store in a dictionary
+    func completeImgImportProcessWithImage(newImage: UIImage!){
+        // Save image to disk, grab a url to it.
+        let side = frontShowing ? "front" : "back"
+        let imgPath = documentsDir!.stringByAppendingPathComponent("\(collectionID)-\(cardID)-\(side)-\(newElementTag).png")
+        UIImagePNGRepresentation(newImage).writeToFile(imgPath, atomically: true)
+        
+        // Show the image with an UIImageView
+        var imageView = UIImageView(frame: CGRect(x: rectSel.frame.origin.x, y: rectSel.frame.origin.y, width: rectSel.frame.width, height: rectSel.frame.height))
+        imageView.image = newImage
+        imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        imageView.tag = newElementTag
+        imageView.layer.borderWidth = 1
+        
+        
+        // TODO: Add pan gesture and option to delete...
+        
+        // Store in a dictionary then show it
+        var dictionary = Dictionary<String, Any>()
+        dictionary["id"] = newElementTag
+        dictionary["frame"] = imageView.frame
+        dictionary["img_url"] = imgPath
+        dictionary["type"] = "img"
+        
+        if frontShowing{
+            frontView.addSubview(imageView)
+            frontElementsDict["\(newElementTag)"] = dictionary
+            frontUIDict["\(newElementTag)"] = imageView
+            numElementsFront++
+        }
+        else{
+            backView.addSubview(imageView)
+            backElementsDict["\(newElementTag)"] = dictionary
+            backUIDict["\(newElementTag)"] = imageView
+            numElementsBack++
+        }
+        newElementTag++
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            UIView.transitionWithView(imageView, duration: 1, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                imageView.layer.borderColor = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1).CGColor
+                }, completion: { (complete) -> Void in
+                    UIView.transitionWithView(imageView, duration: 1, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                        imageView.layer.borderColor = UIColor.blackColor().CGColor
+                        }, completion: { (complete) -> Void in
+                            UIView.transitionWithView(imageView, duration: 1, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                                imageView.layer.borderWidth = 0
+                                }, completion: { (complete) -> Void in
+                            })
+                    })
+            })
+            
+        })
         // 4. Hide full img and exit edit mode
         hideFullImage()
         dismissImportImgView()

@@ -9,18 +9,13 @@
         <relationship name="flashcards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FlashCard" inverseName="collection" inverseEntity="FlashCard" syncable="YES"/>
     </entity>
     <entity name="FlashCard" syncable="YES">
-        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <relationship name="collection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Collection" inverseName="flashcards" inverseEntity="Collection" syncable="YES"/>
-        <relationship name="sides" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Side" inverseName="flashcard" inverseEntity="Side" syncable="YES"/>
-    </entity>
-    <entity name="Side" syncable="YES">
         <attribute name="back" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="front" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <relationship name="flashcard" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FlashCard" inverseName="sides" inverseEntity="FlashCard" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="collection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Collection" inverseName="flashcards" inverseEntity="Collection" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Collection" positionX="-63" positionY="-18" width="128" height="133"/>
-        <element name="FlashCard" positionX="-324" positionY="126" width="128" height="88"/>
-        <element name="Side" positionX="-54" positionY="285" width="128" height="88"/>
+        <element name="Collection" positionX="-173" positionY="-151" width="128" height="133"/>
+        <element name="FlashCard" positionX="99" positionY="-45" width="128" height="103"/>
     </elements>
 </model>
