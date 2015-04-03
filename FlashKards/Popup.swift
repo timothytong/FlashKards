@@ -36,15 +36,29 @@ class Popup: UIView {
             confirmBtnLabel.text = newText
         }
     }
-    var oneOptionOnly: Bool!{
+    var numOptions: Int!{
         get{
-            return !confirmBtn.isDescendantOfView(self)
+            return 0
         }
-        set(newBool){
-            if newBool == true{
-                confirmBtn.removeFromSuperview()
+        set(newVal){
+            removeButtons()
+            if newVal == 0{
+                instrucLabel.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
+                instrucLabel.transform = self.transform
+            }
+            else if newVal == 1{
                 cancelBtn.frame = CGRect(x: instrucLabel.frame.origin.x, y: cancelBtn.frame.origin.y, width: instrucLabel.frame.width, height: cancelBtn.frame.height)
                 cancelBtnLabel.frame = CGRect(x: 0, y: cancelBtnLabel.frame.origin.y, width: instrucLabel.frame.width, height: cancelBtn.frame.height)
+                addSubview(cancelBtn)
+            }
+            else{
+                confirmBtn.frame = CGRect(x: 10, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50)
+                confirmBtnLabel.frame = CGRect(x: 0, y: 0, width: confirmBtn.frame.width, height: confirmBtn.frame.height)
+                addSubview(confirmBtn)
+                
+                cancelBtn.frame = CGRect(x: frame.width/2 + 5, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50)
+                cancelBtnLabel.frame = CGRect(x: 0, y: 0, width: confirmBtn.frame.width, height: confirmBtn.frame.height)
+                addSubview(cancelBtn)
             }
         }
     }
@@ -109,6 +123,15 @@ class Popup: UIView {
         cancelBtn.addTarget(self, action: "cancelBtnTapped", forControlEvents: UIControlEvents.TouchUpInside)
         cancelBtn.addSubview(cancelBtnLabel)
         addSubview(cancelBtn)
+    }
+    
+    func removeButtons(){
+        if confirmBtn.isDescendantOfView(self){
+            confirmBtn.removeFromSuperview()
+        }
+        if cancelBtn.isDescendantOfView(self){
+            cancelBtn.removeFromSuperview()
+        }
     }
     
     func confirmBtnTapped(){
