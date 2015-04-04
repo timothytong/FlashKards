@@ -58,6 +58,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     private var newElementTag = 20 // Reserve some tags for buttons
     private var imgOptionsHeightInitialHeight: CGFloat!
     private var collectionID: Int!
+    private var collectionName: String!
     private var cardID: Int!
     private var frontElementsDict: Dictionary<String, Any>!
     private var backElementsDict: Dictionary<String, Any>!
@@ -218,6 +219,8 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     func configureWithCollection(collection: FlashCardCollection!){
         collectionID = collection.id
+        println("collectionID: \(collectionID)")
+        collectionName = collection.collectionName
         cardID = collection.numCards + 1
     }
     
@@ -731,7 +734,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     func completeImgImportProcessWithImage(newImage: UIImage!){
         // Save image to disk, grab a url to it.
         let side = frontShowing ? "front" : "back"
-        let imgPath = documentsDir!.stringByAppendingPathComponent("\(collectionID)-\(cardID)-\(side)-\(newElementTag).png")
+        let imgPath = documentsDir!.stringByAppendingPathComponent("\(collectionName)/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
         UIImagePNGRepresentation(newImage).writeToFile(imgPath, atomically: true)
         
         // Show the image with an UIImageView
@@ -766,10 +769,10 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         newElementTag++
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            UIView.transitionWithView(imageView, duration: 1, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+            UIView.transitionWithView(imageView, duration: 0.7, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
                 imageView.layer.borderColor = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1).CGColor
                 }, completion: { (complete) -> Void in
-                    UIView.transitionWithView(imageView, duration: 1, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                    UIView.transitionWithView(imageView, duration: 0.7, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
                         imageView.layer.borderColor = UIColor.blackColor().CGColor
                         }, completion: { (complete) -> Void in
                             UIView.transitionWithView(imageView, duration: 1, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in

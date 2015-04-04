@@ -16,6 +16,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     private var rowOfInterest: NSIndexPath?
     private var flashcardCollections: Array<FlashCardCollection>!
     private var collectionsManager: CollectionsManager!
+    private var fileManager: FileManager!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -74,8 +75,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewWillAppear(animated)
         flashcardCollections = collectionsManager.fetchCollections()
         tableView.reloadData()
+        fileManager = FileManager()
     }
-    
+    override func viewWillDisappear(animated: Bool){
+        super.viewWillDisappear(animated)
+        fileManager = nil
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -173,9 +178,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func addCollectionPopupDoneButtonDidPressedWithInput(input: String!){
         closeAddColPopup()
-        let newCollection = FlashCardCollection(collectionName: input, progress: 100, lastReviewed: "Never", numCards: 0, id: nil)
-        collectionsManager.addCollection(newCollection, completionHandler: { (success) -> Void in
+        var newCollection = FlashCardCollection(collectionName: input, progress: 100, lastReviewed: "Never", numCards: 0, id: nil)
+        collectionsManager.addCollection(newCollection, completionHandler: { (success, newID) -> Void in
             if success{
+                self.fileManager.createDirectoryWithName(newCollection.collectionName)
+                newCollection.id = newID
                 self.flashcardCollections.insert(newCollection, atIndex: 0)
                 let indexPath = NSIndexPath(forRow: 0, inSection: 0)
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -200,8 +207,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             collectionsManager.deleteCollectionWithName(collectionToBeDeleted.collectionName, completionHandler: { (success) -> Void in
                 if success{
                     println("deletion success")
-                    self.flashcardCollections.removeAtIndex(rowOfInterest.row)
-                    self.tableView.deleteRowsAtIndexPaths([rowOfInterest], withRowAnimation: UITableViewRowAnimation.Automatic)
+                    self.fileManager.deleteDirectory(collectionToBeDeleted.collectionName, withCompletionHandler: { () -> () in
+                        println("Running completion handler...")
+                        self.flashcardCollections.removeAtIndex(rowOfInterest.row)
+                        self.tableView.deleteRowsAtIndexPaths([rowOfInterest], withRowAnimation: UITableViewRowAnimation.Automatic)
+                    })
                 }
                 else{
                     println("Deletion Error")

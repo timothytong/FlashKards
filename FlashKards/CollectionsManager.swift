@@ -20,7 +20,7 @@ class CollectionsManager: NSObject {
         entity = NSEntityDescription.entityForName("Collection", inManagedObjectContext: managedContext)
     }
     
-    func addCollection(collection: FlashCardCollection!, completionHandler:(success:Bool)->()){
+    func addCollection(collection: FlashCardCollection!, completionHandler:(success:Bool, newID: Int)->()){
         let largestID = findLargestID()
         let newCollection = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
         newCollection.setValue(collection.collectionName, forKey: "name")
@@ -31,7 +31,7 @@ class CollectionsManager: NSObject {
         // println("Saving, assigning id \(largestID+1)")
         var error: NSError?
         let success = managedContext.save(&error)
-        completionHandler(success: success)
+        completionHandler(success: success, newID: largestID+1)
     }
     
     func findLargestID()->Int{

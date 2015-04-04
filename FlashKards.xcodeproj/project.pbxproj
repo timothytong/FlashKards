@@ -30,6 +30,7 @@
 		33402CF31AC0ABD000265F70 /* FlashCardCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CF21AC0ABD000265F70 /* FlashCardCollection.swift */; };
 		33402CF91AC0C1F400265F70 /* AddCollectionPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CF81AC0C1F400265F70 /* AddCollectionPopup.swift */; };
 		3375E2351AC3642B00C39472 /* CollectionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3375E2341AC3642B00C39472 /* CollectionsManager.swift */; };
+		3389247B1ACF9093005BBC94 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3389247A1ACF9093005BBC94 /* FileManager.swift */; };
 		338B575A1AC634D6000A3CD3 /* FlashCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338B57591AC634D6000A3CD3 /* FlashCard.swift */; };
 		339D3BCF1ACB048500E4A6EE /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 339D3BCD1ACB048500E4A6EE /* CollectionViewCell.swift */; };
 		33A53ECF1AC2F0C0001815FA /* Popup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A53ECE1AC2F0C0001815FA /* Popup.swift */; };
@@ -96,6 +97,7 @@
 		33402CF21AC0ABD000265F70 /* FlashCardCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardCollection.swift; sourceTree = "<group>"; };
 		33402CF81AC0C1F400265F70 /* AddCollectionPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCollectionPopup.swift; sourceTree = "<group>"; };
 		3375E2341AC3642B00C39472 /* CollectionsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionsManager.swift; sourceTree = "<group>"; };
+		3389247A1ACF9093005BBC94 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		338B57591AC634D6000A3CD3 /* FlashCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCard.swift; sourceTree = "<group>"; };
 		339D3BCD1ACB048500E4A6EE /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		33A53ECE1AC2F0C0001815FA /* Popup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Popup.swift; sourceTree = "<group>"; };
@@ -275,6 +277,7 @@
 			isa = PBXGroup;
 			children = (
 				3375E2341AC3642B00C39472 /* CollectionsManager.swift */,
+				3389247A1ACF9093005BBC94 /* FileManager.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -406,6 +409,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3389247B1ACF9093005BBC94 /* FileManager.swift in Sources */,
 				3320C5C71ABF807B00A90CD4 /* HomeViewController.swift in Sources */,
 				333439301AC444A500A808F9 /* FlashcardsSummaryController.swift in Sources */,
 				338B575A1AC634D6000A3CD3 /* FlashCard.swift in Sources */,
