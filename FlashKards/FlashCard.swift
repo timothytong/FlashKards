@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Timothy Tong. All rights reserved.
 //
 
-
 struct FlashCard{
     var front: Dictionary<String, Any>!
     var back: Dictionary<String, Any>!

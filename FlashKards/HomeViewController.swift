@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddCollectionPopupDelegate,PopupDelegate{
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private weak var addCardsButton: UIBarButtonItem!
@@ -15,7 +14,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     private var deleteCollectionPopup: Popup!
     private var dimLayer: UIView!
     private var rowOfInterest: NSIndexPath?
-    private var flashcardCoreDataObjs: Array<NSManagedObject>!
+    private var flashcardCollections: Array<FlashCardCollection>!
     private var collectionsManager: CollectionsManager!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,8 +44,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.registerNib(homePageCellNib, forCellReuseIdentifier: "homePageCell")
         tableView.allowsMultipleSelection = false
         
-        // Core Data
-        flashcardCoreDataObjs = [NSManagedObject]()
+        // Collections
+        flashcardCollections = [FlashCardCollection]()
         
         
         // Dim layer
@@ -73,7 +72,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        flashcardCoreDataObjs = collectionsManager.fetchCollections()
+        flashcardCollections = collectionsManager.fetchCollections()
         tableView.reloadData()
     }
     
@@ -85,13 +84,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     // MARK: UITableView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell:FlashCardsOverviewCell = tableView.dequeueReusableCellWithIdentifier("homePageCell") as FlashCardsOverviewCell
-        let collectionCoreDataObj = flashcardCoreDataObjs[indexPath.row]
-        let flashCardCollection = FlashCardCollection(collectionName: collectionCoreDataObj.valueForKey("name")? as? String!, progress: collectionCoreDataObj.valueForKey("progress")? as? Int!, lastReviewed: collectionCoreDataObj.valueForKey("lastReviewed")? as? String!, numCards: collectionCoreDataObj.valueForKey("numCards")? as? Int!, id: nil)
-        cell.populateCellWithCollection(flashCardCollection)
+        let collection = flashcardCollections[indexPath.row]
+        cell.populateCellWithCollection(collection)
         return cell
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return flashcardCoreDataObjs.count
+        return flashcardCollections.count
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 100
@@ -102,9 +100,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete{
             //            openPopup((flashcardCollections[indexPath.row] as FlashCardCollection).collectionName)
-            let collectionCoreDataObj = flashcardCoreDataObjs[indexPath.row]
-            let collectionName = collectionCoreDataObj.valueForKey("name") as String!
-            deleteCollectionPopup.message = "Confirm delete:\n\(collectionName)?"
+            let collectionToBeDeleted = flashcardCollections[indexPath.row]
+            deleteCollectionPopup.message = "Confirm delete:\n\(collectionToBeDeleted.collectionName)?"
             navigationController?.view.addSubview(deleteCollectionPopup)
             deleteCollectionPopup.show()
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -125,15 +122,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if segue.identifier == "showSummary"{
             let indexPath: NSIndexPath = sender! as NSIndexPath
             let flashcardsSummaryVC: FlashcardsSummaryController = segue.destinationViewController as FlashcardsSummaryController
-            let targetFlashcardCollectionCDObj = flashcardCoreDataObjs[indexPath.row]
-            let targetCollection = FlashCardCollection(
-                collectionName: targetFlashcardCollectionCDObj.valueForKey("name")? as String!,
-                progress: targetFlashcardCollectionCDObj.valueForKey("progress")? as Int,
-                lastReviewed: targetFlashcardCollectionCDObj.valueForKey("lastReviewed")? as String!,
-                numCards: targetFlashcardCollectionCDObj.valueForKey("numCards")? as Int!,
-                id: nil
-            )
-            flashcardsSummaryVC.configureWithCollection(targetCollection)
+            let collection = flashcardCollections[indexPath.row]
+            flashcardsSummaryVC.configureWithCollection(collection)
         }
     }
     
@@ -184,9 +174,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     func addCollectionPopupDoneButtonDidPressedWithInput(input: String!){
         closeAddColPopup()
         let newCollection = FlashCardCollection(collectionName: input, progress: 100, lastReviewed: "Never", numCards: 0, id: nil)
-        collectionsManager.addCollection(newCollection, completionHandler: { (success, newCollectionCDObject) -> Void in
+        collectionsManager.addCollection(newCollection, completionHandler: { (success) -> Void in
             if success{
-                self.flashcardCoreDataObjs.insert(newCollectionCDObject, atIndex: 0)
+                self.flashcardCollections.insert(newCollection, atIndex: 0)
                 let indexPath = NSIndexPath(forRow: 0, inSection: 0)
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -206,10 +196,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         })
         if let rowOfInterest = self.rowOfInterest{
             //            println("Deleting row \(rowOfInterest); CDObjCount: \(flashcardCoreDataObjs.count); tableRowsCount: \(tableView.numberOfRowsInSection(0))")
-            let collectionToBeDeleted = flashcardCoreDataObjs[rowOfInterest.row]
-            collectionsManager.deleteCollectionWithName(collectionToBeDeleted.valueForKey("name") as? String!, completionHandler: { (success) -> Void in
+            let collectionToBeDeleted = flashcardCollections[rowOfInterest.row]
+            collectionsManager.deleteCollectionWithName(collectionToBeDeleted.collectionName, completionHandler: { (success) -> Void in
                 if success{
-                    self.flashcardCoreDataObjs.removeAtIndex(rowOfInterest.row)
+                    println("deletion success")
+                    self.flashcardCollections.removeAtIndex(rowOfInterest.row)
                     self.tableView.deleteRowsAtIndexPaths([rowOfInterest], withRowAnimation: UITableViewRowAnimation.Automatic)
                 }
                 else{
