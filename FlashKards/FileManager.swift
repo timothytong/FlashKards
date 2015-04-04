@@ -21,7 +21,7 @@ class FileManager: NSObject {
     func createDirectoryWithName(name: String!){
         println("Creating new directory...")
         var dir = processString(name)
-        var dataPath = documentsDirectory.stringByAppendingPathComponent("\(name)")
+        var dataPath = documentsDirectory.stringByAppendingPathComponent("\(dir)")
         if (!fileManager.fileExistsAtPath(dataPath)) {
             fileManager.createDirectoryAtPath(dataPath, withIntermediateDirectories: false, attributes: nil, error: &error)
             println(" -- created datapath \(dataPath)")
@@ -58,7 +58,9 @@ class FileManager: NSObject {
     }
     
     func processString(string: String!)->String{
-        return string.stringByReplacingOccurrencesOfString(" ", withString: "%20", options: .LiteralSearch, range: nil).stringByReplacingOccurrencesOfString("/", withString: "%2F", options: .LiteralSearch, range: nil)
+        let result = string.stringByReplacingOccurrencesOfString(" ", withString: "%20", options: .LiteralSearch, range: nil).stringByReplacingOccurrencesOfString("/", withString: "%2F", options: .LiteralSearch, range: nil)
+        println("returning \(result)")
+        return result
     }
 }
 

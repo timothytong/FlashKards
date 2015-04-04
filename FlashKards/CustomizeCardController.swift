@@ -83,6 +83,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     private var documentsDir: String!
     
+    private var fileManager: FileManager!
     
     // MARK: Functions
     override func viewDidLoad() {
@@ -215,6 +216,16 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         // Misc
         let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
         documentsDir = paths[0] as? String
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        fileManager = nil
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        fileManager = FileManager()
     }
     
     func configureWithCollection(collection: FlashCardCollection!){
@@ -457,6 +468,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     
     func save(){
+        println("front count: \(frontElementsDict.count) back count: \(backElementsDict.count)")
         if numElementsBack == 0 || numElementsFront == 0 {
             savePopup.numOptions = 1
             savePopup.cancelBtnText = "OK"
