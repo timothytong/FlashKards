@@ -178,7 +178,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func addCollectionPopupDoneButtonDidPressedWithInput(input: String!){
         closeAddColPopup()
-        var newCollection = FlashCardCollection(collectionName: input, progress: 100, lastReviewed: "Never", numCards: 0, id: nil)
+        var newCollection = FlashCardCollection(collectionName: input, progress: 100, lastReviewed: "Never", numCards: 0, id: nil, time_created: NSTimeIntervalSince1970, last_updated: NSTimeIntervalSince1970)
         collectionsManager.addCollection(newCollection, completionHandler: { (success, newID) -> Void in
             if success{
                 self.fileManager.createDirectoryWithName(newCollection.collectionName)

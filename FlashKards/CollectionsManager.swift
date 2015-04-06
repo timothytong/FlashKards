@@ -109,7 +109,9 @@ class CollectionsManager: NSObject {
             progress: cdObject.valueForKey("progress")? as Int,
             lastReviewed: cdObject.valueForKey("lastReviewed")? as String!,
             numCards: cdObject.valueForKey("numCards")? as Int!,
-            id: cdObject.valueForKey("id") as Int!
+            id: cdObject.valueForKey("id") as Int!,
+            time_created: cdObject.valueForKey("time_created") as Double!,
+            last_updated: cdObject.valueForKey("last_updated") as Double!
         )
         return collection
     }

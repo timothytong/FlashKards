@@ -10,5 +10,7 @@ struct FlashCardCollection {
     progress: Int!,
     lastReviewed: String!,
     numCards: Int!,
-    id: Int?
+    id: Int?,
+    time_created: Double!,
+    last_updated: Double!
 }
