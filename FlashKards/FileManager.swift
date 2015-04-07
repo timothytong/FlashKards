@@ -20,7 +20,7 @@ class FileManager: NSObject {
     
     func createDirectoryWithName(name: String!){
         println("Creating new directory...")
-        var dir = processString(name)
+        var dir = name
         var dataPath = documentsDirectory.stringByAppendingPathComponent("\(dir)")
         if (!fileManager.fileExistsAtPath(dataPath)) {
             fileManager.createDirectoryAtPath(dataPath, withIntermediateDirectories: false, attributes: nil, error: &error)
@@ -33,18 +33,20 @@ class FileManager: NSObject {
     }
     
     func deleteFilesInDirectory(directoryName: String!, withCompletionHandler completionHandler:(()->())?){
-        var dir = processString(directoryName)
+        var dir = directoryName
         var dataPath = documentsDirectory.stringByAppendingPathComponent("\(dir)")
+        println("Deleting all files in dir \(dataPath)")
         let url = NSURL(string: dataPath)!
         let enumerator = fileManager.enumeratorAtURL(url, includingPropertiesForKeys: nil, options: nil, errorHandler: nil)
         while let file = enumerator?.nextObject() as? String {
+            println("Deleting")
             fileManager.removeItemAtURL(url.URLByAppendingPathComponent(file), error: nil)
         }
         completionHandler?()
     }
     
     func deleteDirectory(directoryName: String!, withCompletionHandler completionHandler:()->()){
-        var dir = processString(directoryName)
+        var dir = directoryName
         deleteFilesInDirectory(dir, withCompletionHandler: { () -> () in
             var dataPath = self.documentsDirectory.stringByAppendingPathComponent("\(dir)")
             if !self.fileManager.removeItemAtPath(dataPath, error: &self.error) {

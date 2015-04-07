@@ -115,4 +115,20 @@ class CollectionsManager: NSObject {
         )
         return collection
     }
+
+    func findLargestCardIDInCollection()->Int{
+        return 0
+    }
+    
+    func addNewFlashcardWithData(newCardDict: NSDictionary!, toCollection collectionName: String!){
+        let frontDict = newCardDict["front"]! as NSDictionary
+        let backDict = newCardDict["back"]! as NSDictionary
+        if let targetCollection = searchExistingCollectionsWithName(collectionName){
+            var newCard = NSManagedObject(entity: flashcardEntity, insertIntoManagedObjectContext: managedContext)
+            var frontData = NSKeyedArchiver.archivedDataWithRootObject(frontDict)
+            newCard.setValue(frontDict, forKey: "front")
+            newCard.setValue(backDict, forKey: "back")
+            newCard.setValue(0, forKey: "id")
+        }
+    }
 }

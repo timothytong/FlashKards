@@ -60,8 +60,8 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     private var collectionID: Int!
     private var collectionName: String!
     private var cardID: Int!
-    private var frontElementsDict: Dictionary<String, Any>!
-    private var backElementsDict: Dictionary<String, Any>!
+    private var frontElementsDict: NSDictionary!
+    private var backElementsDict: NSDictionary!
     private var frontUIDict: Dictionary<String, UIView>!
     private var backUIDict: Dictionary<String, UIView>!
     
@@ -195,8 +195,8 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         fullImageView.addSubview(completeImgImportBtn)
         
         // Dictionaries
-        frontElementsDict = Dictionary<String, Any>()
-        backElementsDict = Dictionary<String, Any>()
+        frontElementsDict = NSDictionary()
+        backElementsDict = NSDictionary()
         frontUIDict = Dictionary<String, UIView>()
         backUIDict = Dictionary<String, UIView>()
         
@@ -500,9 +500,12 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.4, delay: 0, options: .CurveEaseIn, animations: { () -> Void in
                 self.savePopup.alpha = 1
-            }, completion: { (complete) -> Void in
-                // save... when complete..
-                self.savePopup.message = "Saved."
+                }, completion: { (complete) -> Void in
+                    // TODO: create a new entity
+                    let dictionary: NSDictionary = NSDictionary(dictionary: ["front": self.frontElementsDict, "back": self.backElementsDict])
+                    let collectionManager = CollectionsManager()
+                    collectionManager.addNewFlashcardWithData(dictionary, toCollection: self.collectionName)
+                    self.savePopup.message = "Saved."
             })
         })
         
@@ -746,7 +749,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     func completeImgImportProcessWithImage(newImage: UIImage!){
         // Save image to disk, grab a url to it.
         let side = frontShowing ? "front" : "back"
-        let imgPath = documentsDir!.stringByAppendingPathComponent("\(collectionName)/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
+        let imgPath = documentsDir!.stringByAppendingPathComponent("\(collectionName)/tmp/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
         UIImagePNGRepresentation(newImage).writeToFile(imgPath, atomically: true)
         
         // Show the image with an UIImageView
@@ -760,21 +763,22 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         // TODO: Add pan gesture and option to delete...
         
         // Store in a dictionary then show it
-        var dictionary = Dictionary<String, Any>()
-        dictionary["id"] = newElementTag
-        dictionary["frame"] = imageView.frame
-        dictionary["img_url"] = imgPath
-        dictionary["type"] = "img"
+        var dictionary = NSDictionary(dictionary:[
+            "id": newElementTag,
+            "frame": NSValue(CGRect: imageView.frame),
+            "content": imgPath,
+            "type": "img"
+        ])
         
         if frontShowing{
             frontView.addSubview(imageView)
-            frontElementsDict["\(newElementTag)"] = dictionary
+            frontElementsDict.setValue(dictionary, forKey: "\(newElementTag)")
             frontUIDict["\(newElementTag)"] = imageView
             numElementsFront++
         }
         else{
             backView.addSubview(imageView)
-            backElementsDict["\(newElementTag)"] = dictionary
+            backElementsDict.setValue(dictionary, forKey: "\(newElementTag)")
             backUIDict["\(newElementTag)"] = imageView
             numElementsBack++
         }

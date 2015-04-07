@@ -107,9 +107,10 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "addFlashcard"{
-            println("Preparing customizeFKVC")
             let customizeFKVC: CustomizeCardController = segue.destinationViewController as CustomizeCardController
             customizeFKVC.configureWithCollection(flashcardCollection)
+            let fileManager = FileManager()
+            fileManager.createDirectoryWithName("\(fileManager.processString(flashcardCollection.collectionName))/tmp")
         }
         
     }
