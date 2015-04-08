@@ -167,7 +167,7 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         let charset = NSCharacterSet(charactersInString: bannedCharset).invertedSet
         let components = string.componentsSeparatedByCharactersInSet(charset)
         let filteredText = join("", components)
-        println("STRING: \(string), FILTERED: \(filteredText)")
+//        println("STRING: \(string), FILTERED: \(filteredText)")
         var allowedInput = (string == filteredText) ? false : true
         if !allowedInput && string.utf16Count > 0{
             showTextFieldWarning(0)
