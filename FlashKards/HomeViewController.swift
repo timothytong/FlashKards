@@ -104,9 +104,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == UITableViewCellEditingStyle.Delete{
-            //            openPopup((flashcardCollections[indexPath.row] as FlashCardCollection).collectionName)
+            //            openPopup((flashcardCollections[indexPath.row] as FlashCardCollection).name)
             let collectionToBeDeleted = flashcardCollections[indexPath.row]
-            deleteCollectionPopup.message = "Confirm delete:\n\(collectionToBeDeleted.collectionName)?"
+            deleteCollectionPopup.message = "Confirm delete:\n\(collectionToBeDeleted.name)?"
             navigationController?.view.addSubview(deleteCollectionPopup)
             deleteCollectionPopup.show()
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -178,11 +178,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func addCollectionPopupDoneButtonDidPressedWithInput(input: String!){
         closeAddColPopup()
-        var newCollection = FlashCardCollection(collectionName: input, progress: 100, lastReviewed: "Never", numCards: 0, id: nil, time_created: NSTimeIntervalSince1970, last_updated: NSTimeIntervalSince1970)
-        collectionsManager.addCollection(newCollection, completionHandler: { (success, newID) -> Void in
+        collectionsManager.addCollectionWithName(input, andCompletionHandler: { (success, newCollection) -> Void in
             if success{
-                self.fileManager.createDirectoryWithName(newCollection.collectionName)
-                newCollection.id = newID
+                self.fileManager.createDirectoryWithName(newCollection.name)
                 self.flashcardCollections.insert(newCollection, atIndex: 0)
                 let indexPath = NSIndexPath(forRow: 0, inSection: 0)
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -204,10 +202,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if let rowOfInterest = self.rowOfInterest{
             //            println("Deleting row \(rowOfInterest); CDObjCount: \(flashcardCoreDataObjs.count); tableRowsCount: \(tableView.numberOfRowsInSection(0))")
             let collectionToBeDeleted = flashcardCollections[rowOfInterest.row]
-            collectionsManager.deleteCollectionWithName(collectionToBeDeleted.collectionName, completionHandler: { (success) -> Void in
+            collectionsManager.deleteCollectionWithName(collectionToBeDeleted.name, completionHandler: { (success) -> Void in
                 if success{
                     println("deletion success")
-                    self.fileManager.deleteDirectory(collectionToBeDeleted.collectionName, withCompletionHandler: { () -> () in
+                    self.fileManager.deleteDirectory(collectionToBeDeleted.name, withCompletionHandler: { () -> () in
                         println("Running completion handler...")
                         self.flashcardCollections.removeAtIndex(rowOfInterest.row)
                         self.tableView.deleteRowsAtIndexPaths([rowOfInterest], withRowAnimation: UITableViewRowAnimation.Automatic)

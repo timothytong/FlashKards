@@ -35,7 +35,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     
     func configureWithCollection(flashcardCol: FlashCardCollection!){
         flashcardCollection = flashcardCol
-        navigationItem.title = flashcardCollection.collectionName
+        navigationItem.title = flashcardCollection.name
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -49,7 +49,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: CollectionSummaryCell = tableView.dequeueReusableCellWithIdentifier("summaryCell") as CollectionSummaryCell
         let numCards = flashcardCollection.numCards
-        let relTimeDiff = calculateRelativeDate(flashcardCollection.lastReviewed)
+        let relTimeDiff = calculateRelativeDate(flashcardCollection.lastReviewed.doubleValue)
         switch indexPath.row{
         case 0:
             cell.populateFieldsWithNumberString("\(numCards)", Subtext1: "KARDS", andSubtext2: "In collection")
@@ -67,16 +67,15 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         return 3
     }
     
-    func calculateRelativeDate(timeStamp: String!)->[String]{
+    func calculateRelativeDate(timeStamp: Double!)->[String]{
         let currentTime: Double = NSTimeIntervalSince1970
-        let doubleTimeStamp: Double = (timeStamp == "Never") ? currentTime : (timeStamp as NSString).doubleValue
-        let diff = currentTime - doubleTimeStamp
+        let diff = currentTime - timeStamp
         var returnArray = [String]()
         var time: String, unit: String
         switch diff{
         case 0...300:
-            time = "<5"
-            unit = "MINS"
+            time = "JUST"
+            unit = "NOW."
         case 301...3600:
             time = "\(diff/60)"
             unit = (time == "1") ? "MIN" : "MINS"
@@ -110,7 +109,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
             let customizeFKVC: CustomizeCardController = segue.destinationViewController as CustomizeCardController
             customizeFKVC.configureWithCollection(flashcardCollection)
             let fileManager = FileManager()
-            fileManager.createDirectoryWithName("\(fileManager.processString(flashcardCollection.collectionName))/tmp")
+            fileManager.createDirectoryWithName("\(fileManager.processString(flashcardCollection.name))/tmp")
         }
         
     }

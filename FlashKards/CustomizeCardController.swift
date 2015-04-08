@@ -60,8 +60,8 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     private var collectionID: Int!
     private var collectionName: String!
     private var cardID: Int!
-    private var frontElementsDict: NSDictionary!
-    private var backElementsDict: NSDictionary!
+    private var frontElementsDict: NSMutableDictionary!
+    private var backElementsDict: NSMutableDictionary!
     private var frontUIDict: Dictionary<String, UIView>!
     private var backUIDict: Dictionary<String, UIView>!
     
@@ -195,8 +195,8 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         fullImageView.addSubview(completeImgImportBtn)
         
         // Dictionaries
-        frontElementsDict = NSDictionary()
-        backElementsDict = NSDictionary()
+        frontElementsDict = NSMutableDictionary()
+        backElementsDict = NSMutableDictionary()
         frontUIDict = Dictionary<String, UIView>()
         backUIDict = Dictionary<String, UIView>()
         
@@ -229,10 +229,10 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     }
     
     func configureWithCollection(collection: FlashCardCollection!){
-        collectionID = collection.id
+        collectionID = collection.collectionID.integerValue
         println("collectionID: \(collectionID)")
-        collectionName = collection.collectionName
-        cardID = collection.numCards + 1
+        collectionName = collection.name
+        cardID = collection.numCards.integerValue + 1
     }
     
     override func didReceiveMemoryWarning() {
@@ -749,8 +749,10 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     func completeImgImportProcessWithImage(newImage: UIImage!){
         // Save image to disk, grab a url to it.
         let side = frontShowing ? "front" : "back"
-        let imgPath = documentsDir!.stringByAppendingPathComponent("\(collectionName)/tmp/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
-        UIImagePNGRepresentation(newImage).writeToFile(imgPath, atomically: true)
+        let tmpImgPath = documentsDir!.stringByAppendingPathComponent("\(collectionName)/tmp/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
+                let imgPath = documentsDir!.stringByAppendingPathComponent("\(collectionName)/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
+        
+        UIImagePNGRepresentation(newImage).writeToFile(tmpImgPath, atomically: true)
         
         // Show the image with an UIImageView
         var imageView = UIImageView(frame: CGRect(x: rectSel.frame.origin.x, y: rectSel.frame.origin.y, width: rectSel.frame.width, height: rectSel.frame.height))
@@ -768,17 +770,17 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             "frame": NSValue(CGRect: imageView.frame),
             "content": imgPath,
             "type": "img"
-        ])
+            ])
         
         if frontShowing{
             frontView.addSubview(imageView)
-            frontElementsDict.setValue(dictionary, forKey: "\(newElementTag)")
+            frontElementsDict.setObject(dictionary, forKey: "\(newElementTag)")
             frontUIDict["\(newElementTag)"] = imageView
             numElementsFront++
         }
         else{
             backView.addSubview(imageView)
-            backElementsDict.setValue(dictionary, forKey: "\(newElementTag)")
+            backElementsDict.setObject(dictionary, forKey: "\(newElementTag)")
             backUIDict["\(newElementTag)"] = imageView
             numElementsBack++
         }

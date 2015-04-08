@@ -58,7 +58,7 @@ class FlashCardsOverviewCell: UITableViewCell {
             */
             self.sepLineWidthConstraint.constant = 0
             self.layoutIfNeeded()
-            let collectionName = collection.collectionName
+            let collectionName = collection.name
             let progress = collection.progress
             let lastReviewedDate = collection.lastReviewed
             let numCardsInCollection = collection.numCards
@@ -66,10 +66,10 @@ class FlashCardsOverviewCell: UITableViewCell {
             self.kardLabel.text = (numCardsInCollection == 1) ? "KARD" : "KARDS"
             self.collectionLabel.text = collectionName
             self.collectionProgressLabel.text = "\(progress)%"
-            self.lastReviewedLabel.text = lastReviewedDate
+            self.lastReviewedLabel.text = "\(lastReviewedDate)"
             self.numCardsLabel.text = "\(numCardsInCollection)"
             var progressColor:UIColor
-            switch progress{
+            switch progress.integerValue{
             case 0...20:
                 progressColor = UIColor(red: 247/255, green: 4/255, blue: 0, alpha: 1)
             case 21...50:
