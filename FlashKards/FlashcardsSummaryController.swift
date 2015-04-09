@@ -33,6 +33,10 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(animated: Bool) {
+        tableView.reloadData()
+    }
+    
     func configureWithCollection(flashcardCol: FlashCardCollection!){
         flashcardCollection = flashcardCol
         navigationItem.title = flashcardCollection.name
@@ -55,13 +59,18 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         case 0:
             cell.populateFieldsWithNumberString("\(numCards)", Subtext1: "KARDS", andSubtext2: "In collection")
         case 1:
-            cell.populateFieldsWithNumberString("\(flashcardCollection.progress)", Subtext1: "PERCENT", andSubtext2: "Memorized")
+            let numCardsMem = flashcardCollection.numCardsMemorized.integerValue
+            let numCards = flashcardCollection.numCards.integerValue
+            let progress = (numCards == 0 && numCardsMem == 0) ? 100 : numCardsMem / numCards
+            cell.populateFieldsWithNumberString("\(progress)", Subtext1: "PERCENT", andSubtext2: "Memorized")
         default:
             cell.populateFieldsWithNumberString(relTimeDiff[0], Subtext1: relTimeDiff[1], andSubtext2: "Last reviewed")
         }
-        let substring = (relTimeDiff[1] as NSString).substringToIndex(3)
-        if numCards == 0 { suggestedActionLabel.text = "Suggested Action:\nAdd some FlashKards." }
-        else if (substring != "MIN") && (substring != "HOU"){ suggestedActionLabel.text = "Suggested Action:\nReview the FlashKards." }
+        // TODO: Add more details... time created, updated, numCardsMemorized
+        let subString = (relTimeDiff[1] as NSString).substringToIndex(3) as String
+        if numCards.integerValue < 10 { suggestedActionLabel.text = "Suggested Action:\nAdd some FlashKards." }
+        if ((subString != "MIN") && (subString != "HOU") && (numCards.integerValue >= 10)) { suggestedActionLabel.text = "Suggested Action:\nReview the FlashKards." }
+        if numCards.integerValue >= 10 && ((subString == "MIN") || (subString == "HOU")) { suggestedActionLabel.text = "Do something else,\n come back later." }
         return cell
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -69,9 +78,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func calculateRelativeDate(timeStamp: Double!)->[String]{
-        println("TIMESTAMP: \(timeStamp)")
         if timeStamp == 0{
-            println("NEVER")
             return ["NE", "VER."]
         }
         

@@ -12,7 +12,6 @@ import CoreData
 class CollectionsManager: NSObject {
     private var appDelegate: AppDelegate!
     
-    
     override init(){
         super.init()
         appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
@@ -25,10 +24,10 @@ class CollectionsManager: NSObject {
         newCollection.collectionID = largestID + 1
         newCollection.name = name
         newCollection.numCards = 0
-        newCollection.progress = 100
         newCollection.last_updated = NSDate.timeIntervalSinceReferenceDate()
         newCollection.time_created = NSDate.timeIntervalSinceReferenceDate()
         newCollection.lastReviewed = 0
+        newCollection.numCardsMemorized = 0
         
         // println("Saving, assigning id \(largestID+1)")
         var error: NSError?
@@ -142,6 +141,7 @@ class CollectionsManager: NSObject {
             newCard.time_created = NSDate.timeIntervalSinceReferenceDate()
             newCard.last_updated = NSDate.timeIntervalSinceReferenceDate()
             newCard.parentCollection = targetCollection
+            newCard.memorized = NSNumber(bool: false)
             targetCollection.addFlashcardsObject(newCard)
             targetCollection.last_updated = NSDate.timeIntervalSinceReferenceDate()
             targetCollection.numCards = targetCollection.numCards.integerValue + 1

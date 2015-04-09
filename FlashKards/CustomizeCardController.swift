@@ -493,7 +493,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         savePopup.frame = CGRect(x: view.frame.width / 2 - 60, y: view.frame.height / 2 - 30, width: 120, height: 60)
         savePopup.numOptions = 0
         savePopup.alpha = 0
-        savePopup.message = "Saving..."
+        savePopup.message = "Saving"
         savePopup.transform = CGAffineTransformIdentity
         navigationController?.view.addSubview(savePopup)
         showDimLayer()
@@ -506,6 +506,13 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                     let collectionManager = CollectionsManager()
                     collectionManager.addNewFlashcardWithData(dictionary, toCollection: self.collectionName)
                     self.savePopup.message = "Saved."
+                    UIView.animateWithDuration(0.3, delay: 1, options: .CurveEaseIn, animations: { () -> Void in
+                        self.savePopup.alpha = 0
+                        self.dimLayer.alpha = 0
+                        self.navigationController?.popViewControllerAnimated(true)
+                        }, completion: { (complete) -> Void in
+                    })
+                    
             })
         })
         
@@ -750,7 +757,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         // Save image to disk, grab a url to it.
         let side = frontShowing ? "front" : "back"
         let tmpImgPath = documentsDir!.stringByAppendingPathComponent("\(collectionName)/tmp/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
-                let imgPath = documentsDir!.stringByAppendingPathComponent("\(collectionName)/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
+        let imgPath = documentsDir!.stringByAppendingPathComponent("\(collectionName)/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
         
         UIImagePNGRepresentation(newImage).writeToFile(tmpImgPath, atomically: true)
         

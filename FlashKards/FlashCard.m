@@ -13,10 +13,11 @@
 @implementation FlashCard
 
 @dynamic back;
-@dynamic front;
 @dynamic cardID;
+@dynamic front;
 @dynamic last_updated;
 @dynamic time_created;
+@dynamic memorized;
 @dynamic parentCollection;
 
 @end

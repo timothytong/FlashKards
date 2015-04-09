@@ -17,8 +17,8 @@
 @dynamic lastReviewed;
 @dynamic name;
 @dynamic numCards;
-@dynamic progress;
 @dynamic time_created;
 @dynamic flashcards;
+@dynamic numCardsMemorized;
 
 @end

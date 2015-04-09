@@ -14,10 +14,11 @@
 @interface FlashCard : NSManagedObject
 
 @property (nonatomic, retain) id back;
-@property (nonatomic, retain) id front;
 @property (nonatomic, retain) NSNumber * cardID;
+@property (nonatomic, retain) id front;
 @property (nonatomic, retain) NSNumber * last_updated;
 @property (nonatomic, retain) NSNumber * time_created;
+@property (nonatomic, retain) NSNumber * memorized;
 @property (nonatomic, retain) FlashCardCollection *parentCollection;
 
 @end

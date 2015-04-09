@@ -18,8 +18,8 @@
 @property (nonatomic, retain) NSNumber * lastReviewed;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * numCards;
-@property (nonatomic, retain) NSNumber * progress;
 @property (nonatomic, retain) NSNumber * time_created;
+@property (nonatomic, retain) NSNumber * numCardsMemorized;
 @property (nonatomic, retain) NSSet *flashcards;
 @end
 
