@@ -58,15 +58,15 @@ class FlashCardsOverviewCell: UITableViewCell {
             */
             self.sepLineWidthConstraint.constant = 0
             self.layoutIfNeeded()
-            let collectionName = collection.collectionName
-            let progress = collection.progress
+            let collectionName = collection.name
             let lastReviewedDate = collection.lastReviewed
-            let numCardsInCollection = collection.numCards
-            
+            let numCardsInCollection = collection.numCards.integerValue
+            let numCardsMemorized = collection.numCardsMemorized.integerValue
+            let progress = (numCardsMemorized == 0 && numCardsInCollection == 0) ? 100 : numCardsMemorized / numCardsInCollection
             self.kardLabel.text = (numCardsInCollection == 1) ? "KARD" : "KARDS"
             self.collectionLabel.text = collectionName
             self.collectionProgressLabel.text = "\(progress)%"
-            self.lastReviewedLabel.text = lastReviewedDate
+            self.lastReviewedLabel.text = "\(lastReviewedDate)"
             self.numCardsLabel.text = "\(numCardsInCollection)"
             var progressColor:UIColor
             switch progress{
