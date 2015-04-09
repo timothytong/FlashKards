@@ -66,7 +66,14 @@ class FlashCardsOverviewCell: UITableViewCell {
             self.kardLabel.text = (numCardsInCollection == 1) ? "KARD" : "KARDS"
             self.collectionLabel.text = collectionName
             self.collectionProgressLabel.text = "\(progress)%"
-            self.lastReviewedLabel.text = "\(lastReviewedDate)"
+            var lastReviewedText = ""
+            if lastReviewedDate.doubleValue == 0{
+                lastReviewedText = "Never"
+            }
+            else{
+                lastReviewedText = (("\(NSDate(timeIntervalSinceReferenceDate: lastReviewedDate.doubleValue))") as NSString).substringWithRange(NSMakeRange(2, 9))
+            }
+            self.lastReviewedLabel.text = "'"+lastReviewedText
             self.numCardsLabel.text = "\(numCardsInCollection)"
             var progressColor:UIColor
             switch progress{
