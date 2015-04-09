@@ -162,10 +162,6 @@
 				3320C5CB1ABF807B00A90CD4 /* Images.xcassets */,
 				3320C5CD1ABF807B00A90CD4 /* LaunchScreen.xib */,
 				3320C5C31ABF807B00A90CD4 /* FlashKards.xcdatamodeld */,
-				33EE187E1AD5A5A2006373AA /* FlashCard.h */,
-				33EE187F1AD5A5A2006373AA /* FlashCard.m */,
-				33EE187B1AD5A5A1006373AA /* FlashCardCollection.h */,
-				33EE187C1AD5A5A1006373AA /* FlashCardCollection.m */,
 				3320C5BF1ABF807B00A90CD4 /* Supporting Files */,
 				33EE18741AD59FC8006373AA /* FlashKards-Bridging-Header.h */,
 			);
@@ -252,6 +248,10 @@
 		33402CF61AC0B7DA00265F70 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				33EE187E1AD5A5A2006373AA /* FlashCard.h */,
+				33EE187F1AD5A5A2006373AA /* FlashCard.m */,
+				33EE187B1AD5A5A1006373AA /* FlashCardCollection.h */,
+				33EE187C1AD5A5A1006373AA /* FlashCardCollection.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";

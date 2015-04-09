@@ -49,6 +49,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: CollectionSummaryCell = tableView.dequeueReusableCellWithIdentifier("summaryCell") as CollectionSummaryCell
         let numCards = flashcardCollection.numCards
+        let kardOrKards = (numCards == 1) ? "KARD" : "KARDS"
         let relTimeDiff = calculateRelativeDate(flashcardCollection.lastReviewed.doubleValue)
         switch indexPath.row{
         case 0:
@@ -68,30 +69,34 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func calculateRelativeDate(timeStamp: Double!)->[String]{
-        let currentTime: Double = NSTimeIntervalSince1970
+        println("TIMESTAMP: \(timeStamp)")
+        if timeStamp == 0{
+            println("NEVER")
+            return ["NE", "VER."]
+        }
+        
+        let currentTime: Double = NSDate.timeIntervalSinceReferenceDate()
         let diff = currentTime - timeStamp
         var returnArray = [String]()
         var time: String, unit: String
         switch diff{
-        case 0...300:
-            time = "JUST"
-            unit = "NOW."
-        case 301...3600:
-            time = "\(diff/60)"
+        case 0...3600:
+            time = "\(Int(diff/60))"
             unit = (time == "1") ? "MIN" : "MINS"
         case 3601...86400:
-            time = "\(diff/3600)"
+            time = "\(Int(diff/3600))"
             unit = (time == "1") ? "HOUR" : "HOURS"
         case 86401...2678400:
-            time = "\(diff/86400)"
+            time = "\(Int(diff/86400))"
             unit = (time == "1") ? "DAY" : "DAYS"
         case 2678401...31622400:
-            time = "\(diff/2678400)"
+            time = "\(Int(diff/2678400))"
             unit = (time == "1") ? "MONTH" : "MONTHS"
         default:
             time = ">1"
             unit = "YEAR"
         }
+        println("TIME: \(time)")
         returnArray.append(time)
         returnArray.append(unit)
         return returnArray
