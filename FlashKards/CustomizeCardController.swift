@@ -16,6 +16,8 @@ enum EditMode{
 class CustomizeCardController: UIViewController, PopupDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
     // MARK: Variables
     // IBOutlets
+    @IBOutlet private weak var confirmAddTextBtn: UIButton!
+    @IBOutlet private weak var cancelAddTxtBtn: UIButton!
     @IBOutlet private weak var spinner: UIActivityIndicatorView!
     @IBOutlet private weak var galleryCollectionView: UICollectionView!
     @IBOutlet private weak var cancelImportBtn: UIButton!
@@ -85,6 +87,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     private var fileManager: FileManager!
     
+    private var textViewBeingAdded: UITextView?
     // MARK: Functions
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,8 +107,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         // Buttons
         exitEditBtn.alpha = 0
         confirmAddElementBtn.hidden = true
-        addImgBtn.tag = 0
-        addTextBtn.tag = 1
         
         // -- Glowing effects
         addImgBtn.addTarget(self, action: "touchDownGlow:", forControlEvents: .TouchDown)
@@ -113,37 +114,52 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         addImgBtn.addTarget(self, action: "removeTouchDownGlow:", forControlEvents: .TouchUpOutside)
         addTextBtn.addTarget(self, action: "removeTouchDownGlow:", forControlEvents: .TouchUpOutside)
         
-        // -- Tags
-        addImgBtn.tag = 0
-        addTextBtn.tag = 1
-        flipBtn.tag = 2
-        deleteBtn.tag = 3
-        exitEditBtn.tag = 4
-        saveBtn.tag = 5
-        confirmAddElementBtn.tag = 6
-        dismissImportImgViewBtn.tag = 7
-        cancelImportBtn.tag = 7
-        importImgBtn.tag = 8
-        
         // Glow
-        var color = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1)
-        addImgBtn.layer.shadowColor = color.CGColor
+        var blueGlowColor = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1)
+        var greenGlowColor = UIColor(red: 4/255, green: 247/255, blue: 21/255, alpha: 1)
+        var redGlowColor = UIColor(red: 247/255, green: 5/255, blue: 2/255, alpha: 1)
+        
+        addImgBtn.layer.shadowColor = blueGlowColor.CGColor
         addImgBtn.layer.shadowRadius = 0
         addImgBtn.layer.shadowOpacity = 0.9
         addImgBtn.layer.shadowOffset = CGSizeZero
         addImgBtn.layer.masksToBounds = false
         
-        addTextBtn.layer.shadowColor = color.CGColor
+        addTextBtn.layer.shadowColor = blueGlowColor.CGColor
         addTextBtn.layer.shadowRadius = 0
         addTextBtn.layer.shadowOpacity = 0.9
         addTextBtn.layer.shadowOffset = CGSizeZero
         addTextBtn.layer.masksToBounds = false
         
-        imgOptionsView.layer.shadowColor = color.CGColor
+        imgOptionsView.layer.shadowColor = blueGlowColor.CGColor
         imgOptionsView.layer.shadowRadius = 8
         imgOptionsView.layer.shadowOpacity = 0.9
         imgOptionsView.layer.shadowOffset = CGSizeMake(0, 3)
         imgOptionsView.layer.masksToBounds = false
+        
+        cancelAddTxtBtn.layer.shadowColor = blueGlowColor.CGColor
+        cancelAddTxtBtn.layer.shadowRadius = 4
+        cancelAddTxtBtn.layer.shadowOpacity = 0.9
+        cancelAddTxtBtn.layer.shadowOffset = CGSizeZero
+        cancelAddTxtBtn.layer.masksToBounds = false
+        
+        confirmAddTextBtn.layer.shadowColor = blueGlowColor.CGColor
+        confirmAddTextBtn.layer.shadowRadius = 4
+        confirmAddTextBtn.layer.shadowOpacity = 0.9
+        confirmAddTextBtn.layer.shadowOffset = CGSizeZero
+        confirmAddTextBtn.layer.masksToBounds = false
+        
+        exitEditBtn.layer.shadowColor = redGlowColor.CGColor
+        exitEditBtn.layer.shadowRadius = 0
+        exitEditBtn.layer.shadowOpacity = 0.9
+        exitEditBtn.layer.shadowOffset = CGSizeZero
+        exitEditBtn.layer.masksToBounds = false
+        
+        confirmAddElementBtn.layer.shadowColor = greenGlowColor.CGColor
+        confirmAddElementBtn.layer.shadowRadius = 0
+        confirmAddElementBtn.layer.shadowOpacity = 0.9
+        confirmAddElementBtn.layer.shadowOffset = CGSizeZero
+        confirmAddElementBtn.layer.masksToBounds = false
         
         // Back confirm popup
         backConfirmPopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
@@ -191,7 +207,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         completeImgImportBtn.layer.shadowRadius = 5
         completeImgImportBtn.layer.shadowOffset = CGSizeMake(0, 3)
         completeImgImportBtn.layer.shadowOpacity = 1
-        completeImgImportBtn.tag = 10
         fullImageView.addSubview(completeImgImportBtn)
         
         // Dictionaries
@@ -199,6 +214,21 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         backElementsDict = NSMutableDictionary()
         frontUIDict = Dictionary<String, UIView>()
         backUIDict = Dictionary<String, UIView>()
+        
+        
+        // -- Tags
+        addImgBtn.tag = 0
+        addTextBtn.tag = 1
+        flipBtn.tag = 2
+        deleteBtn.tag = 3
+        exitEditBtn.tag = 4
+        saveBtn.tag = 5
+        confirmAddElementBtn.tag = 6
+        dismissImportImgViewBtn.tag = 7
+        cancelImportBtn.tag = 7
+        importImgBtn.tag = 8
+        completeImgImportBtn.tag = 10
+        cancelAddTxtBtn.tag = 11
         
         // -- Actual presses
         addImgBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
@@ -212,6 +242,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         importImgBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         cancelImportBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         completeImgImportBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        cancelAddTxtBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         
         // Misc
         let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
@@ -335,6 +366,9 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     }
     
     func flip(){
+        if isInEditMode{
+            cancelAddTextAction()
+        }
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             if !self.isAnimating{
                 self.isAnimating = true
@@ -440,6 +474,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     // MARK: Buttons processing
     func buttonPressed(sender:UIButton!){
+        println("button pressed: sender tag: \(sender.tag)")
         switch(sender.tag){
         case 0,1:
             addElementBtnsTapped(sender)
@@ -461,11 +496,12 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             cancelImportImageAction()
         case 10:
             completeImgImportProcessWithImage(fullUIImageView.image!)
+        case 11:
+            cancelAddTextAction()
         default:
             break
         }
     }
-    
     
     func save(){
         println("front count: \(frontElementsDict.count) back count: \(backElementsDict.count)")
@@ -501,7 +537,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             UIView.animateWithDuration(0.4, delay: 0, options: .CurveEaseIn, animations: { () -> Void in
                 self.savePopup.alpha = 1
                 }, completion: { (complete) -> Void in
-                    // TODO: create a new entity
                     let dictionary: NSDictionary = NSDictionary(dictionary: ["front": self.frontElementsDict, "back": self.backElementsDict])
                     let collectionManager = CollectionsManager()
                     collectionManager.addNewFlashcardWithData(dictionary, toCollection: self.collectionName)
@@ -522,6 +557,9 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         if let eMode = editMode{
             if eMode == EditMode.AddImgMode{
                 showImgOptionsView()
+            }
+            else{
+                createTextAction()
             }
         }
     }
@@ -589,8 +627,95 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         }
     }
     
+    func createTextAction(){
+        // Show the image with an UIImageView
+        var textField = UITextView(frame: CGRect(x: rectSel.frame.origin.x, y: rectSel.frame.origin.y, width: rectSel.frame.width, height: rectSel.frame.height))
+        textField.tag = newElementTag
+        textField.layer.borderWidth = 1
+        textField.editable = true
+        textField.alpha = 0
+        textField.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 1)
+        textField.font = UIFont(name: "AppleSDGothicNeo-Light", size: 25)
+        view.addSubview(textField)
+        textField.becomeFirstResponder()
+        self.textViewBeingAdded = textField
+        // TODO: Add logic to move elements up when the keyboard is up so the user can see the center of the textfield
+        // TODO: Add pan gesture and long press gesture (option to delete)...
+        
+        // Store in a dictionary then show it
+        var dictionary = NSDictionary(dictionary:[
+            "id": newElementTag,
+            "frame": NSValue(CGRect: textField.frame),
+            "content": "",
+            "type": "txt"
+            ])
+        
+        if frontShowing{
+            frontView.addSubview(textField)
+            frontElementsDict.setObject(dictionary, forKey: "\(newElementTag)")
+            frontUIDict["\(newElementTag)"] = textField
+            numElementsFront++
+        }
+        else{
+            backView.addSubview(textField)
+            backElementsDict.setObject(dictionary, forKey: "\(newElementTag)")
+            backUIDict["\(newElementTag)"] = textField
+            numElementsBack++
+        }
+        newElementTag++
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            // Transition animation
+            UIView.animateWithDuration(0.4, delay: 0, options: .CurveEaseOut, animations: { () -> Void in
+                self.cancelAddTxtBtn.alpha = 1
+                self.confirmAddTextBtn.alpha = 1
+                textField.alpha = 1
+                }, completion: { (complete) -> Void in
+                    self.confirmAddElementBtn.alpha = 0
+                    self.exitEditBtn.alpha = 0
+            })
+            // TODO: In the future: don't hide rectSel and let user adjust size of textfield
+            if self.rectSel != nil && self.rectSel.isDescendantOfView(self.view){
+                UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+                    self.rectSel.alpha = 0
+                    }) { (complete) -> Void in
+                        self.rectSel.removeFromSuperview()
+                        self.rectSel = nil
+                }
+            }
+            UIView.transitionWithView(textField, duration: 0.7, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                textField.layer.borderColor = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1).CGColor
+                }, completion: { (complete) -> Void in
+                    UIView.transitionWithView(textField, duration: 0.7, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                        textField.layer.borderColor = UIColor.blackColor().CGColor
+                        }, completion: { (complete) -> Void in
+                    })
+            })
+            
+        })
+        
+        
+    }
+    
     func cancelImportImageAction(){
         collapseImgOptionsView()
+    }
+    
+    func cancelAddTextAction(){
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            if let textView = self.textViewBeingAdded{
+                UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseIn, animations: { () -> Void in
+                    textView.alpha = 0
+                    self.cancelAddTxtBtn.alpha = 0
+                    self.confirmAddTextBtn.alpha = 0
+                    self.confirmAddElementBtn.alpha = 1
+                    }, completion: { (complete) -> Void in
+                        textView.removeFromSuperview()
+                        self.textViewBeingAdded = nil
+                        self.exitEditMode()
+                })
+            }
+        })
     }
     
     func expandImgOptionsView(){
@@ -769,7 +894,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         imageView.layer.borderWidth = 1
         
         
-        // TODO: Add pan gesture and option to delete...
+        // TODO: Add pan gesture and long press gesture (option to delete)...
         
         // Store in a dictionary then show it
         var dictionary = NSDictionary(dictionary:[

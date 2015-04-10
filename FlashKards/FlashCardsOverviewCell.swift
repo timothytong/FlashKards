@@ -71,9 +71,9 @@ class FlashCardsOverviewCell: UITableViewCell {
                 lastReviewedText = "Never"
             }
             else{
-                lastReviewedText = (("\(NSDate(timeIntervalSinceReferenceDate: lastReviewedDate.doubleValue))") as NSString).substringWithRange(NSMakeRange(2, 9))
+                lastReviewedText = "'"+(("\(NSDate(timeIntervalSinceReferenceDate: lastReviewedDate.doubleValue))") as NSString).substringWithRange(NSMakeRange(2, 9))
             }
-            self.lastReviewedLabel.text = "'"+lastReviewedText
+            self.lastReviewedLabel.text = lastReviewedText
             self.numCardsLabel.text = "\(numCardsInCollection)"
             var progressColor:UIColor
             switch progress{
