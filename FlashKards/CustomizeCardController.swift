@@ -43,12 +43,11 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     @IBOutlet private weak var deleteBtn: UIButton!
     
     // Additional UI's
-    private var backConfirmPopup: Popup!
+    private var activePopup: Popup?
     private var dimLayer: UIView!
     private var rectSel: RectSelView!
     private var editMode: EditMode?
     private var activeButton: UIButton?
-    private var savePopup: Popup!
     private var fullImageView: UIView!
     private var fullUIImageView: UIImageView!
     private var completeImgImportBtn: UIButton!
@@ -161,16 +160,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         confirmAddElementBtn.layer.shadowOffset = CGSizeZero
         confirmAddElementBtn.layer.masksToBounds = false
         
-        // Back confirm popup
-        backConfirmPopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
-        backConfirmPopup.message = "Are you sure you want to quit without saving?"
-        backConfirmPopup.confirmButtonText = "YES"
-        backConfirmPopup.delegate = self
-        backConfirmPopup.instructionLabelFontSize = 25
-        
-        // Save popup
-        savePopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
-        
         // ImgOptionsPopup (prompts user to choose either import / enter URL)
         imgOptionsViewBottomConstraint.constant = -imgOptionsViewHeightConstraint.constant
         imgOptionsHeightInitialHeight = imgOptionsViewHeightConstraint.constant
@@ -229,6 +218,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         importImgBtn.tag = 8
         completeImgImportBtn.tag = 10
         cancelAddTxtBtn.tag = 11
+        confirmAddTextBtn.tag = 12
         
         // -- Actual presses
         addImgBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
@@ -243,6 +233,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         cancelImportBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         completeImgImportBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         cancelAddTxtBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        confirmAddTextBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         
         // Misc
         let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
@@ -400,8 +391,14 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     // Ask user if they really want to quit without saving.
     func back() {
+        var backConfirmPopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
+        backConfirmPopup.message = "Are you sure you want to quit without saving?"
+        backConfirmPopup.confirmButtonText = "YES"
+        backConfirmPopup.delegate = self
+        backConfirmPopup.instructionLabelFontSize = 25
         navigationController?.view.addSubview(backConfirmPopup)
         showDimLayer()
+        activePopup = backConfirmPopup
         backConfirmPopup.show()
     }
     
@@ -411,10 +408,12 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
                 self.dimLayer.alpha = 0
                 }, completion: { (complete) -> Void in
-                    popup.removeFromSuperview()
+                    if self.activePopup != nil{
+                        self.activePopup = nil
+                    }
             })
         })
-        navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
     func popupCancelBtnDidTapped(popup: Popup) {
@@ -498,6 +497,8 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             completeImgImportProcessWithImage(fullUIImageView.image!)
         case 11:
             cancelAddTextAction()
+        case 12:
+            completeAddTextAction()
         default:
             break
         }
@@ -505,7 +506,9 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     func save(){
         println("front count: \(frontElementsDict.count) back count: \(backElementsDict.count)")
+        var savePopup = Popup(frame: CGRect(x: view.frame.width/2 - 60, y: view.frame.height/2 - 30, width: 120, height: 60))
         if numElementsBack == 0 || numElementsFront == 0 {
+            savePopup.frame = CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3)
             savePopup.numOptions = 1
             savePopup.cancelBtnText = "OK"
             var message = ""
@@ -525,27 +528,27 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             savePopup.show()
             return
         }
-        
-        savePopup.frame = CGRect(x: view.frame.width / 2 - 60, y: view.frame.height / 2 - 30, width: 120, height: 60)
         savePopup.numOptions = 0
         savePopup.alpha = 0
         savePopup.message = "Saving"
         savePopup.transform = CGAffineTransformIdentity
         navigationController?.view.addSubview(savePopup)
         showDimLayer()
+        self.fileManager.deleteDirectory("\(self.collectionName)/tmp", andAllItsFiles: false, withCompletionHandler: { () -> () in})
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.4, delay: 0, options: .CurveEaseIn, animations: { () -> Void in
-                self.savePopup.alpha = 1
+                savePopup.alpha = 1
                 }, completion: { (complete) -> Void in
                     let dictionary: NSDictionary = NSDictionary(dictionary: ["front": self.frontElementsDict, "back": self.backElementsDict])
                     let collectionManager = CollectionsManager()
                     collectionManager.addNewFlashcardWithData(dictionary, toCollection: self.collectionName)
-                    self.savePopup.message = "Saved."
+                    savePopup.message = "Saved."
                     UIView.animateWithDuration(0.3, delay: 1, options: .CurveEaseIn, animations: { () -> Void in
-                        self.savePopup.alpha = 0
+                        savePopup.alpha = 0
                         self.dimLayer.alpha = 0
                         self.navigationController?.popViewControllerAnimated(true)
                         }, completion: { (complete) -> Void in
+                            savePopup.removeFromSuperview()
                     })
                     
             })
@@ -636,33 +639,19 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         textField.alpha = 0
         textField.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 1)
         textField.font = UIFont(name: "AppleSDGothicNeo-Light", size: 25)
+        textField.scrollEnabled = false
+        textField.textAlignment = .Center
         view.addSubview(textField)
         textField.becomeFirstResponder()
         self.textViewBeingAdded = textField
         // TODO: Add logic to move elements up when the keyboard is up so the user can see the center of the textfield
         // TODO: Add pan gesture and long press gesture (option to delete)...
-        
-        // Store in a dictionary then show it
-        var dictionary = NSDictionary(dictionary:[
-            "id": newElementTag,
-            "frame": NSValue(CGRect: textField.frame),
-            "content": "",
-            "type": "txt"
-            ])
-        
         if frontShowing{
             frontView.addSubview(textField)
-            frontElementsDict.setObject(dictionary, forKey: "\(newElementTag)")
-            frontUIDict["\(newElementTag)"] = textField
-            numElementsFront++
         }
         else{
             backView.addSubview(textField)
-            backElementsDict.setObject(dictionary, forKey: "\(newElementTag)")
-            backUIDict["\(newElementTag)"] = textField
-            numElementsBack++
         }
-        newElementTag++
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             // Transition animation
@@ -693,6 +682,58 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             })
             
         })
+        
+        
+    }
+    
+    func completeAddTextAction(){
+        // Store in a dictionary then show it
+        if let textField = textViewBeingAdded{
+            UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseIn, animations: { () -> Void in
+                self.cancelAddTxtBtn.alpha = 0
+                self.confirmAddTextBtn.alpha = 0
+                self.confirmAddElementBtn.alpha = 1
+                }, completion: { (complete) -> Void in
+            })
+            if count(textField.text) > 0{
+                textField.editable = false
+                textField.tag = newElementTag
+                var dictionary = NSDictionary(dictionary:[
+                    "id": newElementTag,
+                    "frame": NSValue(CGRect: textField.frame),
+                    "content": textField.text,
+                    "type": "txt"
+                    ])
+                
+                if frontShowing{
+                    frontElementsDict.setObject(dictionary, forKey: "\(newElementTag)")
+                    frontUIDict["\(newElementTag)"] = textField
+                    numElementsFront++
+                }
+                else{
+                    backElementsDict.setObject(dictionary, forKey: "\(newElementTag)")
+                    backUIDict["\(newElementTag)"] = textField
+                    numElementsBack++
+                }
+                newElementTag++
+                UIView.transitionWithView(textField, duration: 0.7, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                    textField.layer.borderWidth = 0
+                    }, completion: { (complete) -> Void in
+                        self.textViewBeingAdded = nil
+                        self.exitEditMode()
+                })
+            }
+            else{
+                var warningPopup = Popup(frame: CGRect(x: view.frame.width / 2 - 80, y: view.frame.height / 2 - 70, width: 160, height: 140))
+                warningPopup.numOptions = 1
+                warningPopup.message = "Please enter some text."
+                warningPopup.cancelBtnText = "OK"
+                activePopup = warningPopup
+                self.navigationController?.view.addSubview(warningPopup)
+                warningPopup.show()
+            }
+            
+        }
         
         
     }
@@ -944,7 +985,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     // MARK: UICollectionView
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var cell:CollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("imgCollectionCell", forIndexPath: indexPath) as CollectionViewCell
+        var cell:CollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("imgCollectionCell", forIndexPath: indexPath) as! CollectionViewCell
         cell.putImage(self.thumbnails[indexPath.row] as UIImage!, withAnimation: !animatedBools[indexPath.row])
         if !animatedBools[indexPath.row]{ animatedBools[indexPath.row] = true }
         return cell
@@ -962,6 +1003,11 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         return 1
     }
     
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        if let textView = textViewBeingAdded{
+            textView.resignFirstResponder()
+        }
+    }
     
     /*
     // MARK: - Navigation

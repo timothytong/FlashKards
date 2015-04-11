@@ -98,11 +98,11 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
     
     private func checkInputValidity() -> Bool{
         let textFieldText = inputField.text
-        if textFieldText.utf16Count == 0{
+        if count(textFieldText) == 0{
             showTextFieldWarning(1)
             return false
         }
-        else if textFieldText.utf16Count > 20{
+        else if count(textFieldText) > 20{
             inputField.text = (textFieldText as NSString).substringToIndex(20)
             errMsgLabel.text = "Maximum 20 characters."
             showTextFieldWarning(0)
@@ -167,14 +167,14 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         let charset = NSCharacterSet(charactersInString: bannedCharset).invertedSet
         let components = string.componentsSeparatedByCharactersInSet(charset)
         let filteredText = join("", components)
-//        println("STRING: \(string), FILTERED: \(filteredText)")
+        //        println("STRING: \(string), FILTERED: \(filteredText)")
         var allowedInput = (string == filteredText) ? false : true
-        if !allowedInput && string.utf16Count > 0{
+        if !allowedInput && count(string) > 0{
             showTextFieldWarning(0)
-            errMsgLabel.text = "Invalid character \"\((string as NSString).substringFromIndex(string.utf16Count - 1))\""
+            errMsgLabel.text = "Invalid character \"\((string as NSString).substringFromIndex(count(string) - 1))\""
         }
         else{
-            if string.utf16Count == 0{ allowedInput = true } // This is a backspace
+            if count(string) == 0{ allowedInput = true } // This is a backspace
             errMsgLabel.text = ""
         }
         return allowedInput
@@ -221,9 +221,10 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         NSNotificationCenter.defaultCenter().removeObserver(UITextFieldTextDidChangeNotification)
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         dismissKeyboard()
     }
+    
     
     private func dismissKeyboard(){
         if inputField.isFirstResponder(){ inputField.resignFirstResponder() }
