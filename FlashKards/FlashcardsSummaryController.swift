@@ -123,7 +123,11 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
             let fileManager = FileManager()
             fileManager.createDirectoryWithName("\(fileManager.processString(flashcardCollection.name))/tmp")
         }
-        
+        else if segue.identifier == "ReviewCollection"{
+            let reviewVC: ReviewFlashcardController = segue.destinationViewController as! ReviewFlashcardController
+            navigationController?.modalPresentationStyle = UIModalPresentationStyle.CurrentContext
+            presentViewController(reviewVC, animated: true, completion: nil)
+        }
     }
     
     

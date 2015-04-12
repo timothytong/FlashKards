@@ -26,6 +26,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             navbar.topItem!.title = "FLASHKARDS"
             navbar.barStyle = UIBarStyle.BlackTranslucent
             navbar.barTintColor = UIColor(red: 43/255, green: 43/255, blue: 43/255, alpha: 1)
+            Constants.navBarHeight = navbar.frame.height
             let navbarAttrs = [
                 NSForegroundColorAttributeName:UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1),
                 NSFontAttributeName:UIFont(name: "AvenirNextCondensed-Regular", size: 25)!
