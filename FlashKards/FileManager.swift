@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Foundation
 class FileManager: NSObject {
     var error: NSError?
     var paths: [AnyObject]!
@@ -15,7 +15,7 @@ class FileManager: NSObject {
     let fileManager = NSFileManager.defaultManager()
     override init() {
         paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        documentsDirectory = paths[0] as String
+        documentsDirectory = paths[0] as! String
     }
     
     func createDirectoryWithName(name: String!){
@@ -45,24 +45,64 @@ class FileManager: NSObject {
         completionHandler?()
     }
     
-    func deleteDirectory(directoryName: String!, withCompletionHandler completionHandler:()->()){
+    func deleteDirectory(directoryName: String!, andAllItsFiles deleteAllFiles: Bool, withCompletionHandler completionHandler:()->()){
         var dir = directoryName
-        deleteFilesInDirectory(dir, withCompletionHandler: { () -> () in
-            var dataPath = self.documentsDirectory.stringByAppendingPathComponent("\(dir)")
-            if !self.fileManager.removeItemAtPath(dataPath, error: &self.error) {
-                println("Failed to delete directory: \(self.error!.localizedDescription)")
-            }
-            else{
-                println("Deleted directory \(dataPath)")
-            }
-            completionHandler()
-        })
+        if deleteAllFiles{
+            deleteFilesInDirectory(dir, withCompletionHandler: { () -> () in
+                var dataPath = self.documentsDirectory.stringByAppendingPathComponent("\(dir)")
+                if !self.fileManager.removeItemAtPath(dataPath, error: &self.error) {
+                    println("Failed to delete directory: \(self.error!.localizedDescription)")
+                }
+                else{
+                    println("Deleted directory \(dataPath)")
+                }
+                completionHandler()
+            })
+        } else{
+            var originalDataPath = self.documentsDirectory.stringByAppendingPathComponent("\(dir)")
+            var newDataPath = originalDataPath.stringByDeletingLastPathComponent
+            println("COPYING TO DATAPATH: "+newDataPath)
+            copyFilesInDirectory(originalDataPath, toDirectory: newDataPath, withCompletionHandler: { () -> () in
+                if !self.fileManager.removeItemAtPath(originalDataPath, error: &self.error) {
+                    println("Failed to delete directory: \(self.error!.localizedDescription)")
+                }
+                else{
+                    println("Deleted directory \(originalDataPath)")
+                }
+                completionHandler()
+                
+            })
+        }
+        
     }
     
     func processString(string: String!)->String{
         let result = string.stringByReplacingOccurrencesOfString(" ", withString: "%20", options: .LiteralSearch, range: nil).stringByReplacingOccurrencesOfString("/", withString: "%2F", options: .LiteralSearch, range: nil)
         println("returning \(result)")
         return result
+    }
+    
+    private func copyFilesInDirectory(fromDir: String, toDirectory toDir: String, withCompletionHandler handler: ()->()){
+        println("from: \(fromDir)\nto: \(toDir)")
+        var error: NSError?
+        
+        var contents = fileManager.contentsOfDirectoryAtPath(fromDir, error: &error)
+        if let dirContents = contents{
+            let enumerator = (dirContents as NSArray).objectEnumerator()
+
+            while let file = enumerator.nextObject() as? String{
+                let filePath = fromDir.stringByAppendingPathComponent(file)
+                let destFilePath = toDir.stringByAppendingPathComponent(file)
+                println("copying \(filePath)")
+                if(fileManager.copyItemAtURL(NSURL(fileURLWithPath: filePath)!, toURL: NSURL(fileURLWithPath: destFilePath)!, error: &error)){
+                    println("COPIED")
+                }
+                else{
+                    println("COPY ERROR: \(error!.localizedDescription)")
+                }
+            }
+            handler()
+        }
     }
 }
 

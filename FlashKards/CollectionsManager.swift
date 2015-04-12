@@ -14,12 +14,12 @@ class CollectionsManager: NSObject {
     
     override init(){
         super.init()
-        appDelegate = UIApplication.sharedApplication().delegate as AppDelegate
+        appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     }
     
     func addCollectionWithName(name: String!, andCompletionHandler completionHandler:(success:Bool, newCollection: FlashCardCollection)->()){
         var managedContext = appDelegate.managedObjectContext!
-        var newCollection = NSEntityDescription.insertNewObjectForEntityForName("Collection", inManagedObjectContext: managedContext) as FlashCardCollection
+        var newCollection = NSEntityDescription.insertNewObjectForEntityForName("Collection", inManagedObjectContext: managedContext) as! FlashCardCollection
         let largestID = 0 //findLargestID()
         newCollection.collectionID = largestID + 1
         newCollection.name = name
@@ -46,7 +46,7 @@ class CollectionsManager: NSObject {
         var fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error)
         if let results = fetchResults{
             if results.count > 0{
-                let largest = (results[0] as NSManagedObject).valueForKey("id") as Int
+                let largest = (results[0] as! NSManagedObject).valueForKey("id") as! Int
                 // println("Found largest id \(largest)")
                 return largest
             }
@@ -94,12 +94,12 @@ class CollectionsManager: NSObject {
         let fetchRequest = NSFetchRequest(entityName: "Collection")
         var error:NSError?
         var managedContext = appDelegate.managedObjectContext!
-        var fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as [NSManagedObject]?
+        var fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as! [NSManagedObject]?
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
         if let results = fetchResults{
             var collectionArray = Array<FlashCardCollection>()
             fetchResults = fetchResults!.reverse()
-            return fetchResults as [FlashCardCollection]
+            return fetchResults as! [FlashCardCollection]
         }
         else {
             // println("Could not fetch \(error), \(error!.userInfo)")
@@ -127,12 +127,12 @@ class CollectionsManager: NSObject {
     }
     
     func addNewFlashcardWithData(newCardDict: NSDictionary!, toCollection collectionName: String!){
-        let frontDict = newCardDict["front"]! as NSDictionary
-        let backDict = newCardDict["back"]! as NSDictionary
+        let frontDict = newCardDict["front"]! as! NSDictionary
+        let backDict = newCardDict["back"]! as! NSDictionary
         if let targetCollection = searchExistingCollectionsWithName(collectionName) as? FlashCardCollection{
             var managedContext = appDelegate.managedObjectContext!
             var flashcardEntity = NSEntityDescription.entityForName("FlashCard", inManagedObjectContext: managedContext)
-            var newCard = NSManagedObject(entity: flashcardEntity!, insertIntoManagedObjectContext: targetCollection.managedObjectContext) as FlashCard
+            var newCard = NSManagedObject(entity: flashcardEntity!, insertIntoManagedObjectContext: targetCollection.managedObjectContext) as! FlashCard
             
             var frontData = NSKeyedArchiver.archivedDataWithRootObject(frontDict)
             newCard.front = frontDict

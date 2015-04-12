@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSNumber * numCards;
 @property (nonatomic, retain) NSNumber * time_created;
 @property (nonatomic, retain) NSNumber * numCardsMemorized;
+@property (nonatomic, retain) NSNumber * largestCardID;
 @property (nonatomic, retain) NSSet *flashcards;
 @end
 

@@ -20,5 +20,6 @@
 @dynamic time_created;
 @dynamic flashcards;
 @dynamic numCardsMemorized;
+@dynamic largestCardID;
 
 @end

@@ -88,7 +88,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     // MARK: UITableView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:FlashCardsOverviewCell = tableView.dequeueReusableCellWithIdentifier("homePageCell") as FlashCardsOverviewCell
+        var cell:FlashCardsOverviewCell = tableView.dequeueReusableCellWithIdentifier("homePageCell") as! FlashCardsOverviewCell
         let collection = flashcardCollections[indexPath.row]
         cell.populateCellWithCollection(collection)
         return cell
@@ -125,8 +125,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     // MARK: Segue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showSummary"{
-            let indexPath: NSIndexPath = sender! as NSIndexPath
-            let flashcardsSummaryVC: FlashcardsSummaryController = segue.destinationViewController as FlashcardsSummaryController
+            let indexPath: NSIndexPath = sender! as! NSIndexPath
+            let flashcardsSummaryVC: FlashcardsSummaryController = segue.destinationViewController as! FlashcardsSummaryController
             let collection = flashcardCollections[indexPath.row]
             flashcardsSummaryVC.configureWithCollection(collection)
         }
@@ -205,7 +205,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             collectionsManager.deleteCollectionWithName(collectionToBeDeleted.name, completionHandler: { (success) -> Void in
                 if success{
                     println("deletion success")
-                    self.fileManager.deleteDirectory(collectionToBeDeleted.name, withCompletionHandler: { () -> () in
+                    self.fileManager.deleteDirectory(collectionToBeDeleted.name, andAllItsFiles: true, withCompletionHandler: { () -> () in
                         println("Running completion handler...")
                         self.flashcardCollections.removeAtIndex(rowOfInterest.row)
                         self.tableView.deleteRowsAtIndexPaths([rowOfInterest], withRowAnimation: UITableViewRowAnimation.Automatic)

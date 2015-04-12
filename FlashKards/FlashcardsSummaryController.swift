@@ -51,7 +51,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         return 64
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: CollectionSummaryCell = tableView.dequeueReusableCellWithIdentifier("summaryCell") as CollectionSummaryCell
+        var cell: CollectionSummaryCell = tableView.dequeueReusableCellWithIdentifier("summaryCell") as! CollectionSummaryCell
         let numCards = flashcardCollection.numCards
         let kardOrKards = (numCards == 1) ? "KARD" : "KARDS"
         let relTimeDiff = calculateRelativeDate(flashcardCollection.lastReviewed.doubleValue)
@@ -118,7 +118,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "addFlashcard"{
-            let customizeFKVC: CustomizeCardController = segue.destinationViewController as CustomizeCardController
+            let customizeFKVC: CustomizeCardController = segue.destinationViewController as! CustomizeCardController
             customizeFKVC.configureWithCollection(flashcardCollection)
             let fileManager = FileManager()
             fileManager.createDirectoryWithName("\(fileManager.processString(flashcardCollection.name))/tmp")
