@@ -113,9 +113,6 @@
                                 <state key="normal" image="go-white.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <segue destination="arZ-YX-aN7" kind="custom" identifier="ReviewCollection" id="6c6-S8-ElM"/>
-                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ADD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHO-fk-vyo">
                                 <rect key="frame" x="161" y="477" width="60" height="25"/>
@@ -179,47 +176,6 @@
             </objects>
             <point key="canvasLocation" x="1860" y="1031"/>
         </scene>
-        <!--Review Flashcard Controller-->
-        <scene sceneID="P13-pk-beK">
-            <objects>
-                <viewController id="arZ-YX-aN7" customClass="ReviewFlashcardController" customModule="FlashKards" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="QbY-Rh-5Qk"/>
-                        <viewControllerLayoutGuide type="bottom" id="t9s-PU-djk"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="2vC-Ha-fJl">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view alpha="0.59999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kv3-xq-TBA">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pjC-aj-PEK" userLabel="CardsContainer">
-                                <rect key="frame" x="26" y="60" width="548" height="417"/>
-                                <color key="backgroundColor" red="0.96862745100000003" green="0.015686274510000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="pjC-aj-PEK" firstAttribute="leading" secondItem="2vC-Ha-fJl" secondAttribute="leadingMargin" constant="10" id="DSP-mZ-BCE"/>
-                            <constraint firstItem="Kv3-xq-TBA" firstAttribute="leading" secondItem="2vC-Ha-fJl" secondAttribute="leadingMargin" constant="-16" id="DvA-WN-FGr"/>
-                            <constraint firstItem="t9s-PU-djk" firstAttribute="top" secondItem="Kv3-xq-TBA" secondAttribute="bottom" id="ILh-1r-DhQ"/>
-                            <constraint firstItem="pjC-aj-PEK" firstAttribute="top" secondItem="QbY-Rh-5Qk" secondAttribute="bottom" constant="40" id="g7s-Xx-e3e"/>
-                            <constraint firstItem="t9s-PU-djk" firstAttribute="top" secondItem="pjC-aj-PEK" secondAttribute="bottom" constant="123" id="jSB-nu-1bP"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Kv3-xq-TBA" secondAttribute="trailing" constant="-16" id="pp2-RI-YRy"/>
-                            <constraint firstItem="Kv3-xq-TBA" firstAttribute="top" secondItem="QbY-Rh-5Qk" secondAttribute="bottom" constant="-20" id="xkE-Lp-BA4"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="pjC-aj-PEK" secondAttribute="trailing" constant="10" id="zT2-LI-vzM"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="containerViewTopConstraint" destination="g7s-Xx-e3e" id="v2e-IF-euT"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="OiZ-Lo-7n2" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2812" y="2046"/>
-        </scene>
         <!--Customize FlashKard-->
         <scene sceneID="57Q-jI-LNZ">
             <objects>
@@ -249,6 +205,7 @@
                                 <constraints>
                                     <constraint firstItem="ELC-mh-i8S" firstAttribute="height" secondItem="mTJ-59-Q9J" secondAttribute="height" id="BMt-pM-qn9"/>
                                     <constraint firstItem="Lab-fK-CwS" firstAttribute="top" secondItem="mTJ-59-Q9J" secondAttribute="top" id="BnK-LV-Zsd"/>
+                                    <constraint firstAttribute="height" constant="370" id="N94-Tu-0zX"/>
                                     <constraint firstItem="Lab-fK-CwS" firstAttribute="leading" secondItem="mTJ-59-Q9J" secondAttribute="leading" id="Pnn-lF-d5u"/>
                                     <constraint firstItem="Lab-fK-CwS" firstAttribute="width" secondItem="mTJ-59-Q9J" secondAttribute="width" id="S4z-KK-11t"/>
                                     <constraint firstItem="ELC-mh-i8S" firstAttribute="leading" secondItem="mTJ-59-Q9J" secondAttribute="leading" id="VSi-CQ-9md"/>
@@ -525,7 +482,6 @@
                             <constraint firstAttribute="centerX" secondItem="mTJ-59-Q9J" secondAttribute="centerX" id="v17-MR-zO5"/>
                             <constraint firstAttribute="trailingMargin" secondItem="6L4-IT-Lyf" secondAttribute="trailing" constant="-16" id="vT1-7J-GhU"/>
                             <constraint firstItem="Lab-fK-CwS" firstAttribute="top" secondItem="xmq-55-N6z" secondAttribute="bottom" constant="8" id="wzw-d9-gXO"/>
-                            <constraint firstItem="w1a-AY-FGu" firstAttribute="top" secondItem="mTJ-59-Q9J" secondAttribute="bottom" constant="126" id="z1o-TX-Ryf"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Customize FlashKard" id="IVV-Hg-Mgh"/>
@@ -536,6 +492,7 @@
                         <outlet property="backView" destination="ELC-mh-i8S" id="wU7-xH-fTv"/>
                         <outlet property="cancelAddTxtBtn" destination="VhC-dy-Lzw" id="USJ-fV-iNj"/>
                         <outlet property="cancelImportBtn" destination="nil-KT-Ysc" id="F8n-Hs-iZi"/>
+                        <outlet property="cardHeightConstraint" destination="N94-Tu-0zX" id="u3Q-UU-1Ht"/>
                         <outlet property="confirmAddElementBtn" destination="Sat-XM-M1n" id="q9X-Qx-BSp"/>
                         <outlet property="confirmAddTextBtn" destination="tHR-4r-8i5" id="a7q-Sb-hAb"/>
                         <outlet property="confirmBtnsContainerView" destination="YK3-nh-gjM" id="uvp-Fb-k1f"/>
