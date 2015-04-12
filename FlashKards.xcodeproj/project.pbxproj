@@ -45,6 +45,8 @@
 		33CB736B1AC49D1400B72A6A /* CustomizeCardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CB736A1AC49D1400B72A6A /* CustomizeCardController.swift */; };
 		33CB73711AC4A65000B72A6A /* flip-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 33CB73701AC4A65000B72A6A /* flip-white.png */; };
 		33CB73731AC4B65600B72A6A /* RectSelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CB73721AC4B65600B72A6A /* RectSelView.swift */; };
+		33E719BA1ADA07A700869D52 /* ReviewFlashcardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E719B91ADA07A700869D52 /* ReviewFlashcardController.swift */; };
+		33E719BC1ADA081E00869D52 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E719BB1ADA081E00869D52 /* Constants.swift */; };
 		33EE187D1AD5A5A1006373AA /* FlashCardCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 33EE187C1AD5A5A1006373AA /* FlashCardCollection.m */; };
 /* End PBXBuildFile section */
 
@@ -115,6 +117,8 @@
 		33CB736A1AC49D1400B72A6A /* CustomizeCardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomizeCardController.swift; sourceTree = "<group>"; };
 		33CB73701AC4A65000B72A6A /* flip-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "flip-white.png"; path = "Images/flip-white.png"; sourceTree = "<group>"; };
 		33CB73721AC4B65600B72A6A /* RectSelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectSelView.swift; sourceTree = "<group>"; };
+		33E719B91ADA07A700869D52 /* ReviewFlashcardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewFlashcardController.swift; sourceTree = "<group>"; };
+		33E719BB1ADA081E00869D52 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		33EE18741AD59FC8006373AA /* FlashKards-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FlashKards-Bridging-Header.h"; sourceTree = "<group>"; };
 		33EE187B1AD5A5A1006373AA /* FlashCardCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashCardCollection.h; sourceTree = "<group>"; };
 		33EE187C1AD5A5A1006373AA /* FlashCardCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlashCardCollection.m; sourceTree = "<group>"; };
@@ -265,6 +269,7 @@
 		33402CF71AC0B7F300265F70 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				33E719B91ADA07A700869D52 /* ReviewFlashcardController.swift */,
 				3320C5C61ABF807B00A90CD4 /* HomeViewController.swift */,
 				3334392E1AC444A500A808F9 /* FlashcardsSummaryController.swift */,
 				33CB736A1AC49D1400B72A6A /* CustomizeCardController.swift */,
@@ -288,6 +293,7 @@
 		3375E2331AC362B300C39472 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				33E719BB1ADA081E00869D52 /* Constants.swift */,
 				3375E2341AC3642B00C39472 /* CollectionsManager.swift */,
 				3389247A1ACF9093005BBC94 /* FileManager.swift */,
 			);
@@ -424,6 +430,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3389247B1ACF9093005BBC94 /* FileManager.swift in Sources */,
+				33E719BC1ADA081E00869D52 /* Constants.swift in Sources */,
 				3320C5C71ABF807B00A90CD4 /* HomeViewController.swift in Sources */,
 				333439301AC444A500A808F9 /* FlashcardsSummaryController.swift in Sources */,
 				33402CF91AC0C1F400265F70 /* AddCollectionPopup.swift in Sources */,
@@ -431,6 +438,7 @@
 				339EFC701AD61A2800FF6313 /* FlashCard.m in Sources */,
 				3334393A1AC46FF400A808F9 /* CollectionSummaryCell.swift in Sources */,
 				33A53ECF1AC2F0C0001815FA /* Popup.swift in Sources */,
+				33E719BA1ADA07A700869D52 /* ReviewFlashcardController.swift in Sources */,
 				3375E2351AC3642B00C39472 /* CollectionsManager.swift in Sources */,
 				3320C5C51ABF807B00A90CD4 /* FlashKards.xcdatamodeld in Sources */,
 				339D3BCF1ACB048500E4A6EE /* CollectionViewCell.swift in Sources */,
