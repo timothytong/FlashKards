@@ -473,7 +473,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     // MARK: Buttons processing
     func buttonPressed(sender:UIButton!){
-        println("button pressed: sender tag: \(sender.tag)")
         switch(sender.tag){
         case 0,1:
             addElementBtnsTapped(sender)
@@ -506,9 +505,9 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     func save(){
         println("front count: \(frontElementsDict.count) back count: \(backElementsDict.count)")
-        var savePopup = Popup(frame: CGRect(x: view.frame.width/2 - 60, y: view.frame.height/2 - 30, width: 120, height: 60))
+        var savePopup: Popup!
         if numElementsBack == 0 || numElementsFront == 0 {
-            savePopup.frame = CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3)
+            savePopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
             savePopup.numOptions = 1
             savePopup.cancelBtnText = "OK"
             var message = ""
@@ -528,6 +527,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             savePopup.show()
             return
         }
+        savePopup = Popup(frame: CGRect(x: view.frame.width/2 - 60, y: view.frame.height/2 - 30, width: 120, height: 60))
         savePopup.numOptions = 0
         savePopup.alpha = 0
         savePopup.message = "Saving"

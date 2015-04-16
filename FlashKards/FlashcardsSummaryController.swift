@@ -7,13 +7,15 @@
 //
 
 import UIKit
-class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITableViewDataSource, PopupDelegate {
+    @IBOutlet private weak var editButton: UIButton!
     @IBOutlet private weak var tableViewTopConstraint: NSLayoutConstraint!
     // If iPhone 4 move up!
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var suggestedActionLabel: UILabel!
     private var collectionManager: CollectionsManager!
     private var flashcardCollection: FlashCardCollection!
+    private var updateSummaryTimer: NSTimer!
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionManager = CollectionsManager()
@@ -25,7 +27,18 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
             tableView.separatorStyle = .None
             tableView.scrollEnabled = false
         }
+        editButton.addTarget(self, action: "editButtonPressed", forControlEvents: .TouchUpInside)
         // Do any additional setup after loading the view.
+    }
+    
+    func editButtonPressed(){
+        var featureNotAvailablePopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
+        featureNotAvailablePopup.numOptions = 1
+        featureNotAvailablePopup.message = "Sorry, this feature is not yet available."
+        featureNotAvailablePopup.cancelBtnText = "OK"
+        featureNotAvailablePopup.delegate = self
+        navigationController?.view.addSubview(featureNotAvailablePopup)
+        featureNotAvailablePopup.show()
     }
     
     override func didReceiveMemoryWarning() {
@@ -34,6 +47,22 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     }
     
     override func viewWillAppear(animated: Bool) {
+        tableView.reloadData()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        updateSummaryTimer = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "updateSummary", userInfo: nil, repeats: true)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        if updateSummaryTimer != nil{
+            updateSummaryTimer.invalidate()
+            updateSummaryTimer = nil
+        }
+        
+    }
+    
+    func updateSummary(){
         tableView.reloadData()
     }
     
@@ -57,14 +86,16 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         let relTimeDiff = calculateRelativeDate(flashcardCollection.lastReviewed.doubleValue)
         switch indexPath.row{
         case 0:
-            cell.populateFieldsWithNumberString("\(numCards)", Subtext1: "KARDS", andSubtext2: "In collection")
+            cell.populateFieldsWithNumberString("\(numCards)", Subtext1: kardOrKards, andSubtext2: "In collection")
         case 1:
             let numCardsMem = flashcardCollection.numCardsMemorized.integerValue
             let numCards = flashcardCollection.numCards.integerValue
             let progress = (numCards == 0 && numCardsMem == 0) ? 100 : numCardsMem / numCards
             cell.populateFieldsWithNumberString("\(progress)", Subtext1: "PERCENT", andSubtext2: "Memorized")
-        default:
+        case 2:
             cell.populateFieldsWithNumberString(relTimeDiff[0], Subtext1: relTimeDiff[1], andSubtext2: "Last reviewed")
+        default:
+            break
         }
         // TODO: Add more details... time created, updated, numCardsMemorized
         let subString = (relTimeDiff[1] as NSString).substringToIndex(3) as String
@@ -103,7 +134,6 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
             time = ">1"
             unit = "YEAR"
         }
-        println("TIME: \(time)")
         returnArray.append(time)
         returnArray.append(unit)
         return returnArray
@@ -126,13 +156,23 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         else if segue.identifier == "ReviewCollection"{
             let reviewVC: ReviewFlashcardController = segue.destinationViewController as! ReviewFlashcardController
             reviewVC.configureWithCollection(flashcardCollection)
+            flashcardCollection.lastReviewed = NSDate.timeIntervalSinceReferenceDate()
+            var managedObjectContext = flashcardCollection.managedObjectContext
+            var error: NSError?
+            if managedObjectContext?.save(&error) == false{
+                println("Update error: \(error?.localizedDescription)")
+            }
+            else{
+                println("Collection update successful")
+            }
             /*
             navigationController?.modalPresentationStyle = UIModalPresentationStyle.CurrentContext
-            
             presentViewController(reviewVC, animated: true, completion: nil)
             */
         }
     }
     
-    
+    func popupCancelBtnDidTapped(popup: Popup) {
+        popup.removeFromSuperview()
+    }
 }

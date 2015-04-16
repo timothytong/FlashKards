@@ -28,11 +28,13 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     private let INITIAL_MAIN_TOP_CONSTRAINT_CONSTANT = 40
     private var threeCards = Array<UIView>()
     private var quizTimer: NSTimer!
+    private var countDownTimer: NSTimer!
     private var collectionOfInterest: FlashCardCollection!
     private var cardSet: [AnyObject]!
     private var numSecondsElapsed: Int64 = 0
     private var isPaused = true
     private var dimLayer: UIView!
+    private var isStarted = false
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(white: 0, alpha: 0.6)
@@ -96,13 +98,16 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     }
     
     func countDown(){
-        var timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "updateCountDownLabel:", userInfo: nil, repeats: true)
+        countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "updateCountDownLabel:", userInfo: nil, repeats: true)
     }
     
     func updateCountDownLabel(timer: NSTimer){
         countDownLabelText--
         if countDownLabelText == 0{
             countdownLabel.text = "GO."
+            return
+        }
+        else if countDownLabelText == -1{
             timer.invalidate()
             startQuiz()
             return
@@ -115,6 +120,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     }
     
     func startQuiz(){
+        isStarted = true
         isPaused = false
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.pauseButton.userInteractionEnabled = true
@@ -181,8 +187,14 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     }
     
     func quit(){
-        if !isPaused{
+        if !isPaused && isStarted{
             pause()
+        }
+        else if !isStarted && isPaused{
+            if countDownTimer != nil{
+                countDownTimer.invalidate()
+                countDownTimer = nil
+            }
         }
         var quitConfirmPopup = Popup(frame:CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
         quitConfirmPopup.message = "Are you sure you want to quit?"
@@ -268,6 +280,9 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     func popupCancelBtnDidTapped(popup: Popup) {
         popup.removeFromSuperview()
         hideDimLayer()
+        if !isStarted && isPaused{
+            countDownTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "updateCountDownLabel:", userInfo: nil, repeats: true)
+        }
     }
     
     func popupConfirmBtnDidTapped(popup: Popup) {

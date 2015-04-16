@@ -1,9 +1,9 @@
 //
 //  FlashCard.m
-//  FlashKards
+//  
 //
-//  Created by Timothy Tong on 2015-04-08.
-//  Copyright (c) 2015 Timothy Tong. All rights reserved.
+//  Created by Timothy Tong on 2015-04-16.
+//
 //
 
 #import "FlashCard.h"
@@ -16,8 +16,8 @@
 @dynamic cardID;
 @dynamic front;
 @dynamic last_updated;
-@dynamic time_created;
 @dynamic memorized;
+@dynamic time_created;
 @dynamic parentCollection;
 
 @end
