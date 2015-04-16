@@ -125,8 +125,12 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         }
         else if segue.identifier == "ReviewCollection"{
             let reviewVC: ReviewFlashcardController = segue.destinationViewController as! ReviewFlashcardController
+            reviewVC.configureWithCollection(flashcardCollection)
+            /*
             navigationController?.modalPresentationStyle = UIModalPresentationStyle.CurrentContext
+            
             presentViewController(reviewVC, animated: true, completion: nil)
+            */
         }
     }
     
