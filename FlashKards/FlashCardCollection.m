@@ -24,4 +24,16 @@
 @dynamic flashcards;
 @dynamic reviewHistory;
 
+- (void)updateLastReviewTimeToCurrentTime {
+    self.lastReviewed = [NSNumber numberWithDouble:[NSDate timeIntervalSinceReferenceDate]];
+    NSManagedObjectContext *context = [self managedObjectContext];
+    NSError *error;
+    if([context save:&error]){
+        NSLog(@"Updated last review time successfully");
+    }
+    else{
+        NSLog(@"Update last review time failed");
+    }
+}
+
 @end

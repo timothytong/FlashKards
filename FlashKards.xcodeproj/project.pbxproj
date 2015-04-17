@@ -10,7 +10,6 @@
 		3311FED91ACB9CD8001C3693 /* ok-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 3311FED81ACB9CD8001C3693 /* ok-white.png */; };
 		331734391ADCBFA50021DC8B /* cancel-red-forget.png in Resources */ = {isa = PBXBuildFile; fileRef = 331734381ADCBFA50021DC8B /* cancel-red-forget.png */; };
 		3317343B1ADCC5360021DC8B /* ok-gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 3317343A1ADCC5360021DC8B /* ok-gray.png */; };
-		3317343D1ADCC84F0021DC8B /* flag.png in Resources */ = {isa = PBXBuildFile; fileRef = 3317343C1ADCC84F0021DC8B /* flag.png */; };
 		3320C5C21ABF807B00A90CD4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5C11ABF807B00A90CD4 /* AppDelegate.swift */; };
 		3320C5C51ABF807B00A90CD4 /* FlashKards.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5C31ABF807B00A90CD4 /* FlashKards.xcdatamodeld */; };
 		3320C5C71ABF807B00A90CD4 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5C61ABF807B00A90CD4 /* HomeViewController.swift */; };
@@ -81,7 +80,6 @@
 		3311FED81ACB9CD8001C3693 /* ok-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ok-white.png"; path = "Images/ok-white.png"; sourceTree = "<group>"; };
 		331734381ADCBFA50021DC8B /* cancel-red-forget.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cancel-red-forget.png"; path = "Images/cancel-red-forget.png"; sourceTree = "<group>"; };
 		3317343A1ADCC5360021DC8B /* ok-gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ok-gray.png"; path = "Images/ok-gray.png"; sourceTree = "<group>"; };
-		3317343C1ADCC84F0021DC8B /* flag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = flag.png; path = Images/flag.png; sourceTree = "<group>"; };
 		3320C5BC1ABF807B00A90CD4 /* FlashKards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlashKards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3320C5C01ABF807B00A90CD4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3320C5C11ABF807B00A90CD4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -228,7 +226,6 @@
 				3334393D1AC495CF00A808F9 /* text-white.png */,
 				33CB73681AC49C6900B72A6A /* newImg-white.png */,
 				3327F5F31AD6DAA700D1B3D1 /* cancel-blue.png */,
-				3317343C1ADCC84F0021DC8B /* flag.png */,
 				3327F5F41AD6DAA700D1B3D1 /* ok-blue.png */,
 				333439361AC450F300A808F9 /* go-white.png */,
 				333439341AC44F6F00A808F9 /* edit-white.png */,
@@ -426,7 +423,6 @@
 				33BF1DCE1AC624DC00031C69 /* cancel-red.png in Resources */,
 				3320C5CC1ABF807B00A90CD4 /* Images.xcassets in Resources */,
 				3327F5F61AD6DAA700D1B3D1 /* ok-blue.png in Resources */,
-				3317343D1ADCC84F0021DC8B /* flag.png in Resources */,
 				3334393E1AC495CF00A808F9 /* text-white.png in Resources */,
 				33BF1DCF1AC624DC00031C69 /* ok-green.png in Resources */,
 			);

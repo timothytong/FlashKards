@@ -98,7 +98,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
             break
         }
         // TODO: Add more details... time created, updated, numCardsMemorized
-        let subString = (relTimeDiff[1] as NSString).substringToIndex(3) as String
+        let subString = count(relTimeDiff[1]) > 2 ? (relTimeDiff[1] as NSString).substringToIndex(3) as String : ""
         if numCards.integerValue < 10 { suggestedActionLabel.text = "Suggested Action:\nAdd some FlashKards." }
         if ((subString != "MIN") && (subString != "HOU") && (numCards.integerValue >= 10)) { suggestedActionLabel.text = "Suggested Action:\nReview the FlashKards." }
         if numCards.integerValue >= 10 && ((subString == "MIN") || (subString == "HOU")) { suggestedActionLabel.text = "Do something else,\n come back later." }
@@ -110,7 +110,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     
     func calculateRelativeDate(timeStamp: Double!)->[String]{
         if timeStamp == 0{
-            return ["NE", "VER."]
+            return ["X", "NEVER"]
         }
         
         let currentTime: Double = NSDate.timeIntervalSinceReferenceDate()
@@ -157,14 +157,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
             let reviewVC: ReviewFlashcardController = segue.destinationViewController as! ReviewFlashcardController
             reviewVC.configureWithCollection(flashcardCollection)
             flashcardCollection.lastReviewed = NSDate.timeIntervalSinceReferenceDate()
-            var managedObjectContext = flashcardCollection.managedObjectContext
-            var error: NSError?
-            if managedObjectContext?.save(&error) == false{
-                println("Update error: \(error?.localizedDescription)")
-            }
-            else{
-                println("Collection update successful")
-            }
+            flashcardCollection.updateLastReviewTimeToCurrentTime()
             /*
             navigationController?.modalPresentationStyle = UIModalPresentationStyle.CurrentContext
             presentViewController(reviewVC, animated: true, completion: nil)

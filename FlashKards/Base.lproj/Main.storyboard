@@ -195,6 +195,54 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bfa-hC-GJa" userLabel="MainCardContainer">
                                 <rect key="frame" x="26" y="60" width="548" height="417"/>
                                 <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D6V-EY-hfS" userLabel="NextCardView">
+                                        <rect key="frame" x="0.0" y="0.0" width="548" height="417"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VYX-Xq-ZBx" userLabel="NextBack">
+                                                <rect key="frame" x="0.0" y="0.0" width="548" height="417"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uWo-h9-Z1T" userLabel="NextFront">
+                                                <rect key="frame" x="0.0" y="0.0" width="548" height="417"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="uWo-h9-Z1T" firstAttribute="leading" secondItem="D6V-EY-hfS" secondAttribute="leading" id="1ss-pI-xSa"/>
+                                            <constraint firstAttribute="bottom" secondItem="VYX-Xq-ZBx" secondAttribute="bottom" id="BIx-QA-V69"/>
+                                            <constraint firstItem="VYX-Xq-ZBx" firstAttribute="top" secondItem="D6V-EY-hfS" secondAttribute="top" id="ITP-a7-EZg"/>
+                                            <constraint firstItem="VYX-Xq-ZBx" firstAttribute="leading" secondItem="D6V-EY-hfS" secondAttribute="leading" id="Q0c-p1-Xat"/>
+                                            <constraint firstAttribute="bottom" secondItem="uWo-h9-Z1T" secondAttribute="bottom" id="cql-Ow-zLG"/>
+                                            <constraint firstItem="uWo-h9-Z1T" firstAttribute="top" secondItem="D6V-EY-hfS" secondAttribute="top" id="jj1-pK-xGE"/>
+                                            <constraint firstAttribute="trailing" secondItem="VYX-Xq-ZBx" secondAttribute="trailing" id="qC7-GS-BAL"/>
+                                            <constraint firstAttribute="trailing" secondItem="uWo-h9-Z1T" secondAttribute="trailing" id="zda-ep-B9U"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="85L-ET-gmF" userLabel="CurrentCardView">
+                                        <rect key="frame" x="0.0" y="0.0" width="548" height="417"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2c8-ZT-7MX" userLabel="CurrentBack">
+                                                <rect key="frame" x="0.0" y="0.0" width="548" height="417"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p0V-IJ-Bq4" userLabel="CurrentFront">
+                                                <rect key="frame" x="0.0" y="0.0" width="548" height="417"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="p0V-IJ-Bq4" secondAttribute="trailing" id="2Ue-zc-ycY"/>
+                                            <constraint firstItem="2c8-ZT-7MX" firstAttribute="top" secondItem="85L-ET-gmF" secondAttribute="top" id="6w1-qG-asX"/>
+                                            <constraint firstItem="p0V-IJ-Bq4" firstAttribute="leading" secondItem="85L-ET-gmF" secondAttribute="leading" id="8oy-NL-l4F"/>
+                                            <constraint firstAttribute="bottom" secondItem="2c8-ZT-7MX" secondAttribute="bottom" id="XFV-Dt-DVw"/>
+                                            <constraint firstItem="p0V-IJ-Bq4" firstAttribute="top" secondItem="85L-ET-gmF" secondAttribute="top" id="bM4-JQ-dR4"/>
+                                            <constraint firstAttribute="trailing" secondItem="2c8-ZT-7MX" secondAttribute="trailing" id="djx-zM-PMz"/>
+                                            <constraint firstItem="2c8-ZT-7MX" firstAttribute="leading" secondItem="85L-ET-gmF" secondAttribute="leading" id="oPx-7i-1Nq"/>
+                                            <constraint firstAttribute="bottom" secondItem="p0V-IJ-Bq4" secondAttribute="bottom" id="yUp-gK-yNm"/>
+                                        </constraints>
+                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hvc-Jg-XZM" userLabel="CoverView">
                                         <rect key="frame" x="0.0" y="0.0" width="548" height="417"/>
                                         <subviews>
@@ -216,12 +264,20 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="85L-ET-gmF" secondAttribute="bottom" id="4Cc-0w-s76"/>
+                                    <constraint firstItem="D6V-EY-hfS" firstAttribute="leading" secondItem="bfa-hC-GJa" secondAttribute="leading" id="7Dx-bD-WA1"/>
                                     <constraint firstAttribute="centerY" secondItem="ONI-Jb-lkR" secondAttribute="centerY" id="G7f-xp-nYM"/>
+                                    <constraint firstItem="85L-ET-gmF" firstAttribute="top" secondItem="bfa-hC-GJa" secondAttribute="top" id="Kc5-3H-ZVR"/>
+                                    <constraint firstAttribute="bottom" secondItem="D6V-EY-hfS" secondAttribute="bottom" id="Lji-sV-LsR"/>
+                                    <constraint firstItem="85L-ET-gmF" firstAttribute="leading" secondItem="bfa-hC-GJa" secondAttribute="leading" id="MiY-V1-ols"/>
                                     <constraint firstItem="Hvc-Jg-XZM" firstAttribute="leading" secondItem="bfa-hC-GJa" secondAttribute="leading" id="TPp-fU-Vnz"/>
+                                    <constraint firstItem="D6V-EY-hfS" firstAttribute="top" secondItem="bfa-hC-GJa" secondAttribute="top" id="TqP-3j-myE"/>
                                     <constraint firstAttribute="bottom" secondItem="Hvc-Jg-XZM" secondAttribute="bottom" id="Vzo-3U-RNp"/>
+                                    <constraint firstAttribute="trailing" secondItem="85L-ET-gmF" secondAttribute="trailing" id="mdH-p1-P8I"/>
                                     <constraint firstAttribute="centerX" secondItem="ONI-Jb-lkR" secondAttribute="centerX" id="r2P-r4-OAz"/>
                                     <constraint firstItem="Hvc-Jg-XZM" firstAttribute="top" secondItem="bfa-hC-GJa" secondAttribute="top" id="u3E-oJ-GxS"/>
                                     <constraint firstAttribute="trailing" secondItem="Hvc-Jg-XZM" secondAttribute="trailing" id="un9-WU-QBX"/>
+                                    <constraint firstAttribute="trailing" secondItem="D6V-EY-hfS" secondAttribute="trailing" id="xCx-ut-oc0"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s7g-Ab-Ldb" userLabel="Forget">
@@ -356,8 +412,14 @@
                         <outlet property="controlButtonsContainer" destination="0Gn-Oj-Zpz" id="Mqd-y8-0b7"/>
                         <outlet property="countdownLabel" destination="ONI-Jb-lkR" id="AiU-j3-Ai2"/>
                         <outlet property="coverView" destination="Hvc-Jg-XZM" id="SYO-Da-qo7"/>
+                        <outlet property="currentBackView" destination="2c8-ZT-7MX" id="P9s-XM-TV4"/>
+                        <outlet property="currentCardView" destination="85L-ET-gmF" id="9Md-LI-dZ9"/>
+                        <outlet property="currentFrontView" destination="p0V-IJ-Bq4" id="URK-fV-et8"/>
                         <outlet property="forgetButton" destination="s7g-Ab-Ldb" id="5Ge-Da-TNt"/>
                         <outlet property="mainCardContainer" destination="bfa-hC-GJa" id="S0P-LF-rp7"/>
+                        <outlet property="nextBackView" destination="VYX-Xq-ZBx" id="doF-7P-lGZ"/>
+                        <outlet property="nextCardView" destination="D6V-EY-hfS" id="DVa-qA-WDz"/>
+                        <outlet property="nextFrontView" destination="VYX-Xq-ZBx" id="cOn-wK-gD0"/>
                         <outlet property="pauseButton" destination="kjM-dw-Bks" id="hJX-CO-44g"/>
                         <outlet property="quitButton" destination="sly-H5-wJO" id="kck-Vs-9jn"/>
                         <outlet property="rememberButton" destination="NJf-nw-Fba" id="f4J-gk-QFx"/>

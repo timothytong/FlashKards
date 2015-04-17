@@ -42,4 +42,6 @@
 - (void)removeReviewHistoryObject:(CollectionHistory *)value;
 - (void)addReviewHistory:(NSOrderedSet *)values;
 - (void)removeReviewHistory:(NSOrderedSet *)values;
+
+- (void)updateLastReviewTimeToCurrentTime;
 @end
