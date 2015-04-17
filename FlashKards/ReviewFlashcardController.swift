@@ -9,8 +9,14 @@
 import UIKit
 
 class ReviewFlashcardController: UIViewController, PopupDelegate {
-    @IBOutlet weak var controlButtonsContainer: UIView!
-    @IBOutlet weak var continueButton: UIButton!
+    @IBOutlet private weak var currentBackView: UIView!
+    @IBOutlet private weak var currentFrontView: UIView!
+    @IBOutlet private weak var nextFrontView: UIView!
+    @IBOutlet private weak var nextBackView: UIView!
+    @IBOutlet private weak var nextCardView: UIView!
+    @IBOutlet private weak var controlButtonsContainer: UIView!
+    @IBOutlet private weak var currentCardView: UIView!
+    @IBOutlet private weak var continueButton: UIButton!
     @IBOutlet private weak var rememberButton: UIButton!
     @IBOutlet private weak var quitButton: UIButton!
     @IBOutlet private weak var pauseButton: UIButton!
@@ -30,7 +36,8 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     private var quizTimer: NSTimer!
     private var countDownTimer: NSTimer!
     private var collectionOfInterest: FlashCardCollection!
-    private var cardSet: [AnyObject]!
+    private var cardSet: [FlashCard]!
+    private var reviewedCardSet: [FlashCard]!
     private var numSecondsElapsed: Int64 = 0
     private var isPaused = true
     private var dimLayer: UIView!
@@ -49,14 +56,26 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         mainCardContainer.layer.cornerRadius = 3
         mainCardContainer.layer.borderWidth = 1
         mainCardContainer.layer.borderColor = UIColor(white: 0.5, alpha: 1).CGColor
+        mainCardContainer.clipsToBounds = false
         
+        currentCardView.layer.cornerRadius = 3
+        currentCardView.layer.borderWidth = 1
+        currentCardView.layer.borderColor = UIColor(white: 0.5, alpha: 1).CGColor
+        currentCardView.clipsToBounds = true
+        
+        currentBackView.hidden = true
+        
+        nextCardView.layer.cornerRadius = 3
+        nextCardView.layer.borderWidth = 1
+        nextCardView.layer.borderColor = UIColor(white: 0.5, alpha: 1).CGColor
+        nextCardView.clipsToBounds = true
         completedCardsNumLabel.text = "0/\(collectionOfInterest.numCards)"
         continueButton.hidden = true
         
         quitButton.tag = 0
         pauseButton.tag = 1
-        forgetButton.tag = 2
-        rememberButton.tag = 3
+        rememberButton.tag = 2
+        forgetButton.tag = 3
         continueButton.tag = 4
         
         quitButton.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
@@ -79,7 +98,41 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         countDown()
+        let firstCard = cardSet.first as FlashCard!
+        let frontDict = firstCard.front as! NSDictionary
+        let backDict = firstCard.back as! NSDictionary
+        restoreViewsWithDictionary(frontDict, onView: currentFrontView)
+        restoreViewsWithDictionary(backDict, onView: currentBackView)
     }
+    
+    private func restoreViewsWithDictionary(dict: NSDictionary, onView view: UIView){
+        for key in dict.allKeys{
+            let element = dict.objectForKey(key) as! NSDictionary
+            let type = element.objectForKey("type") as! String
+            if type == "txt"{
+                let frameValue = element.objectForKey("frame") as! NSValue
+                let frame = frameValue.CGRectValue()
+                var label = UILabel(frame: frame)
+                label.font = UIFont(name: "AppleSDGothicNeo-Light", size: 25)
+                label.text = element.objectForKey("content") as? String
+                label.textAlignment = .Center
+                view.addSubview(label)
+            }
+            else if type == "img"{
+                let frameValue = element.objectForKey("frame") as! NSValue
+                let frame = frameValue.CGRectValue()
+                let imgURL = element.objectForKey("content") as! String
+                var imageView = UIImageView(frame: frame)
+                imageView.contentMode = UIViewContentMode.ScaleAspectFit
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    let image = UIImage(contentsOfFile: imgURL)
+                    imageView.image = image
+                    view.addSubview(imageView)
+                })
+            }
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -90,6 +143,14 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     }
     
     func forget(){
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            UIView.transitionWithView(self.currentCardView, duration: 0.4, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: { () -> Void in
+                self.currentFrontView.hidden = true
+                self.currentBackView.hidden = false
+                }, completion: { (complete) -> Void in
+                    
+            })
+        })
         
     }
     
@@ -214,7 +275,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     
     func configureWithCollection(collection: FlashCardCollection){
         collectionOfInterest = collection
-        cardSet = (collectionOfInterest.flashcards as NSSet).allObjects
+        cardSet = (collectionOfInterest.flashcards as NSSet).allObjects as! [FlashCard]
     }
     
     func pause(){
