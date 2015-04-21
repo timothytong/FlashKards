@@ -9,6 +9,8 @@
 import UIKit
 
 class ReviewFlashcardController: UIViewController, PopupDelegate {
+    @IBOutlet private weak var flipButton: UIButton!
+    @IBOutlet private weak var nextButton: UIButton!
     @IBOutlet private weak var currentBackView: UIView!
     @IBOutlet private weak var currentFrontView: UIView!
     @IBOutlet private weak var nextFrontView: UIView!
@@ -32,7 +34,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     private var countDownLabelText = 3
     private var navBarHeight: CGFloat = 0
     private let INITIAL_MAIN_TOP_CONSTRAINT_CONSTANT = 40
-    private var threeCards = Array<UIView>()
+
     private var quizTimer: NSTimer!
     private var countDownTimer: NSTimer!
     private var collectionOfInterest: FlashCardCollection!
@@ -42,6 +44,10 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     private var isPaused = true
     private var dimLayer: UIView!
     private var isStarted = false
+    private let INITIAL_NEXT_TRANSFORM = CGAffineTransformMakeTranslation(-50, 0)
+    private let INITIAL_FLIP_TRANSFORM = CGAffineTransformMakeScale(0.1, 0.1)
+    private var flipAnimating = false
+    private var resultsDictionary: NSDictionary!
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(white: 0, alpha: 0.6)
@@ -49,6 +55,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
             navBarHeight = navbarHeight
             containerViewTopConstraint.constant += navbarHeight
         }
+        reviewedCardSet = [FlashCard]()
         view.sendSubviewToBack(backgroundView)
         forgetButton.userInteractionEnabled = false
         rememberButton.userInteractionEnabled = false
@@ -77,12 +84,16 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         rememberButton.tag = 2
         forgetButton.tag = 3
         continueButton.tag = 4
+        flipButton.tag = 5
+        nextButton.tag = 6
         
         quitButton.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         pauseButton.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         forgetButton.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         rememberButton.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         continueButton.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        flipButton.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
+        nextButton.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         
         // Dim layer
         dimLayer = UIView(frame: UIScreen.mainScreen().bounds)
@@ -91,6 +102,11 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         dimLayer.alpha = 0
         view.addSubview(dimLayer)
         
+        // Transforms
+        
+        nextButton.transform = INITIAL_NEXT_TRANSFORM
+        flipButton.transform = INITIAL_FLIP_TRANSFORM
+        
         //        view.bringSubviewToFront(cardsContainer)
         // Do any additional setup after loading the view.
     }
@@ -98,11 +114,31 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         countDown()
-        let firstCard = cardSet.first as FlashCard!
-        let frontDict = firstCard.front as! NSDictionary
-        let backDict = firstCard.back as! NSDictionary
-        restoreViewsWithDictionary(frontDict, onView: currentFrontView)
-        restoreViewsWithDictionary(backDict, onView: currentBackView)
+        if let firstCard = cardSet.first as FlashCard!{
+            reviewedCardSet.append(firstCard)
+            cardSet.removeAtIndex(0)
+            var frontDict = firstCard.front as! NSDictionary
+            var backDict = firstCard.back as! NSDictionary
+            restoreViewsWithDictionary(frontDict, onView: currentFrontView)
+            restoreViewsWithDictionary(backDict, onView: currentBackView)
+            
+            if let secondCard = cardSet.first as FlashCard!{
+                reviewedCardSet.append(secondCard)
+                cardSet.removeAtIndex(0)
+                frontDict = secondCard.front as! NSDictionary
+                backDict = secondCard.back as! NSDictionary
+                restoreViewsWithDictionary(frontDict, onView: nextFrontView)
+                restoreViewsWithDictionary(backDict, onView: nextBackView)
+            }
+            else{
+                println("There's only one card in collection")
+            }
+        }
+        else{
+            println("No card in collection")
+        }
+        
+        
     }
     
     private func restoreViewsWithDictionary(dict: NSDictionary, onView view: UIView){
@@ -143,19 +179,96 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     }
     
     func forget(){
+        flip()
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            UIView.transitionWithView(self.currentCardView, duration: 0.4, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: { () -> Void in
-                self.currentFrontView.hidden = true
-                self.currentBackView.hidden = false
+            UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                self.forgetButton.alpha = 0
+                self.rememberButton.alpha = 0
                 }, completion: { (complete) -> Void in
-                    
+                    self.showSecondaryButtons()
             })
         })
-        
+    }
+    
+    private func showSecondaryButtons(){
+        UIView.animateKeyframesWithDuration(0.6, delay: 0, options: UIViewKeyframeAnimationOptions.CalculationModePaced, animations: {
+            UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
+                self.flipButton.alpha = 1
+                self.nextButton.alpha = 1
+                var scaleTransform = CGAffineTransformMakeScale(0.5, 0.5)
+                var rotationTransform = CGAffineTransformMakeRotation(1/3 * CGFloat(M_PI))
+                let flipTransform = CGAffineTransformConcat(scaleTransform, rotationTransform)
+                self.flipButton.transform = flipTransform
+                
+                let nextTransform = CGAffineTransformMakeTranslation(-30, 0)
+                self.nextButton.transform = nextTransform
+            })
+            
+            UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
+                var scaleTransform = CGAffineTransformMakeScale(0.8, 0.8)
+                var rotationTransform = CGAffineTransformMakeRotation(2/3 * CGFloat(M_PI))
+                let flipTransform = CGAffineTransformConcat(scaleTransform, rotationTransform)
+                self.flipButton.transform = flipTransform
+                
+                let nextTransform = CGAffineTransformMakeTranslation(-10, 0)
+                self.nextButton.transform = nextTransform
+            })
+            
+            UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
+                var scaleTransform = CGAffineTransformMakeScale(1, 1)
+                var rotationTransform = CGAffineTransformMakeRotation(CGFloat(M_PI))
+                let flipTransform = CGAffineTransformConcat(scaleTransform, rotationTransform)
+                self.flipButton.transform = flipTransform
+                
+                let nextTransform = CGAffineTransformMakeTranslation(0, 0)
+                self.nextButton.transform = nextTransform
+            })
+            }, completion: nil)
+    }
+    
+    private func hideSecondaryButtons(){
+        UIView.animateKeyframesWithDuration(0.2, delay: 0, options: UIViewKeyframeAnimationOptions.CalculationModePaced, animations: {
+            UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
+                self.flipButton.alpha = 0
+                self.nextButton.alpha = 0
+                var scaleTransform = CGAffineTransformMakeScale(0.5, 0.5)
+                var rotationTransform = CGAffineTransformMakeRotation(2/3 * CGFloat(M_PI))
+                let flipTransform = CGAffineTransformConcat(scaleTransform, rotationTransform)
+                self.flipButton.transform = flipTransform
+                
+                let nextTransform = CGAffineTransformMakeTranslation(-30, 0)
+                self.nextButton.transform = nextTransform
+            })
+            
+            UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
+                var scaleTransform = CGAffineTransformMakeScale(0.3, 0.3)
+                var rotationTransform = CGAffineTransformMakeRotation(1/3 * CGFloat(M_PI))
+                let flipTransform = CGAffineTransformConcat(scaleTransform, rotationTransform)
+                self.flipButton.transform = flipTransform
+                
+                let nextTransform = CGAffineTransformMakeTranslation(-40, 0)
+                self.nextButton.transform = nextTransform
+            })
+            
+            UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
+                self.resetSecondaryButtons()
+            })
+            }, completion: nil)
+    }
+    
+    private func resetSecondaryButtons(){
+        flipButton.transform = INITIAL_FLIP_TRANSFORM
+        nextButton.transform = INITIAL_NEXT_TRANSFORM
     }
     
     func nextCard(){
         
+        hideSecondaryButtons()
+        UIView.animateWithDuration(0.6, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+            self.forgetButton.alpha = 1
+            self.rememberButton.alpha = 1
+            }, completion: { (complete) -> Void in
+        })
     }
     
     func countDown(){
@@ -225,9 +338,11 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     }
     
     func endQuiz(){
-        dismissViewControllerAnimated(true, completion: { () -> Void in
-            
-        })
+//        dismissViewControllerAnimated(true, completion: { () -> Void in
+//            
+//        })
+        self.performSegueWithIdentifier("completeReview", sender: self)
+        
     }
     
     func buttonPressed(sender: UIButton){
@@ -242,6 +357,10 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
             forget()
         case 4:
             resume()
+        case 5:
+            flip()
+        case 6:
+            nextCard()
         default:
             break
         }
@@ -360,14 +479,38 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
             })
         })
     }
-    /*
+    
+    func flip(){
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            if !self.flipAnimating{
+                self.flipAnimating = true
+                UIView.transitionWithView(self.currentCardView, duration: 0.6, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: { () -> Void in
+                    self.currentFrontView.hidden = !self.currentFrontView.hidden
+                    self.currentBackView.hidden = !self.currentBackView.hidden
+                    }, completion: { (complete) -> Void in
+                        self.flipAnimating = false
+                })
+            }
+            
+        })
+        
+    }
+    
+
+    
+
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        println("preparing for segue \(segue.identifier!)　")
     // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
     }
-    */
+    
+    
+
+
+    
     
 }

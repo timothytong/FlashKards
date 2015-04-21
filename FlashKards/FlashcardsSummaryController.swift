@@ -168,4 +168,10 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     func popupCancelBtnDidTapped(popup: Popup) {
         popup.removeFromSuperview()
     }
+    
+    @IBAction func unwindToSummary(sender: UIStoryboardSegue)
+    {
+        println("unwinded to summary, destination \(sender.destinationViewController), originating VC \(sender.sourceViewController)")
+        
+    }
 }

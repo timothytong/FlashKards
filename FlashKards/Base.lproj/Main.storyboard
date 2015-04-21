@@ -290,6 +290,16 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
+                            <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="agB-Sx-P9o" userLabel="Next">
+                                <rect key="frame" x="499" y="502" width="45" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="jwK-oa-RcC"/>
+                                    <constraint firstAttribute="width" constant="45" id="tbJ-Fm-Alo"/>
+                                </constraints>
+                                <state key="normal" image="right-blue.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NJf-nw-Fba" userLabel="Remember">
                                 <rect key="frame" x="499" y="502" width="45" height="45"/>
                                 <constraints>
@@ -297,6 +307,16 @@
                                     <constraint firstAttribute="width" constant="45" id="VuG-Dm-FgC"/>
                                 </constraints>
                                 <state key="normal" image="ok-gray.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P7l-lW-rHb" userLabel="Flip">
+                                <rect key="frame" x="56" y="502" width="45" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="45" id="g9T-O0-2kT"/>
+                                    <constraint firstAttribute="height" constant="45" id="iGY-3I-Icp"/>
+                                </constraints>
+                                <state key="normal" image="flip-blue.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
@@ -384,10 +404,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Cx8-Fw-OY2" firstAttribute="top" secondItem="bfa-hC-GJa" secondAttribute="bottom" constant="123" id="0mg-gx-Ed1"/>
+                            <constraint firstItem="s7g-Ab-Ldb" firstAttribute="leading" secondItem="P7l-lW-rHb" secondAttribute="leading" id="1qa-Ni-R6c"/>
                             <constraint firstItem="bfa-hC-GJa" firstAttribute="top" secondItem="IHP-U8-Dr7" secondAttribute="bottom" constant="5" id="2Ja-4O-uY1"/>
                             <constraint firstItem="0Gn-Oj-Zpz" firstAttribute="top" secondItem="pkd-Vh-P6G" secondAttribute="bottom" constant="15" id="4N2-Hc-KXL"/>
                             <constraint firstItem="bfa-hC-GJa" firstAttribute="top" secondItem="0xu-gh-Gvn" secondAttribute="bottom" constant="5" id="4rJ-JZ-hij"/>
                             <constraint firstItem="bfa-hC-GJa" firstAttribute="top" secondItem="pkd-Vh-P6G" secondAttribute="bottom" constant="40" id="5Xp-1X-FG3"/>
+                            <constraint firstItem="NJf-nw-Fba" firstAttribute="leading" secondItem="agB-Sx-P9o" secondAttribute="leading" id="97j-lF-Nob"/>
+                            <constraint firstItem="NJf-nw-Fba" firstAttribute="top" secondItem="agB-Sx-P9o" secondAttribute="top" id="BlS-P4-ThR"/>
                             <constraint firstItem="CkY-0b-gMA" firstAttribute="top" secondItem="pkd-Vh-P6G" secondAttribute="bottom" constant="-20" id="DYD-Fv-MhK"/>
                             <constraint firstItem="Cx8-Fw-OY2" firstAttribute="top" secondItem="s7g-Ab-Ldb" secondAttribute="bottom" constant="53" id="Mt7-ty-5Mm"/>
                             <constraint firstItem="0Gn-Oj-Zpz" firstAttribute="trailing" secondItem="bfa-hC-GJa" secondAttribute="trailing" constant="2" id="ORH-4z-wyA"/>
@@ -398,6 +421,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="bfa-hC-GJa" secondAttribute="trailing" constant="10" id="coM-tN-1f7"/>
                             <constraint firstAttribute="trailingMargin" secondItem="CkY-0b-gMA" secondAttribute="trailing" constant="-16" id="dgo-9z-1Zc"/>
                             <constraint firstItem="bfa-hC-GJa" firstAttribute="trailing" secondItem="0xu-gh-Gvn" secondAttribute="trailing" constant="-2" id="iWm-Bl-8Ge"/>
+                            <constraint firstItem="s7g-Ab-Ldb" firstAttribute="top" secondItem="P7l-lW-rHb" secondAttribute="top" id="pqi-3Z-r9Q"/>
                             <constraint firstItem="CkY-0b-gMA" firstAttribute="leading" secondItem="Xqq-qV-H5O" secondAttribute="leadingMargin" constant="-16" id="uAb-93-XH3"/>
                             <constraint firstItem="Cx8-Fw-OY2" firstAttribute="top" secondItem="CkY-0b-gMA" secondAttribute="bottom" id="vpN-jS-pkr"/>
                             <constraint firstItem="bfa-hC-GJa" firstAttribute="leading" secondItem="Xqq-qV-H5O" secondAttribute="leadingMargin" constant="10" id="xpV-tc-qHu"/>
@@ -415,20 +439,45 @@
                         <outlet property="currentBackView" destination="2c8-ZT-7MX" id="P9s-XM-TV4"/>
                         <outlet property="currentCardView" destination="85L-ET-gmF" id="9Md-LI-dZ9"/>
                         <outlet property="currentFrontView" destination="p0V-IJ-Bq4" id="URK-fV-et8"/>
+                        <outlet property="flipButton" destination="P7l-lW-rHb" id="4ez-cf-bu1"/>
                         <outlet property="forgetButton" destination="s7g-Ab-Ldb" id="5Ge-Da-TNt"/>
                         <outlet property="mainCardContainer" destination="bfa-hC-GJa" id="S0P-LF-rp7"/>
                         <outlet property="nextBackView" destination="VYX-Xq-ZBx" id="doF-7P-lGZ"/>
+                        <outlet property="nextButton" destination="agB-Sx-P9o" id="KnA-5U-5tQ"/>
                         <outlet property="nextCardView" destination="D6V-EY-hfS" id="DVa-qA-WDz"/>
                         <outlet property="nextFrontView" destination="VYX-Xq-ZBx" id="cOn-wK-gD0"/>
                         <outlet property="pauseButton" destination="kjM-dw-Bks" id="hJX-CO-44g"/>
                         <outlet property="quitButton" destination="sly-H5-wJO" id="kck-Vs-9jn"/>
                         <outlet property="rememberButton" destination="NJf-nw-Fba" id="f4J-gk-QFx"/>
                         <outlet property="timeElapsedLabel" destination="0xu-gh-Gvn" id="lbI-4a-tKY"/>
+                        <segue destination="h1c-mQ-uDl" kind="unwind" identifier="completeReview" unwindAction="unwindToSummary:" id="2Tf-IK-J9O"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mm7-hv-zdZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="h1c-mQ-uDl" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2603" y="1424"/>
+        </scene>
+        <!--Results Controller-->
+        <scene sceneID="YhK-DW-5BL">
+            <objects>
+                <viewController id="TuS-cR-lvu" userLabel="Results Controller" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Lhf-8i-sDu"/>
+                        <viewControllerLayoutGuide type="bottom" id="9ja-Ig-5ru"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="JSW-JK-ud7">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="y4e-RO-kXO" kind="presentation" identifier="presentResults" id="67Z-R1-a0h"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IrQ-Sp-cJ8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1890" y="1945"/>
         </scene>
         <!--Customize FlashKard-->
         <scene sceneID="57Q-jI-LNZ">
@@ -802,13 +851,18 @@
         <image name="delete-white.png" width="128" height="128"/>
         <image name="down-white.png" width="128" height="128"/>
         <image name="edit-white.png" width="128" height="128"/>
+        <image name="flip-blue.png" width="128" height="128"/>
         <image name="flip-white.png" width="128" height="128"/>
         <image name="go-white.png" width="128" height="128"/>
         <image name="newImg-white.png" width="128" height="128"/>
         <image name="ok-blue.png" width="128" height="128"/>
         <image name="ok-gray.png" width="128" height="128"/>
         <image name="ok-green.png" width="128" height="128"/>
+        <image name="right-blue.png" width="128" height="128"/>
         <image name="save-blue.png" width="128" height="128"/>
         <image name="text-white.png" width="128" height="128"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="67Z-R1-a0h"/>
+    </inferredMetricsTieBreakers>
 </document>

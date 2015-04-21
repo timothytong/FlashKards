@@ -45,6 +45,8 @@
 		33BF1DCE1AC624DC00031C69 /* cancel-red.png in Resources */ = {isa = PBXBuildFile; fileRef = 33BF1DCC1AC624DC00031C69 /* cancel-red.png */; };
 		33BF1DCF1AC624DC00031C69 /* ok-green.png in Resources */ = {isa = PBXBuildFile; fileRef = 33BF1DCD1AC624DC00031C69 /* ok-green.png */; };
 		33BF1DD11AC6297F00031C69 /* save-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 33BF1DD01AC6297F00031C69 /* save-blue.png */; };
+		33CA2C451AE1B8C200BC7804 /* flip-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 33CA2C441AE1B8C200BC7804 /* flip-blue.png */; };
+		33CA2C471AE1BA4300BC7804 /* right-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 33CA2C461AE1BA4300BC7804 /* right-blue.png */; };
 		33CB73691AC49C6900B72A6A /* newImg-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 33CB73681AC49C6900B72A6A /* newImg-white.png */; };
 		33CB736B1AC49D1400B72A6A /* CustomizeCardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CB736A1AC49D1400B72A6A /* CustomizeCardController.swift */; };
 		33CB73711AC4A65000B72A6A /* flip-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 33CB73701AC4A65000B72A6A /* flip-white.png */; };
@@ -122,6 +124,8 @@
 		33BF1DCC1AC624DC00031C69 /* cancel-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cancel-red.png"; path = "Images/cancel-red.png"; sourceTree = "<group>"; };
 		33BF1DCD1AC624DC00031C69 /* ok-green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ok-green.png"; path = "Images/ok-green.png"; sourceTree = "<group>"; };
 		33BF1DD01AC6297F00031C69 /* save-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "save-blue.png"; path = "Images/save-blue.png"; sourceTree = "<group>"; };
+		33CA2C441AE1B8C200BC7804 /* flip-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "flip-blue.png"; path = "Images/flip-blue.png"; sourceTree = "<group>"; };
+		33CA2C461AE1BA4300BC7804 /* right-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "right-blue.png"; path = "Images/right-blue.png"; sourceTree = "<group>"; };
 		33CB73681AC49C6900B72A6A /* newImg-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "newImg-white.png"; path = "Images/newImg-white.png"; sourceTree = "<group>"; };
 		33CB736A1AC49D1400B72A6A /* CustomizeCardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomizeCardController.swift; sourceTree = "<group>"; };
 		33CB73701AC4A65000B72A6A /* flip-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "flip-white.png"; path = "Images/flip-white.png"; sourceTree = "<group>"; };
@@ -214,6 +218,7 @@
 			children = (
 				33BF1DD01AC6297F00031C69 /* save-blue.png */,
 				33BF1DCA1AC600A700031C69 /* delete-white.png */,
+				33CA2C461AE1BA4300BC7804 /* right-blue.png */,
 				33BF1DC21AC5DB2B00031C69 /* newImg-blue.png */,
 				3311FED81ACB9CD8001C3693 /* ok-white.png */,
 				33BF1DCC1AC624DC00031C69 /* cancel-red.png */,
@@ -221,6 +226,7 @@
 				331734381ADCBFA50021DC8B /* cancel-red-forget.png */,
 				3317343A1ADCC5360021DC8B /* ok-gray.png */,
 				33BF1DCD1AC624DC00031C69 /* ok-green.png */,
+				33CA2C441AE1B8C200BC7804 /* flip-blue.png */,
 				33BF1DC31AC5DB2B00031C69 /* text-blue.png */,
 				33CB73701AC4A65000B72A6A /* flip-white.png */,
 				3334393D1AC495CF00A808F9 /* text-white.png */,
@@ -280,10 +286,10 @@
 		33402CF71AC0B7F300265F70 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				33E719B91ADA07A700869D52 /* ReviewFlashcardController.swift */,
 				3320C5C61ABF807B00A90CD4 /* HomeViewController.swift */,
 				3334392E1AC444A500A808F9 /* FlashcardsSummaryController.swift */,
 				33CB736A1AC49D1400B72A6A /* CustomizeCardController.swift */,
+				33E719B91ADA07A700869D52 /* ReviewFlashcardController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -402,6 +408,7 @@
 			files = (
 				333439331AC44EDC00A808F9 /* add-white.png in Resources */,
 				3334393B1AC46FF400A808F9 /* CollectionSummaryCellTemplate.xib in Resources */,
+				33CA2C471AE1BA4300BC7804 /* right-blue.png in Resources */,
 				33BF1DD11AC6297F00031C69 /* save-blue.png in Resources */,
 				33BF1DC51AC5DB2B00031C69 /* text-blue.png in Resources */,
 				33213C391AC1E44700CF1B38 /* cancel-white.png in Resources */,
@@ -412,6 +419,7 @@
 				33213C3B1AC20D6A00CF1B38 /* cancel-white-highlighted.png in Resources */,
 				3317343B1ADCC5360021DC8B /* ok-gray.png in Resources */,
 				331734391ADCBFA50021DC8B /* cancel-red-forget.png in Resources */,
+				33CA2C451AE1B8C200BC7804 /* flip-blue.png in Resources */,
 				333439351AC44F6F00A808F9 /* edit-white.png in Resources */,
 				333D95811AC902BA0028337D /* down-white.png in Resources */,
 				33BF1DC41AC5DB2B00031C69 /* newImg-blue.png in Resources */,
