@@ -11,13 +11,9 @@ import UIKit
 class ReviewFlashcardController: UIViewController, PopupDelegate {
     @IBOutlet private weak var flipButton: UIButton!
     @IBOutlet private weak var nextButton: UIButton!
-    @IBOutlet private weak var currentBackView: UIView!
-    @IBOutlet private weak var currentFrontView: UIView!
-    @IBOutlet private weak var nextFrontView: UIView!
-    @IBOutlet private weak var nextBackView: UIView!
-    @IBOutlet private weak var nextCardView: UIView!
+    @IBOutlet private weak var nextCardView: FlashCardView!
     @IBOutlet private weak var controlButtonsContainer: UIView!
-    @IBOutlet private weak var currentCardView: UIView!
+    @IBOutlet private weak var currentCardView: FlashCardView!
     @IBOutlet private weak var continueButton: UIButton!
     @IBOutlet private weak var rememberButton: UIButton!
     @IBOutlet private weak var quitButton: UIButton!
@@ -34,8 +30,8 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     private var countDownLabelText = 3
     private var navBarHeight: CGFloat = 0
     private let INITIAL_MAIN_TOP_CONSTRAINT_CONSTANT = 40
-
-    private var quizTimer: NSTimer!
+    
+    private var reviewTimer: NSTimer!
     private var countDownTimer: NSTimer!
     private var collectionOfInterest: FlashCardCollection!
     private var cardSet: [FlashCard]!
@@ -48,6 +44,15 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     private let INITIAL_FLIP_TRANSFORM = CGAffineTransformMakeScale(0.1, 0.1)
     private var flipAnimating = false
     private var resultsDictionary: NSDictionary!
+    private var currentCard: FlashCard!
+    private var nextCard: FlashCard!
+    
+    var quizResultsDict:NSDictionary?{
+        get{
+            return self.resultsDictionary
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(white: 0, alpha: 0.6)
@@ -70,7 +75,6 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         currentCardView.layer.borderColor = UIColor(white: 0.5, alpha: 1).CGColor
         currentCardView.clipsToBounds = true
         
-        currentBackView.hidden = true
         
         nextCardView.layer.cornerRadius = 3
         nextCardView.layer.borderWidth = 1
@@ -113,22 +117,19 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        resultsDictionary = NSDictionary()
         countDown()
-        if let firstCard = cardSet.first as FlashCard!{
-            reviewedCardSet.append(firstCard)
-            cardSet.removeAtIndex(0)
-            var frontDict = firstCard.front as! NSDictionary
-            var backDict = firstCard.back as! NSDictionary
-            restoreViewsWithDictionary(frontDict, onView: currentFrontView)
-            restoreViewsWithDictionary(backDict, onView: currentBackView)
+        if !self.cardSet.isEmpty{
+            let firstCard = cardSet.removeAtIndex(0) as FlashCard
+            currentCard = firstCard
+            currentCardView.restoreViewsWithFlashcard(firstCard)
             
-            if let secondCard = cardSet.first as FlashCard!{
-                reviewedCardSet.append(secondCard)
-                cardSet.removeAtIndex(0)
-                frontDict = secondCard.front as! NSDictionary
-                backDict = secondCard.back as! NSDictionary
-                restoreViewsWithDictionary(frontDict, onView: nextFrontView)
-                restoreViewsWithDictionary(backDict, onView: nextBackView)
+            if !self.cardSet.isEmpty{
+                let secondCard = cardSet.removeAtIndex(0) as FlashCard!
+                nextCard = secondCard
+                nextCardView.restoreViewsWithFlashcard(secondCard)
+                //                nextCardView.alpha = 0
+                //                nextCardView.layer.zPosition = 1
             }
             else{
                 println("There's only one card in collection")
@@ -141,35 +142,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         
     }
     
-    private func restoreViewsWithDictionary(dict: NSDictionary, onView view: UIView){
-        for key in dict.allKeys{
-            let element = dict.objectForKey(key) as! NSDictionary
-            let type = element.objectForKey("type") as! String
-            if type == "txt"{
-                let frameValue = element.objectForKey("frame") as! NSValue
-                let frame = frameValue.CGRectValue()
-                var label = UILabel(frame: frame)
-                label.font = UIFont(name: element.objectForKey("font") as! String, size: element.objectForKey("font_size") as! CGFloat)
-                label.text = element.objectForKey("content") as? String
-                label.textAlignment = .Center
-                label.numberOfLines = 0
-                label.lineBreakMode = NSLineBreakMode.ByCharWrapping
-                view.addSubview(label)
-            }
-            else if type == "img"{
-                let frameValue = element.objectForKey("frame") as! NSValue
-                let frame = frameValue.CGRectValue()
-                let imgURL = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String) + "/" + (element.objectForKey("content") as! String)
-                var imageView = UIImageView(frame: frame)
-                imageView.contentMode = UIViewContentMode.ScaleAspectFit
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    let image = UIImage(contentsOfFile: imgURL)
-                    imageView.image = image
-                    view.addSubview(imageView)
-                })
-            }
-        }
-    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -181,7 +154,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     }
     
     func forget(){
-        flip()
+        currentCardView.flip()
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                 self.forgetButton.alpha = 0
@@ -263,13 +236,51 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         nextButton.transform = INITIAL_NEXT_TRANSFORM
     }
     
-    func nextCard(){
-        
+    func showNextCard(){
+        reviewedCardSet.append(currentCard)
+        currentCard = nextCard
+        if !currentCardView.frontIsShowing{
+            currentCardView.flip()
+        }
         hideSecondaryButtons()
-        UIView.animateWithDuration(0.6, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-            self.forgetButton.alpha = 1
-            self.rememberButton.alpha = 1
-            }, completion: { (complete) -> Void in
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            let rotationTransform = CGAffineTransformMakeRotation(CGFloat(-M_PI/6))
+            let translationTransform = CGAffineTransformMakeTranslation(-200, 100)
+            let transform = CGAffineTransformConcat(rotationTransform, translationTransform)
+            UIView.animateWithDuration(0.6, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                self.currentCardView.transform = transform
+                self.currentCardView.alpha = 0
+                //                self.nextCardView.layer.zPosition = 0
+                //                self.nextCardView.alpha = 1
+                }, completion: { (complete) -> Void in
+                    
+                    
+                    // Swap...
+                    let tempCardView = self.currentCardView
+                    self.currentCardView = self.nextCardView
+                    self.nextCardView = tempCardView
+                    
+                    self.mainCardContainer.bringSubviewToFront(self.currentCardView)
+                    
+                    self.nextCardView.transform = CGAffineTransformIdentity
+                    self.nextCardView.alpha = 1
+                    
+                    
+                    println("Swapped!")
+                    if !self.cardSet.isEmpty{
+                        println("Preparing next card...")
+                        let nextCard = self.cardSet.removeAtIndex(0) as FlashCard
+                        self.nextCard = nextCard
+                        self.nextCardView.restoreViewsWithFlashcard(nextCard)
+                    }
+                    
+            })
+            UIView.animateWithDuration(0.6, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                self.forgetButton.alpha = 1
+                self.rememberButton.alpha = 1
+                }, completion: { (complete) -> Void in
+            })
+            
         })
     }
     
@@ -285,17 +296,17 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         }
         else if countDownLabelText == -1{
             timer.invalidate()
-            startQuiz()
+            startReview()
             return
         }
         countdownLabel.text = "\(countDownLabelText)"
     }
     
     func startTiming(){
-        quizTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "updateQuizTimer", userInfo: nil, repeats: true)
+        reviewTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "updatereviewTimer", userInfo: nil, repeats: true)
     }
     
-    func startQuiz(){
+    func startReview(){
         isStarted = true
         isPaused = false
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -322,7 +333,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         self.startTiming()
     }
     
-    func updateQuizTimer(){
+    func updatereviewTimer(){
         numSecondsElapsed++
         timeElapsedLabel.text = formatTimeWithSeconds()
     }
@@ -339,10 +350,10 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         return "Elapsed: " + hourString + ":" + minString + ":" + secString
     }
     
-    func endQuiz(){
-//        dismissViewControllerAnimated(true, completion: { () -> Void in
-//            
-//        })
+    func endReview(){
+        //        dismissViewControllerAnimated(true, completion: { () -> Void in
+        //
+        //        })
         self.performSegueWithIdentifier("completeReview", sender: self)
         
     }
@@ -360,9 +371,9 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         case 4:
             resume()
         case 5:
-            flip()
+            currentCardView.flip()
         case 6:
-            nextCard()
+            showNextCard()
         default:
             break
         }
@@ -401,9 +412,10 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     
     func pause(){
         isPaused = true
-        if quizTimer != nil{
-            quizTimer.invalidate()
-            quizTimer = nil
+        self.mainCardContainer.bringSubviewToFront(coverView)
+        if reviewTimer != nil{
+            reviewTimer.invalidate()
+            reviewTimer = nil
         }
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.countdownLabel.text = "Paused."
@@ -433,7 +445,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     
     func resume(){
         isPaused = false
-        quizTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "updateQuizTimer", userInfo: nil, repeats: true)
+        reviewTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "updatereviewTimer", userInfo: nil, repeats: true)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.transitionWithView(self.controlButtonsContainer, duration: 0.5, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: { () -> Void in
                 self.continueButton.hidden = true
@@ -470,7 +482,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     func popupConfirmBtnDidTapped(popup: Popup) {
         popup.removeFromSuperview()
         hideDimLayer()
-        endQuiz()
+        endReview()
     }
     
     func hideDimLayer(){
@@ -482,37 +494,20 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         })
     }
     
-    func flip(){
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            if !self.flipAnimating{
-                self.flipAnimating = true
-                UIView.transitionWithView(self.currentCardView, duration: 0.6, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: { () -> Void in
-                    self.currentFrontView.hidden = !self.currentFrontView.hidden
-                    self.currentBackView.hidden = !self.currentBackView.hidden
-                    }, completion: { (complete) -> Void in
-                        self.flipAnimating = false
-                })
-            }
-            
-        })
-        
-    }
-    
-
-    
-
     // MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        println("preparing for segue \(segue.identifier!)　")
-    // Get the new view controller using segue.destinationViewController.
-    // Pass the selected object to the new view controller.
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
     }
     
+    private func clearSubviews(viewToBeCleared: UIView){
+        for subview in viewToBeCleared.subviews{
+            subview.removeFromSuperview()
+        }
+    }
     
-
-
     
     
 }
