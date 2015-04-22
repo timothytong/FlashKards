@@ -698,11 +698,15 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             if count(textField.text) > 0{
                 textField.editable = false
                 textField.tag = newElementTag
+                let optimalFontSize = calculateOptimalFontSizeWithText(textField.text, inRect: textField.frame)
+                textField.font = textField.font.fontWithSize(optimalFontSize)
                 var dictionary = NSDictionary(dictionary:[
                     "id": newElementTag,
                     "frame": NSValue(CGRect: textField.frame),
                     "content": textField.text,
-                    "type": "txt"
+                    "type": "txt",
+                    "font_size": optimalFontSize,
+                    "font": "AppleSDGothicNeo-Light"
                     ])
                 
                 if frontShowing{
@@ -923,7 +927,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         // Save image to disk, grab a url to it.
         let side = frontShowing ? "front" : "back"
         let tmpImgPath = documentsDir!.stringByAppendingPathComponent("\(collectionName)/tmp/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
-        let imgPath = documentsDir!.stringByAppendingPathComponent("\(collectionName)/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
+        let imgPath = "\(collectionName)/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png"
         
         UIImagePNGRepresentation(newImage).writeToFile(tmpImgPath, atomically: true)
         
@@ -1007,6 +1011,32 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         if let textView = textViewBeingAdded{
             textView.resignFirstResponder()
         }
+    }
+    
+    
+    private func calculateOptimalFontSizeWithText(text: String, inRect rect: CGRect) -> CGFloat{
+        // Set the frame of the label to the targeted rectangle
+        println("calculateOptimalFontSizeWithText - \(text)")
+        var fontSize: CGFloat = 100;
+        let minFontSize: CGFloat = 20;
+        let adjustedText = " " + text + " "
+        // Fit label width wize
+        let constraintSize = CGSizeMake(rect.width, CGFloat.max)
+        do {
+            // Set current font size
+            let font = UIFont(name: "AppleSDGothicNeo-Light", size: fontSize)
+            // Find label size for current font size
+            let textRect = (adjustedText as NSString).boundingRectWithSize(constraintSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName: font!], context: nil)
+            let labelSize = textRect.size
+            // Done, if created label is within target size
+            if labelSize.height <= rect.height{
+                        println("  --label width: \(labelSize.width) height \(labelSize.height), rect height \(rect.height)")
+                break
+            }
+            fontSize--
+        } while (fontSize > minFontSize)
+        println("  --returning fontsize \(fontSize)")
+        return fontSize
     }
     
     /*
