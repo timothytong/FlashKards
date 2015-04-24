@@ -46,6 +46,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     private var resultsDictionary: NSDictionary!
     private var currentCard: FlashCard!
     private var nextCard: FlashCard!
+    private var endReviewPopup: Popup!
     
     var quizResultsDict:NSDictionary?{
         get{
@@ -316,6 +317,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
             self.pauseButton.userInteractionEnabled = false
             self.forgetButton.userInteractionEnabled = false
             self.rememberButton.userInteractionEnabled = false
+            self.quitButton.userInteractionEnabled = false
             UIView.transitionWithView(self.forgetButton, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
                 self.forgetButton.setImage(UIImage(named: "cancel-white-highlighted.png"), forState: .Normal)
                 }, completion: { (complete) -> Void in
@@ -327,6 +329,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
             UIView.transitionWithView(self.pauseButton, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
                 self.pauseButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
                 }, completion: { (complete) -> Void in
+                    self.endReview()
             })
         }
     }
@@ -376,6 +379,10 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
                 self.pauseButton.setTitleColor(UIColor(red: 11/255, green: 124/255, blue: 250/255, alpha: 1), forState: .Normal)
                 }, completion: { (complete) -> Void in
             })
+            UIView.transitionWithView(self.quitButton, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                self.quitButton.setTitleColor(UIColor(red: 11/255, green: 124/255, blue: 250/255, alpha: 1), forState: .Normal)
+                }, completion: { (complete) -> Void in
+            })
         })
         self.startTiming()
     }
@@ -398,7 +405,38 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     }
     
     func endReview(){
-        self.performSegueWithIdentifier("completeReview", sender: self)
+        let dimLayer = UIView(frame: UIScreen.mainScreen().bounds)
+        dimLayer.backgroundColor = UIColor(white: 0, alpha: 0.6)
+        dimLayer.userInteractionEnabled = true
+        dimLayer.alpha = 0
+        view.addSubview(dimLayer)
+        
+        endReviewPopup = Popup(frame: CGRect(x: view.frame.width/2 - 80, y: view.frame.height/2 - 30, width: 160, height: 60))
+        endReviewPopup.numOptions = 0
+        endReviewPopup.message = "Exiting in 3"
+        endReviewPopup.alpha = 1
+        endReviewPopup.transform = CGAffineTransformIdentity
+        dimLayer.addSubview(endReviewPopup)
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            UIView.animateWithDuration(0.25, delay: 0.25, options: .CurveEaseInOut, animations: { () -> Void in
+                dimLayer.alpha = 1
+                }, completion: { (complete) -> Void in
+                    self.countDownLabelText = 3
+                    let timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "exitCountDown:", userInfo: nil, repeats: true)
+            })
+        })
+    }
+    
+    func exitCountDown(timer: NSTimer){
+        if countDownLabelText > 0 {
+            countDownLabelText--
+            endReviewPopup.message = "Exiting in \(countDownLabelText)"
+        }
+        else{
+            timer.invalidate()
+            self.performSegueWithIdentifier("completeReview", sender: self)
+        }
     }
     
     func buttonPressed(sender: UIButton){

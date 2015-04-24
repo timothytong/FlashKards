@@ -696,10 +696,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                         }, completion: { (complete) -> Void in
                     })
             })
-            
         })
-        
-        
     }
     
     func completeAddTextAction(){
