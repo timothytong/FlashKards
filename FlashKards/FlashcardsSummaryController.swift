@@ -16,6 +16,8 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     private var collectionManager: CollectionsManager!
     private var flashcardCollection: FlashCardCollection!
     private var updateSummaryTimer: NSTimer!
+    private var showResultsScreen = false
+    private var quizResultsDict: NSDictionary?
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionManager = CollectionsManager()
@@ -52,6 +54,13 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     
     override func viewDidAppear(animated: Bool) {
         updateSummaryTimer = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "updateSummary", userInfo: nil, repeats: true)
+        if showResultsScreen {
+            showResultsScreen = false
+            if let dict = self.quizResultsDict{
+                println("Showing results screen")
+                self.performSegueWithIdentifier("showResults", sender: self)
+            }
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -163,6 +172,9 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
             presentViewController(reviewVC, animated: true, completion: nil)
             */
         }
+        else if segue.identifier == "showResults"{
+            
+        }
     }
     
     func popupCancelBtnDidTapped(popup: Popup) {
@@ -172,6 +184,11 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     @IBAction func unwindToSummary(sender: UIStoryboardSegue)
     {
         println("unwinded to summary, destination \(sender.destinationViewController), originating VC \(sender.sourceViewController)")
-        
+        if sender.identifier == "completeReview"{
+            println("Complete Review")
+            let sourceController = sender.sourceViewController as! ReviewFlashcardController
+            showResultsScreen = true
+            quizResultsDict = sourceController.quizResultsDict
+        }
     }
 }

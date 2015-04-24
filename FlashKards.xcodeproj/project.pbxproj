@@ -10,6 +10,7 @@
 		3311FED91ACB9CD8001C3693 /* ok-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 3311FED81ACB9CD8001C3693 /* ok-white.png */; };
 		331734391ADCBFA50021DC8B /* cancel-red-forget.png in Resources */ = {isa = PBXBuildFile; fileRef = 331734381ADCBFA50021DC8B /* cancel-red-forget.png */; };
 		3317343B1ADCC5360021DC8B /* ok-gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 3317343A1ADCC5360021DC8B /* ok-gray.png */; };
+		3318DD311AE9197100ECB48F /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3318DD301AE9197100ECB48F /* Utilities.swift */; };
 		3320C5C21ABF807B00A90CD4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5C11ABF807B00A90CD4 /* AppDelegate.swift */; };
 		3320C5C51ABF807B00A90CD4 /* FlashKards.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5C31ABF807B00A90CD4 /* FlashKards.xcdatamodeld */; };
 		3320C5C71ABF807B00A90CD4 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5C61ABF807B00A90CD4 /* HomeViewController.swift */; };
@@ -53,6 +54,7 @@
 		33CB73731AC4B65600B72A6A /* RectSelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CB73721AC4B65600B72A6A /* RectSelView.swift */; };
 		33E719BA1ADA07A700869D52 /* ReviewFlashcardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E719B91ADA07A700869D52 /* ReviewFlashcardController.swift */; };
 		33E719BC1ADA081E00869D52 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E719BB1ADA081E00869D52 /* Constants.swift */; };
+		33ED156E1AE74A14004D8629 /* FlashCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33ED156D1AE74A14004D8629 /* FlashCardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +84,7 @@
 		3311FED81ACB9CD8001C3693 /* ok-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ok-white.png"; path = "Images/ok-white.png"; sourceTree = "<group>"; };
 		331734381ADCBFA50021DC8B /* cancel-red-forget.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cancel-red-forget.png"; path = "Images/cancel-red-forget.png"; sourceTree = "<group>"; };
 		3317343A1ADCC5360021DC8B /* ok-gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ok-gray.png"; path = "Images/ok-gray.png"; sourceTree = "<group>"; };
+		3318DD301AE9197100ECB48F /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		3320C5BC1ABF807B00A90CD4 /* FlashKards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlashKards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3320C5C01ABF807B00A90CD4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3320C5C11ABF807B00A90CD4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -132,6 +135,7 @@
 		33CB73721AC4B65600B72A6A /* RectSelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectSelView.swift; sourceTree = "<group>"; };
 		33E719B91ADA07A700869D52 /* ReviewFlashcardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewFlashcardController.swift; sourceTree = "<group>"; };
 		33E719BB1ADA081E00869D52 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		33ED156D1AE74A14004D8629 /* FlashCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardView.swift; sourceTree = "<group>"; };
 		33EE18741AD59FC8006373AA /* FlashKards-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FlashKards-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -303,6 +307,7 @@
 				339D3BCC1ACB046100E4A6EE /* ImageCollectionCell */,
 				33402CF11AC09CB800265F70 /* HomePageCell */,
 				3334393C1AC4703C00A808F9 /* CollectionSummaryCell */,
+				33ED156D1AE74A14004D8629 /* FlashCardView.swift */,
 			);
 			name = AuxiliaryViews;
 			sourceTree = "<group>";
@@ -313,6 +318,7 @@
 				33E719BB1ADA081E00869D52 /* Constants.swift */,
 				3375E2341AC3642B00C39472 /* CollectionsManager.swift */,
 				3389247A1ACF9093005BBC94 /* FileManager.swift */,
+				3318DD301AE9197100ECB48F /* Utilities.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -464,9 +470,11 @@
 				339D3BCF1ACB048500E4A6EE /* CollectionViewCell.swift in Sources */,
 				3330EE6D1AE051220004BDC0 /* CollectionHistory.m in Sources */,
 				33CB73731AC4B65600B72A6A /* RectSelView.swift in Sources */,
+				33ED156E1AE74A14004D8629 /* FlashCardView.swift in Sources */,
 				3320C5C21ABF807B00A90CD4 /* AppDelegate.swift in Sources */,
 				3330EE6B1AE051220004BDC0 /* FlashCard.m in Sources */,
 				3330EE6C1AE051220004BDC0 /* FlashCardCollection.m in Sources */,
+				3318DD311AE9197100ECB48F /* Utilities.swift in Sources */,
 				33CB736B1AC49D1400B72A6A /* CustomizeCardController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

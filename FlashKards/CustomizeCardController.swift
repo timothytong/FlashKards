@@ -13,7 +13,7 @@ enum EditMode{
     case AddImgMode
 }
 
-class CustomizeCardController: UIViewController, PopupDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+class CustomizeCardController: UIViewController, PopupDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITextViewDelegate {
     // MARK: Variables
     // IBOutlets
     @IBOutlet private weak var confirmAddTextBtn: UIButton!
@@ -294,6 +294,8 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         rectSel.alpha = 0
         flashcardContainerView.addSubview(rectSel)
         flashcardContainerView.bringSubviewToFront(rectSel)
+        confirmAddElementBtn.userInteractionEnabled = true
+        exitEditBtn.userInteractionEnabled = true
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.transitionWithView(self.confirmBtnsContainerView, duration: 0.6, options: UIViewAnimationOptions.TransitionFlipFromBottom, animations: { () -> Void in
                 self.saveBtn.hidden = true
@@ -630,8 +632,21 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         }
     }
     
+    func textViewTapped(sender: UITapGestureRecognizer){
+        println("TextView tapped!")
+        if let textView = sender.view{
+            if textView.isKindOfClass(UITextField){
+                if !textView.isFirstResponder(){
+                    sender.view!.becomeFirstResponder()
+                }
+            }
+        }
+    }
+    
     func createTextAction(){
         // Show the image with an UIImageView
+        confirmAddElementBtn.userInteractionEnabled = false
+        exitEditBtn.userInteractionEnabled = false
         var textField = UITextView(frame: CGRect(x: rectSel.frame.origin.x, y: rectSel.frame.origin.y, width: rectSel.frame.width, height: rectSel.frame.height))
         textField.tag = newElementTag
         textField.layer.borderWidth = 1
@@ -639,18 +654,19 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         textField.alpha = 0
         textField.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 1)
         textField.font = UIFont(name: "AppleSDGothicNeo-Light", size: 25)
-        textField.scrollEnabled = false
         textField.textAlignment = .Center
-        view.addSubview(textField)
+        textField.delegate = self
         textField.becomeFirstResponder()
-        self.textViewBeingAdded = textField
+        textViewBeingAdded = textField
         // TODO: Add logic to move elements up when the keyboard is up so the user can see the center of the textfield
         // TODO: Add pan gesture and long press gesture (option to delete)...
         if frontShowing{
             frontView.addSubview(textField)
+            frontView.bringSubviewToFront(textField)
         }
         else{
             backView.addSubview(textField)
+            backView.bringSubviewToFront(textField)
         }
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -689,16 +705,19 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     func completeAddTextAction(){
         // Store in a dictionary then show it
         if let textField = textViewBeingAdded{
-            UIView.animateWithDuration(0.3, delay: 0, options: .CurveEaseIn, animations: { () -> Void in
-                self.cancelAddTxtBtn.alpha = 0
-                self.confirmAddTextBtn.alpha = 0
-                self.confirmAddElementBtn.alpha = 1
+            UIView.transitionWithView(textField, duration: 0.2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                textField.layer.borderWidth = 0
                 }, completion: { (complete) -> Void in
+                    self.textViewBeingAdded = nil
+                    self.exitEditMode()
+                    self.cancelAddTxtBtn.alpha = 0
+                    self.confirmAddTextBtn.alpha = 0
+                    self.confirmAddElementBtn.alpha = 1
             })
             if count(textField.text) > 0{
                 textField.editable = false
                 textField.tag = newElementTag
-                let optimalFontSize = calculateOptimalFontSizeWithText(textField.text, inRect: textField.frame)
+                let optimalFontSize = Utilities.calculateOptimalFontSizeWithText(textField.text, inRect: textField.frame)
                 textField.font = textField.font.fontWithSize(optimalFontSize)
                 var dictionary = NSDictionary(dictionary:[
                     "id": newElementTag,
@@ -720,12 +739,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                     numElementsBack++
                 }
                 newElementTag++
-                UIView.transitionWithView(textField, duration: 0.7, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-                    textField.layer.borderWidth = 0
-                    }, completion: { (complete) -> Void in
-                        self.textViewBeingAdded = nil
-                        self.exitEditMode()
-                })
             }
             else{
                 var warningPopup = Popup(frame: CGRect(x: view.frame.width / 2 - 80, y: view.frame.height / 2 - 70, width: 160, height: 140))
@@ -924,6 +937,8 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     }
     
     func completeImgImportProcessWithImage(newImage: UIImage!){
+        confirmAddElementBtn.userInteractionEnabled = false
+        exitEditBtn.userInteractionEnabled = false
         // Save image to disk, grab a url to it.
         let side = frontShowing ? "front" : "back"
         let tmpImgPath = documentsDir!.stringByAppendingPathComponent("\(collectionName)/tmp/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
@@ -938,7 +953,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         imageView.tag = newElementTag
         imageView.layer.borderWidth = 1
         
-        
         // TODO: Add pan gesture and long press gesture (option to delete)...
         
         // Store in a dictionary then show it
@@ -946,7 +960,9 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             "id": newElementTag,
             "frame": NSValue(CGRect: imageView.frame),
             "content": imgPath,
-            "type": "img"
+            "type": "img",
+            "img_width": newImage.size.width,
+            "img_height": newImage.size.height
             ])
         
         if frontShowing{
@@ -1008,36 +1024,25 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        if let touch = touches.first as? UITouch{
+            if let tv = self.textViewBeingAdded{
+                let location = touch.locationInView(tv)
+                if CGRectContainsPoint(tv.bounds, location){
+                    if !tv.isFirstResponder() && tv.editable{
+                        tv.becomeFirstResponder()
+                        return
+                    }
+                }
+            }
+            
+        }
         if let textView = textViewBeingAdded{
             textView.resignFirstResponder()
         }
     }
     
     
-    private func calculateOptimalFontSizeWithText(text: String, inRect rect: CGRect) -> CGFloat{
-        // Set the frame of the label to the targeted rectangle
-        println("calculateOptimalFontSizeWithText - \(text)")
-        var fontSize: CGFloat = 100;
-        let minFontSize: CGFloat = 20;
-        let adjustedText = " " + text + " "
-        // Fit label width wize
-        let constraintSize = CGSizeMake(rect.width, CGFloat.max)
-        do {
-            // Set current font size
-            let font = UIFont(name: "AppleSDGothicNeo-Light", size: fontSize)
-            // Find label size for current font size
-            let textRect = (adjustedText as NSString).boundingRectWithSize(constraintSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName: font!], context: nil)
-            let labelSize = textRect.size
-            // Done, if created label is within target size
-            if labelSize.height <= rect.height{
-                        println("  --label width: \(labelSize.width) height \(labelSize.height), rect height \(rect.height)")
-                break
-            }
-            fontSize--
-        } while (fontSize > minFontSize)
-        println("  --returning fontsize \(fontSize)")
-        return fontSize
-    }
+    
     
     /*
     // MARK: - Navigation

@@ -13,18 +13,24 @@ class FlashCardView: UIView {
     var back: UIView!
     private var flipAnimating = false
     private var frontShowing = true
+    private var isLast = false
     var frontIsShowing: Bool{
         get{
             return frontShowing
         }
     }
+    var isEndOfQuizCard: Bool{
+        get{
+            return isLast
+        }
+    }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-
+        
         front = UIView()
         back = UIView()
-        let viewsDict = ["front": front, "back": back]        
+        let viewsDict = ["front": front, "back": back]
         front.backgroundColor = UIColor.redColor()
         back.backgroundColor = UIColor.greenColor()
         
@@ -39,7 +45,7 @@ class FlashCardView: UIView {
             addConstraints(constraint)
         }
         
-
+        
         back.hidden = true
     }
     /*
@@ -54,7 +60,7 @@ class FlashCardView: UIView {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             if !self.flipAnimating{
                 self.flipAnimating = true
-                UIView.transitionWithView(self, duration: 0.6, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: { () -> Void in
+                UIView.transitionWithView(self, duration: 0.4, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: { () -> Void in
                     self.front.hidden = !self.front.hidden
                     self.back.hidden = !self.back.hidden
                     }, completion: { (complete) -> Void in
@@ -110,5 +116,4 @@ class FlashCardView: UIView {
             }
         }
     }
-    
 }

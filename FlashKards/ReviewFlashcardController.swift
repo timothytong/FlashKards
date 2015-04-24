@@ -30,12 +30,12 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     private var countDownLabelText = 3
     private var navBarHeight: CGFloat = 0
     private let INITIAL_MAIN_TOP_CONSTRAINT_CONSTANT = 40
-    
+    private let INITIAL_NEXT_CARD_VIEW_SCALE_TRANSFORM = CGAffineTransformMakeScale(0.8, 0.8)
     private var reviewTimer: NSTimer!
     private var countDownTimer: NSTimer!
     private var collectionOfInterest: FlashCardCollection!
     private var cardSet: [FlashCard]!
-    private var reviewedCardSet: [FlashCard]!
+    private var forgottenCardSet: [FlashCard]!
     private var numSecondsElapsed: Int64 = 0
     private var isPaused = true
     private var dimLayer: UIView!
@@ -60,7 +60,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
             navBarHeight = navbarHeight
             containerViewTopConstraint.constant += navbarHeight
         }
-        reviewedCardSet = [FlashCard]()
+        forgottenCardSet = [FlashCard]()
         view.sendSubviewToBack(backgroundView)
         forgetButton.userInteractionEnabled = false
         rememberButton.userInteractionEnabled = false
@@ -128,8 +128,8 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
                 let secondCard = cardSet.removeAtIndex(0) as FlashCard!
                 nextCard = secondCard
                 nextCardView.restoreViewsWithFlashcard(secondCard)
-                //                nextCardView.alpha = 0
-                //                nextCardView.layer.zPosition = 1
+                nextCardView.alpha = 0
+                nextCardView.transform = INITIAL_NEXT_CARD_VIEW_SCALE_TRANSFORM
             }
             else{
                 println("There's only one card in collection")
@@ -138,11 +138,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         else{
             println("No card in collection")
         }
-        
-        
     }
-    
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -150,10 +146,11 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     }
     
     func remember(){
-        
+        showNextCard()
     }
     
     func forget(){
+        forgottenCardSet.append(currentCard)
         currentCardView.flip()
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
@@ -237,51 +234,101 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     }
     
     func showNextCard(){
-        reviewedCardSet.append(currentCard)
-        currentCard = nextCard
-        if !currentCardView.frontIsShowing{
-            currentCardView.flip()
-        }
-        hideSecondaryButtons()
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            let rotationTransform = CGAffineTransformMakeRotation(CGFloat(-M_PI/6))
-            let translationTransform = CGAffineTransformMakeTranslation(-200, 100)
-            let transform = CGAffineTransformConcat(rotationTransform, translationTransform)
-            UIView.animateWithDuration(0.6, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.currentCardView.transform = transform
-                self.currentCardView.alpha = 0
-                //                self.nextCardView.layer.zPosition = 0
-                //                self.nextCardView.alpha = 1
-                }, completion: { (complete) -> Void in
-                    
-                    
-                    // Swap...
-                    let tempCardView = self.currentCardView
-                    self.currentCardView = self.nextCardView
-                    self.nextCardView = tempCardView
-                    
-                    self.mainCardContainer.bringSubviewToFront(self.currentCardView)
-                    
+        if self.cardSet != nil{
+            currentCard = nextCard
+            nextCardView.alpha = 1
+            if !currentCardView.frontIsShowing{
+                currentCardView.flip()
+            }
+            forgetButton.userInteractionEnabled = false
+            rememberButton.userInteractionEnabled = false
+            hideSecondaryButtons()
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                let rotationTransform = CGAffineTransformMakeRotation(CGFloat(-M_PI/6))
+                let translationTransform = CGAffineTransformMakeTranslation(-200, 100)
+                let scaleTransform = CGAffineTransformMakeScale(1.2, 1.2)
+                let transform = CGAffineTransformConcat(rotationTransform, translationTransform)
+                let finalTransform = CGAffineTransformConcat(transform, scaleTransform)
+                UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                    self.currentCardView.transform = finalTransform
+                    self.currentCardView.alpha = 0
                     self.nextCardView.transform = CGAffineTransformIdentity
                     self.nextCardView.alpha = 1
-                    
-                    
-                    println("Swapped!")
-                    if !self.cardSet.isEmpty{
-                        println("Preparing next card...")
-                        let nextCard = self.cardSet.removeAtIndex(0) as FlashCard
-                        self.nextCard = nextCard
-                        self.nextCardView.restoreViewsWithFlashcard(nextCard)
-                    }
-                    
+                    }, completion: { (complete) -> Void in
+                        self.forgetButton.userInteractionEnabled = true
+                        self.rememberButton.userInteractionEnabled = true
+                        
+                        // Swap...
+                        
+                        let tempCardView = self.currentCardView
+                        self.currentCardView = self.nextCardView
+                        self.nextCardView = tempCardView
+                        
+                        self.mainCardContainer.bringSubviewToFront(self.currentCardView)
+                        
+                        self.nextCardView.transform = CGAffineTransformIdentity
+                        self.nextCardView.alpha = 0
+                        
+                        println("Swapped!")
+                        self.nextCardView.transform = self.INITIAL_NEXT_CARD_VIEW_SCALE_TRANSFORM
+                        
+                        if !self.cardSet.isEmpty{
+                            println("Preparing next card...")
+                            let nextCard = self.cardSet.removeAtIndex(0) as FlashCard
+                            self.nextCard = nextCard
+                            self.nextCardView.restoreViewsWithFlashcard(nextCard)
+                        }
+                        else if !self.forgottenCardSet.isEmpty{
+                            println("Preparing a forgotten card...")
+                            let nextCard = self.forgottenCardSet.removeAtIndex(0) as FlashCard
+                            self.nextCard = nextCard
+                            self.nextCardView.restoreViewsWithFlashcard(nextCard)
+                        }
+                        else{
+                            self.cardSet = nil
+                            self.countdownLabel.text = "Done"
+                        }
+                        
+                        
+                        
+                        
+                        
+                })
+                UIView.animateWithDuration(0.6, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+                    self.forgetButton.alpha = 1
+                    self.rememberButton.alpha = 1
+                    }, completion: { (complete) -> Void in
+                })
+                
             })
-            UIView.animateWithDuration(0.6, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-                self.forgetButton.alpha = 1
-                self.rememberButton.alpha = 1
+        }
+        else{
+            self.mainCardContainer.bringSubviewToFront(self.coverView)
+            if self.reviewTimer != nil{
+                self.reviewTimer.invalidate()
+                self.reviewTimer = nil
+            }
+            
+            UIView.transitionWithView(self.mainCardContainer, duration: 0.5, options: UIViewAnimationOptions.TransitionCurlDown, animations: { () -> Void in
+                self.coverView.hidden = false
                 }, completion: { (complete) -> Void in
             })
-            
-        })
+            self.pauseButton.userInteractionEnabled = false
+            self.forgetButton.userInteractionEnabled = false
+            self.rememberButton.userInteractionEnabled = false
+            UIView.transitionWithView(self.forgetButton, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                self.forgetButton.setImage(UIImage(named: "cancel-white-highlighted.png"), forState: .Normal)
+                }, completion: { (complete) -> Void in
+            })
+            UIView.transitionWithView(self.rememberButton, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                self.rememberButton.setImage(UIImage(named: "ok-gray.png"), forState: .Normal)
+                }, completion: { (complete) -> Void in
+            })
+            UIView.transitionWithView(self.pauseButton, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                self.pauseButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
+                }, completion: { (complete) -> Void in
+            })
+        }
     }
     
     func countDown(){
@@ -351,11 +398,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     }
     
     func endReview(){
-        //        dismissViewControllerAnimated(true, completion: { () -> Void in
-        //
-        //        })
         self.performSegueWithIdentifier("completeReview", sender: self)
-        
     }
     
     func buttonPressed(sender: UIButton){
