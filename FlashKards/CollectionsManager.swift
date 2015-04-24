@@ -126,7 +126,7 @@ class CollectionsManager: NSObject {
         return 0
     }
     
-    func addNewFlashcardWithData(newCardDict: NSDictionary!, toCollection collectionName: String!){
+    func addNewFlashcardWithData(newCardDict: NSDictionary, toCollection collectionName: String){
         let frontDict = newCardDict["front"]! as! NSDictionary
         let backDict = newCardDict["back"]! as! NSDictionary
         if let targetCollection = searchExistingCollectionsWithName(collectionName) as? FlashCardCollection{

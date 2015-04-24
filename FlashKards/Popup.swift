@@ -135,18 +135,22 @@ class Popup: UIView {
     }
     
     func confirmBtnTapped(){
-        hide()
-        if (self.delegate?.respondsToSelector(Selector("popupConfirmBtnDidTapped:")) == true){
-            self.delegate!.popupConfirmBtnDidTapped!(self)
+        hide { () -> () in
+            if (self.delegate?.respondsToSelector(Selector("popupConfirmBtnDidTapped:")) == true){
+                self.delegate!.popupConfirmBtnDidTapped!(self)
+            }
         }
+        
         
     }
     func cancelBtnTapped(){
-        hide()
-        if (self.delegate?.respondsToSelector(Selector("popupCancelBtnDidTapped:")) == true){
-            println("Calling delegate...")
-            self.delegate!.popupCancelBtnDidTapped!(self)
+        hide { () -> () in
+            if (self.delegate?.respondsToSelector(Selector("popupCancelBtnDidTapped:")) == true){
+                println("Calling delegate...")
+                self.delegate!.popupCancelBtnDidTapped!(self)
+            }
         }
+        
     }
     
     func show(){
@@ -164,13 +168,14 @@ class Popup: UIView {
         })
     }
     
-    func hide(){
+    func hide(completionHandler: ()->()){
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
                 self.transform = CGAffineTransformMakeScale(0.8, 0.8)
                 self.alpha = 0
                 }, completion: { (complete) -> Void in
                     self.transform = CGAffineTransformMakeScale(1.1, 1.1)
+                    completionHandler()
             })
         })
     }
