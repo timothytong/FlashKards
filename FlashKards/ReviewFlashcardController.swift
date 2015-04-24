@@ -47,7 +47,8 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     private var currentCard: FlashCard!
     private var nextCard: FlashCard!
     private var endReviewPopup: Popup!
-    
+    private var cardsDone = 0
+
     var quizResultsDict:NSDictionary?{
         get{
             return self.resultsDictionary
@@ -147,7 +148,13 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     }
     
     func remember(){
+        cardsDone++
+        updateCardsDoneLabel()
         showNextCard()
+    }
+    
+    func updateCardsDoneLabel(){
+        completedCardsNumLabel.text = "\(cardsDone)/\(collectionOfInterest.numCards)"
     }
     
     func forget(){
