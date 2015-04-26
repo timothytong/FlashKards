@@ -48,7 +48,8 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     private var nextCard: FlashCard!
     private var endReviewPopup: Popup!
     private var cardsDone = 0
-
+    private var cardsForgotten = 0
+    
     var quizResultsDict:NSDictionary?{
         get{
             return self.resultsDictionary
@@ -159,6 +160,11 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     
     func forget(){
         forgottenCardSet.append(currentCard)
+        if currentCard.forgotten == false{
+            println("First time forgotten")
+            currentCard.forgotten = true
+            cardsForgotten++
+        }
         currentCardView.flip()
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
@@ -296,11 +302,6 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
                             self.cardSet = nil
                             self.countdownLabel.text = "Done"
                         }
-                        
-                        
-                        
-                        
-                        
                 })
                 UIView.animateWithDuration(0.6, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                     self.forgetButton.alpha = 1
@@ -311,6 +312,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
             })
         }
         else{
+            self.completedCardsNumLabel.text = "\(self.collectionOfInterest.numCards)/\(self.collectionOfInterest.numCards)"
             self.mainCardContainer.bringSubviewToFront(self.coverView)
             if self.reviewTimer != nil{
                 self.reviewTimer.invalidate()
@@ -336,7 +338,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
             UIView.transitionWithView(self.pauseButton, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
                 self.pauseButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
                 }, completion: { (complete) -> Void in
-                    self.endReview()
+                    self.endReview(true)
             })
         }
     }
@@ -411,34 +413,34 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         return "Elapsed: " + hourString + ":" + minString + ":" + secString
     }
     
-    func endReview(){
-        let dimLayer = UIView(frame: UIScreen.mainScreen().bounds)
-        dimLayer.backgroundColor = UIColor(white: 0, alpha: 0.6)
-        dimLayer.userInteractionEnabled = true
-        dimLayer.alpha = 0
-        view.addSubview(dimLayer)
-        
-        endReviewPopup = Popup(frame: CGRect(x: view.frame.width/2 - 80, y: view.frame.height/2 - 30, width: 160, height: 60))
-        endReviewPopup.numOptions = 0
-        endReviewPopup.message = "Exiting in 3"
-        endReviewPopup.alpha = 1
-        endReviewPopup.transform = CGAffineTransformIdentity
-        dimLayer.addSubview(endReviewPopup)
-        
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            UIView.animateWithDuration(0.25, delay: 0.25, options: .CurveEaseInOut, animations: { () -> Void in
-                dimLayer.alpha = 1
-                }, completion: { (complete) -> Void in
-                    self.countDownLabelText = 3
-                    let timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "exitCountDown:", userInfo: nil, repeats: true)
+    func endReview(withCountDown: Bool){
+        if withCountDown{
+            endReviewPopup = Popup(frame: CGRect(x: view.frame.width/2 - 80, y: view.frame.height/2 - 30, width: 160, height: 60))
+            endReviewPopup.numOptions = 0
+            endReviewPopup.message = "Exiting in 3 "
+            endReviewPopup.alpha = 1
+            endReviewPopup.transform = CGAffineTransformIdentity
+            dimLayer.addSubview(endReviewPopup)
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                UIView.animateWithDuration(0.25, delay: 0.25, options: .CurveEaseInOut, animations: { () -> Void in
+                    self.dimLayer.alpha = 1
+                    }, completion: { (complete) -> Void in
+                        self.countDownLabelText = 3
+                        let timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "exitCountDown:", userInfo: nil, repeats: true)
+                })
             })
-        })
+            
+        }
+        else{
+            self.performSegueWithIdentifier("completeReview", sender: self)
+        }
     }
     
     func exitCountDown(timer: NSTimer){
         if countDownLabelText > 0 {
             countDownLabelText--
-            endReviewPopup.message = "Exiting in \(countDownLabelText)"
+            endReviewPopup.message = "Exiting in \(countDownLabelText) "
         }
         else{
             timer.invalidate()
@@ -570,7 +572,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     func popupConfirmBtnDidTapped(popup: Popup) {
         popup.removeFromSuperview()
         hideDimLayer()
-        endReview()
+        endReview(false)
     }
     
     func hideDimLayer(){
@@ -588,6 +590,19 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        var status = "aborted"
+        if cardsDone == collectionOfInterest.numCards{
+            status = "complete"
+            collectionOfInterest.updateLastReviewTimeToCurrentTime()
+        }
+        resultsDictionary = NSDictionary(dictionary: [
+            "status": status,
+            "cardsReviewed": "\(cardsDone)",
+            "timeElapsed": "\(numSecondsElapsed)",
+            "cardsForgotten": "\(cardsForgotten)"
+            ])
+        collectionOfInterest.updateCardsMemorizedVal(Int32(collectionOfInterest.numCards.integerValue - cardsForgotten))
+        
     }
     
     private func clearSubviews(viewToBeCleared: UIView){

@@ -419,7 +419,7 @@
         <!--Results Controller-->
         <scene sceneID="YhK-DW-5BL">
             <objects>
-                <viewController id="TuS-cR-lvu" userLabel="Results Controller" sceneMemberID="viewController">
+                <viewController id="TuS-cR-lvu" userLabel="Results Controller" customClass="ResultsController" customModule="FlashKards" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Lhf-8i-sDu"/>
                         <viewControllerLayoutGuide type="bottom" id="9ja-Ig-5ru"/>
@@ -429,22 +429,49 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S4i-CS-mbU">
-                                <rect key="frame" x="554" y="20" width="30" height="30"/>
+                                <rect key="frame" x="557" y="32" width="27" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="YrE-av-EG1"/>
+                                    <constraint firstAttribute="width" constant="27" id="YrE-av-EG1"/>
                                     <constraint firstAttribute="height" constant="30" id="niM-Ho-0o8"/>
                                 </constraints>
                                 <state key="normal" image="down-white.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Summary." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6z4-h1-tAQ">
+                                <rect key="frame" x="16" y="29" width="568" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="u8N-0K-hZw"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNextCondensed-Regular" family="Avenir Next Condensed" pointSize="25"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vRk-uc-0DB">
+                                <rect key="frame" x="150" y="69" width="300" height="1"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="YXd-dt-why"/>
+                                    <constraint firstAttribute="width" constant="300" id="tOx-EV-tcF"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.24313725489999999" green="0.24313725489999999" blue="0.24313725489999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="vRk-uc-0DB" firstAttribute="top" secondItem="6z4-h1-tAQ" secondAttribute="bottom" constant="5" id="5O5-v8-YhF"/>
+                            <constraint firstItem="6z4-h1-tAQ" firstAttribute="leading" secondItem="JSW-JK-ud7" secondAttribute="leadingMargin" id="7IA-1U-svi"/>
+                            <constraint firstItem="6z4-h1-tAQ" firstAttribute="top" secondItem="Lhf-8i-sDu" secondAttribute="bottom" constant="9" id="F3R-H9-OOb"/>
                             <constraint firstItem="S4i-CS-mbU" firstAttribute="trailing" secondItem="JSW-JK-ud7" secondAttribute="trailingMargin" id="HG3-Vj-ZO4"/>
-                            <constraint firstItem="S4i-CS-mbU" firstAttribute="top" secondItem="Lhf-8i-sDu" secondAttribute="bottom" id="xqH-1J-Vqk"/>
+                            <constraint firstItem="6z4-h1-tAQ" firstAttribute="trailing" secondItem="JSW-JK-ud7" secondAttribute="trailingMargin" id="QYv-9q-5UL"/>
+                            <constraint firstAttribute="centerX" secondItem="vRk-uc-0DB" secondAttribute="centerX" id="iRN-ZD-pKp"/>
+                            <constraint firstItem="S4i-CS-mbU" firstAttribute="top" secondItem="Lhf-8i-sDu" secondAttribute="bottom" constant="12" id="xqH-1J-Vqk"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="exitControllerBtn" destination="S4i-CS-mbU" id="guC-EF-YUh"/>
+                        <outlet property="sepLine" destination="JSW-JK-ud7" id="gUt-wJ-ZwA"/>
+                        <outlet property="sepLineWidthConstraint" destination="tOx-EV-tcF" id="3k4-N5-JSj"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IrQ-Sp-cJ8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

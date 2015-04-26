@@ -99,7 +99,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         case 1:
             let numCardsMem = flashcardCollection.numCardsMemorized.integerValue
             let numCards = flashcardCollection.numCards.integerValue
-            let progress = (numCards == 0 && numCardsMem == 0) ? 100 : numCardsMem / numCards
+            let progress = (numCards == 0 && numCardsMem == 0) ? 100 : numCardsMem * 100 / numCards
             cell.populateFieldsWithNumberString("\(progress)", Subtext1: "PERCENT", andSubtext2: "Memorized")
         case 2:
             cell.populateFieldsWithNumberString(relTimeDiff[0], Subtext1: relTimeDiff[1], andSubtext2: "Last reviewed")
@@ -166,14 +166,19 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
             let reviewVC: ReviewFlashcardController = segue.destinationViewController as! ReviewFlashcardController
             reviewVC.configureWithCollection(flashcardCollection)
             flashcardCollection.lastReviewed = NSDate.timeIntervalSinceReferenceDate()
-            flashcardCollection.updateLastReviewTimeToCurrentTime()
             /*
             navigationController?.modalPresentationStyle = UIModalPresentationStyle.CurrentContext
             presentViewController(reviewVC, animated: true, completion: nil)
             */
         }
         else if segue.identifier == "showResults"{
-            
+            let resultsVC: ResultsController = segue.destinationViewController as! ResultsController
+            if let resultsDict = quizResultsDict{
+                resultsVC.configureWithResults(resultsDict, andCollection: flashcardCollection)
+            }
+            else{
+                println("SOMETHING IS WRONG")
+            }
         }
     }
     
