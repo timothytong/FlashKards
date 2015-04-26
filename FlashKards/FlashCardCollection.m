@@ -36,4 +36,16 @@
     }
 }
 
+- (void)updateCardsMemorizedVal: (int)val{
+    self.numCardsMemorized = [NSNumber numberWithInt: val];
+    NSManagedObjectContext *context = [self managedObjectContext];
+    NSError *error;
+    if([context save:&error]){
+        NSLog(@"Updated numCardsMemorized successfully");
+    }
+    else{
+        NSLog(@"Update numCardsMemorized failed");
+    }
+}
+
 @end

@@ -44,4 +44,5 @@
 - (void)removeReviewHistory:(NSOrderedSet *)values;
 
 - (void)updateLastReviewTimeToCurrentTime;
+- (void)updateCardsMemorizedVal: (int)val;
 @end
