@@ -10,10 +10,13 @@ import UIKit
 class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITableViewDataSource, PopupDelegate {
     @IBOutlet private weak var editButton: UIButton!
     @IBOutlet private weak var tableViewTopConstraint: NSLayoutConstraint!
-    // If iPhone 4 move up!
+
+    @IBOutlet weak var buttonsBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var suggestedActionLabel: UILabel!
     private var collectionManager: CollectionsManager!
+    @IBOutlet weak var tableViewSugActionVConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tableViewSugActVConstraint: NSLayoutConstraint!
     private var flashcardCollection: FlashCardCollection!
     private var updateSummaryTimer: NSTimer!
     private var showResultsScreen = false
@@ -28,6 +31,15 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
             tableView.registerNib(nib, forCellReuseIdentifier: "summaryCell")
             tableView.separatorStyle = .None
             tableView.scrollEnabled = false
+        }
+        if Utilities.IS_IPHONE4(){
+            tableViewTopConstraint.constant -= 20
+            tableViewSugActionVConstraint.constant -= 10
+        }
+        else if !Utilities.IS_IPHONE5(){
+            buttonsBottomConstraint.constant += 20
+            tableViewTopConstraint.constant += 30
+            tableViewSugActVConstraint.constant += 40
         }
         editButton.addTarget(self, action: "editButtonPressed", forControlEvents: .TouchUpInside)
         // Do any additional setup after loading the view.
@@ -77,7 +89,8 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     
     func configureWithCollection(flashcardCol: FlashCardCollection!){
         flashcardCollection = flashcardCol
-        navigationItem.title = flashcardCollection.name
+        println("\(flashcardCollection.name.capitalizedString)")
+        navigationItem.title = flashcardCollection.name.uppercaseString
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
