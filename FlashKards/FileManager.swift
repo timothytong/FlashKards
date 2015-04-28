@@ -36,11 +36,13 @@ class FileManager: NSObject {
         var dir = directoryName
         var dataPath = documentsDirectory.stringByAppendingPathComponent("\(dir)")
         println("Deleting all files in dir \(dataPath)")
-        let url = NSURL(string: dataPath)!
-        let enumerator = fileManager.enumeratorAtURL(url, includingPropertiesForKeys: nil, options: nil, errorHandler: nil)
-        while let file = enumerator?.nextObject() as? String {
-            println("Deleting")
-            fileManager.removeItemAtURL(url.URLByAppendingPathComponent(file), error: nil)
+        if let url = NSURL(string: dataPath){
+            let enumerator = fileManager.enumeratorAtURL(url, includingPropertiesForKeys: nil, options: nil, errorHandler: nil)
+            while let file = enumerator?.nextObject() as? String {
+                println("Deleting")
+                fileManager.removeItemAtURL(url.URLByAppendingPathComponent(file), error: nil)
+            }
+
         }
         completionHandler?()
     }
