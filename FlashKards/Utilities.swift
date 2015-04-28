@@ -34,4 +34,12 @@ class Utilities {
         println("  --returning fontsize \(fontSize)")
         return fontSize
     }
+    
+    static func IS_IPHONE4()->Bool{
+        return UIScreen.mainScreen().bounds.size.height < 568
+    }
+    
+    static func IS_IPHONE5()->Bool{
+        return UIScreen.mainScreen().bounds.size.height == 568
+    }
 }
