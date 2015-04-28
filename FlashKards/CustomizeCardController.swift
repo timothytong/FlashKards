@@ -393,9 +393,10 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     // Ask user if they really want to quit without saving.
     func back() {
-        var backConfirmPopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
+        var backConfirmPopup = Popup(frame: CGRect(x: view.frame.width/2 - 125, y: view.frame.height/3, width: 250, height: view.frame.height/3))
         backConfirmPopup.message = "Are you sure you want to quit without saving?"
-        backConfirmPopup.confirmButtonText = "YES"
+        backConfirmPopup.confirmButtonText = "QUIT"
+        backConfirmPopup.cancelBtnText = "NO"
         backConfirmPopup.delegate = self
         backConfirmPopup.instructionLabelFontSize = 25
         navigationController?.view.addSubview(backConfirmPopup)
@@ -509,7 +510,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         println("front count: \(frontElementsDict.count) back count: \(backElementsDict.count)")
         var savePopup: Popup!
         if numElementsBack == 0 || numElementsFront == 0 {
-            savePopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
+            savePopup = Popup(frame: CGRect(x: view.frame.width/2 - 125, y: view.frame.height/3, width: 250, height: view.frame.height/3))
             savePopup.numOptions = 1
             savePopup.cancelBtnText = "OK"
             var message = ""

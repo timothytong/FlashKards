@@ -479,7 +479,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
                 countDownTimer = nil
             }
         }
-        var quitConfirmPopup = Popup(frame:CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
+        var quitConfirmPopup = Popup(frame: CGRect(x: view.frame.width/2 - 125, y: view.frame.height/3, width: 250, height: view.frame.height/3))
         quitConfirmPopup.message = "Are you sure you want to quit?"
         quitConfirmPopup.confirmButtonText = "YES"
         quitConfirmPopup.cancelBtnText = "NO"

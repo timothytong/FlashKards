@@ -58,14 +58,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         navigationController?.view.addSubview(dimLayer)
         
         // New collection popup
-        newCollectionPopup = AddCollectionPopup(frame: CGRect(x: 35, y: view.frame.height/5, width: view.frame.width - 70, height: view.frame.height * 3/5))
+        newCollectionPopup = AddCollectionPopup(frame: CGRect(x: view.frame.width/2 - 125, y: view.frame.height/2 - 170, width: 250, height: 340))
         newCollectionPopup.alpha = 0
         newCollectionPopup.transform = CGAffineTransformMakeScale(1.1, 1.1)
         newCollectionPopup.delegate = self
         navigationController?.view.addSubview(newCollectionPopup)
         
         // Delete collection confirmation popup
-        deleteCollectionPopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
+        deleteCollectionPopup = Popup(frame: CGRect(x: view.frame.width/2 - 125, y: view.frame.height/3, width: 250, height: view.frame.height/3))
         deleteCollectionPopup.delegate = self
         
         // Collections Manager
