@@ -16,6 +16,7 @@ enum EditMode{
 class CustomizeCardController: UIViewController, PopupDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITextViewDelegate {
     // MARK: Variables
     // IBOutlets
+    @IBOutlet private weak var addTxtButtonBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var confirmAddTextBtn: UIButton!
     @IBOutlet private weak var cancelAddTxtBtn: UIButton!
     @IBOutlet private weak var spinner: UIActivityIndicatorView!
@@ -238,6 +239,10 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         // Misc
         let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
         documentsDir = paths[0] as? String
+        
+        if Utilities.IS_IPHONE4(){
+            addTxtButtonBottomConstraint.constant -= 30
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -654,7 +659,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         textField.editable = true
         textField.alpha = 0
         textField.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 1)
-        textField.font = UIFont(name: "AppleSDGothicNeo-Light", size: 25)
+        textField.font = UIFont(name: "HelveticaNeue-Light", size: 25)
         textField.textAlignment = .Center
         textField.delegate = self
         textField.becomeFirstResponder()
@@ -715,6 +720,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             if count(textField.text) > 0{
                 textField.editable = false
                 textField.tag = newElementTag
+                
                 let optimalFontSize = Utilities.calculateOptimalFontSizeWithText(textField.text, inRect: textField.frame)
                 textField.font = textField.font.fontWithSize(optimalFontSize)
                 var dictionary = NSDictionary(dictionary:[
@@ -723,7 +729,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                     "content": textField.text,
                     "type": "txt",
                     "font_size": optimalFontSize,
-                    "font": "AppleSDGothicNeo-Light"
+                    "font": "HelveticaNeue-Light"
                     ])
                 
                 if frontShowing{
@@ -840,7 +846,12 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     func convertAndAppendThumbnail(index: Int!){
         let thumbnail = assetThumbnails[index]
         thumbnails.append(thumbnail)
-        galleryCollectionView.insertItemsAtIndexPaths([NSIndexPath(forRow: thumbnails.count - 1, inSection: 0)])
+        galleryCollectionView.performBatchUpdates({ () -> Void in
+            self.galleryCollectionView.insertItemsAtIndexPaths([NSIndexPath(forRow: self.thumbnails.count - 1, inSection: 0)])
+        }, completion: { (complete) -> Void in
+            
+        })
+
     }
     
     // MARK: ALAssetsLibrary
