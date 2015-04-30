@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ReviewFlashcardController: UIViewController, PopupDelegate {
+class ReviewFlashcardController: UIViewController, PopupDelegate{
     @IBOutlet private weak var flipButton: UIButton!
     @IBOutlet private weak var nextButton: UIButton!
     @IBOutlet private weak var nextCardView: FlashCardView!
@@ -27,8 +27,14 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     @IBOutlet private weak var mainCardContainer: UIView!
     @IBOutlet private weak var containerViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var containerViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var mainCardContainerBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var rememberBtnBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var
+    forgetButtonBottomConstraint: NSLayoutConstraint!
     private var countDownLabelText = 3
+    
     private var navBarHeight: CGFloat = 0
+    
     private let INITIAL_MAIN_TOP_CONSTRAINT_CONSTANT = 40
     private let INITIAL_NEXT_CARD_VIEW_SCALE_TRANSFORM = CGAffineTransformMakeScale(0.8, 0.8)
     private var reviewTimer: NSTimer!
@@ -62,6 +68,11 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         if let navbarHeight = Constants.navBarHeight{
             navBarHeight = navbarHeight
             containerViewTopConstraint.constant += navbarHeight
+        }
+        if Utilities.IS_IPHONE4(){
+            mainCardContainerBottomConstraint.constant -= 30
+            forgetButtonBottomConstraint.constant -= 30
+            rememberBtnBottomConstraint.constant -= 30
         }
         forgottenCardSet = [FlashCard]()
         view.sendSubviewToBack(backgroundView)
@@ -114,7 +125,9 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         nextButton.transform = INITIAL_NEXT_TRANSFORM
         flipButton.transform = INITIAL_FLIP_TRANSFORM
         
-        //        view.bringSubviewToFront(cardsContainer)
+        for card in cardSet{
+            card.forgotten = false
+        }
         // Do any additional setup after loading the view.
     }
     
@@ -594,15 +607,20 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         if cardsDone == collectionOfInterest.numCards{
             status = "complete"
             collectionOfInterest.updateLastReviewTimeToCurrentTime()
+            collectionOfInterest.updateCardsMemorizedVal(Int32(collectionOfInterest.numCards.integerValue - cardsForgotten))
         }
+        let newProgress = (cardsDone == 0) ? "N/A" : status == "complete" ? "\((cardsDone - cardsForgotten) * 100/cardsDone)%" : "\(collectionOfInterest.numCardsMemorized.integerValue * 100 / collectionOfInterest.numCards.integerValue)%"
         resultsDictionary = NSDictionary(dictionary: [
             "status": status,
-            "cardsReviewed": "\(cardsDone)",
-            "timeElapsed": "\(numSecondsElapsed)",
-            "cardsForgotten": "\(cardsForgotten)"
+            "T I M E\n\n    U S E D": "\(numSecondsElapsed)",
+            "N E W\n\n    P R O G R E S S": newProgress,
+            "C A R D S\n\n    R E V I E W E D": "\(cardsDone)",
+            "C A R D S\n\n    F O R G O T T E N": "\(cardsForgotten)"
             ])
-        collectionOfInterest.updateCardsMemorizedVal(Int32(collectionOfInterest.numCards.integerValue - cardsForgotten))
-        
+    }
+    
+    func getCollection()->FlashCardCollection{
+        return self.collectionOfInterest
     }
     
     private func clearSubviews(viewToBeCleared: UIView){
@@ -610,7 +628,4 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
             subview.removeFromSuperview()
         }
     }
-    
-    
-    
 }
