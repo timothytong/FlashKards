@@ -12,7 +12,7 @@ class ReviewSummaryStatusCell: UITableViewCell {
 
     @IBOutlet weak var statusCompleteLabel: UILabel!
     @IBOutlet weak var statusLightView: UIView!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -24,6 +24,18 @@ class ReviewSummaryStatusCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func configureWithDict(dict: Dictionary<String, String>){
+        if dict["status"] == "complete"{
+            statusCompleteLabel.text = "C O M P L E T E"
+            statusCompleteLabel.textColor = UIColor(red: 60/255, green: 242/255, blue: 119/255, alpha: 1)
+            statusLightView.backgroundColor = UIColor(red: 60/255, green: 242/255, blue: 119/255, alpha: 1)
+        }
+        else if dict["status"] == "aborted"{
+            statusCompleteLabel.text = "A B O R T E D"
+            statusLightView.backgroundColor = UIColor.redColor()
+        }
     }
 
 }
