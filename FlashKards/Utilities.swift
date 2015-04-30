@@ -20,9 +20,9 @@ class Utilities {
         let constraintSize = CGSizeMake(rect.width, CGFloat.max)
         do {
             // Set current font size
-            let font = UIFont(name: "AppleSDGothicNeo-Light", size: fontSize)
+            let font = UIFont(name: "HelveticaNeue-Light", size: fontSize)
             // Find label size for current font size
-            let textRect = (adjustedText as NSString).boundingRectWithSize(constraintSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName: font!], context: nil)
+            let textRect = (adjustedText as NSString).boundingRectWithSize(constraintSize, options: NSStringDrawingOptions.UsesLineFragmentOrigin | NSStringDrawingOptions.UsesFontLeading, attributes: [NSFontAttributeName: font!], context: nil)
             let labelSize = textRect.size
             // Done, if created label is within target size
             if labelSize.height <= rect.height{
