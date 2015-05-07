@@ -261,7 +261,10 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
     }
     
     func showNextCard(){
-        if self.cardSet != nil{
+        if collectionOfInterest.numCards == 1{
+            cardsDone++
+        }
+        if cardSet != nil{
             currentCard = nextCard
             nextCardView.alpha = 1
             if !currentCardView.frontIsShowing{
