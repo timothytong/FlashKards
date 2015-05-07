@@ -854,10 +854,10 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         thumbnails.append(thumbnail)
         galleryCollectionView.performBatchUpdates({ () -> Void in
             self.galleryCollectionView.insertItemsAtIndexPaths([NSIndexPath(forRow: self.thumbnails.count - 1, inSection: 0)])
-        }, completion: { (complete) -> Void in
-            
+            }, completion: { (complete) -> Void in
+                
         })
-
+        
     }
     
     // MARK: ALAssetsLibrary
@@ -958,10 +958,25 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         let side = frontShowing ? "front" : "back"
         let tmpImgPath = documentsDir!.stringByAppendingPathComponent("\(collectionName)/tmp/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
         let imgPath = "\(collectionName)/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png"
-        
-        UIImagePNGRepresentation(newImage).writeToFile(tmpImgPath, atomically: true)
+        /*
+        if UIImagePNGRepresentation(newImage).writeToFile(tmpImgPath, atomically: true){
+        println("Wrote to file")
+        }
+        else{
+        println("Could not write to file")
+        }
+        */
         
         // Show the image with an UIImageView
+        let imageData = UIImagePNGRepresentation(newImage)
+        let fileManager: NSFileManager = NSFileManager.defaultManager()
+        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        let documentsDirectory: NSString = paths[0] as! NSString
+        let fullPath = documentsDirectory.stringByAppendingPathComponent(imgPath)
+        
+        fileManager.createFileAtPath(fullPath, contents: imageData, attributes: nil) //finally save the path (image)
+        
+        
         var imageView = UIImageView(frame: CGRect(x: rectSel.frame.origin.x, y: rectSel.frame.origin.y, width: rectSel.frame.width, height: rectSel.frame.height))
         imageView.image = newImage
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
