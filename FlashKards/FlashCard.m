@@ -19,5 +19,7 @@
 @dynamic memorized;
 @dynamic time_created;
 @dynamic parentCollection;
+@dynamic times_forgotten;
+@dynamic forgotten;
 
 @end

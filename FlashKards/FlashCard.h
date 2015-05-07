@@ -20,5 +20,7 @@
 @property (nonatomic, retain) NSNumber * memorized;
 @property (nonatomic, retain) NSNumber * time_created;
 @property (nonatomic, retain) FlashCardCollection *parentCollection;
+@property (nonatomic, retain) NSNumber * times_forgotten;
+@property (nonatomic, readwrite) BOOL forgotten;
 
 @end

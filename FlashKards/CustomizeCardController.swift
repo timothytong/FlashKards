@@ -13,9 +13,10 @@ enum EditMode{
     case AddImgMode
 }
 
-class CustomizeCardController: UIViewController, PopupDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITextViewDelegate {
+class CustomizeCardController: UIViewController, PopupDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITextViewDelegate, UICollectionViewDelegateFlowLayout {
     // MARK: Variables
     // IBOutlets
+    @IBOutlet private weak var addTxtButtonBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var confirmAddTextBtn: UIButton!
     @IBOutlet private weak var cancelAddTxtBtn: UIButton!
     @IBOutlet private weak var spinner: UIActivityIndicatorView!
@@ -41,7 +42,8 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     @IBOutlet private weak var addTextBtn: UIButton!
     @IBOutlet private weak var addImgBtn: UIButton!
     @IBOutlet private weak var deleteBtn: UIButton!
-    
+    @IBOutlet private weak var importViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var importViewTrailingConstraint: NSLayoutConstraint!
     // Additional UI's
     private var activePopup: Popup?
     private var dimLayer: UIView!
@@ -95,6 +97,11 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         backView.userInteractionEnabled = false
         navigationItem.hidesBackButton = true
         
+        // Import View
+        if Utilities.IS_IPHONE6P(){
+            importViewLeadingConstraint.constant -= 8
+            importViewTrailingConstraint.constant -= 8
+        }
         
         // Dim layer
         dimLayer = UIView(frame: UIScreen.mainScreen().bounds)
@@ -238,6 +245,10 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         // Misc
         let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
         documentsDir = paths[0] as? String
+        
+        if Utilities.IS_IPHONE4(){
+            addTxtButtonBottomConstraint.constant -= 30
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -393,9 +404,10 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     // Ask user if they really want to quit without saving.
     func back() {
-        var backConfirmPopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
+        var backConfirmPopup = Popup(frame: CGRect(x: view.frame.width/2 - 125, y: view.frame.height/3, width: 250, height: view.frame.height/3))
         backConfirmPopup.message = "Are you sure you want to quit without saving?"
-        backConfirmPopup.confirmButtonText = "YES"
+        backConfirmPopup.confirmButtonText = "QUIT"
+        backConfirmPopup.cancelBtnText = "NO"
         backConfirmPopup.delegate = self
         backConfirmPopup.instructionLabelFontSize = 25
         navigationController?.view.addSubview(backConfirmPopup)
@@ -509,7 +521,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         println("front count: \(frontElementsDict.count) back count: \(backElementsDict.count)")
         var savePopup: Popup!
         if numElementsBack == 0 || numElementsFront == 0 {
-            savePopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
+            savePopup = Popup(frame: CGRect(x: view.frame.width/2 - 125, y: view.frame.height/3, width: 250, height: view.frame.height/3))
             savePopup.numOptions = 1
             savePopup.cancelBtnText = "OK"
             var message = ""
@@ -653,7 +665,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         textField.editable = true
         textField.alpha = 0
         textField.backgroundColor = UIColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 1)
-        textField.font = UIFont(name: "AppleSDGothicNeo-Light", size: 25)
+        textField.font = UIFont(name: "HelveticaNeue-Light", size: 25)
         textField.textAlignment = .Center
         textField.delegate = self
         textField.becomeFirstResponder()
@@ -714,6 +726,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             if count(textField.text) > 0{
                 textField.editable = false
                 textField.tag = newElementTag
+                
                 let optimalFontSize = Utilities.calculateOptimalFontSizeWithText(textField.text, inRect: textField.frame)
                 textField.font = textField.font.fontWithSize(optimalFontSize)
                 var dictionary = NSDictionary(dictionary:[
@@ -722,7 +735,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                     "content": textField.text,
                     "type": "txt",
                     "font_size": optimalFontSize,
-                    "font": "AppleSDGothicNeo-Light"
+                    "font": "HelveticaNeue-Light"
                     ])
                 
                 if frontShowing{
@@ -839,7 +852,12 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     func convertAndAppendThumbnail(index: Int!){
         let thumbnail = assetThumbnails[index]
         thumbnails.append(thumbnail)
-        galleryCollectionView.insertItemsAtIndexPaths([NSIndexPath(forRow: thumbnails.count - 1, inSection: 0)])
+        galleryCollectionView.performBatchUpdates({ () -> Void in
+            self.galleryCollectionView.insertItemsAtIndexPaths([NSIndexPath(forRow: self.thumbnails.count - 1, inSection: 0)])
+        }, completion: { (complete) -> Void in
+            
+        })
+
     }
     
     // MARK: ALAssetsLibrary
@@ -1038,7 +1056,23 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         }
     }
     
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
+    {
+        println(view.frame.height)
+        var side = (view.frame.width - 40) / 4 // iPhone 6+
+        if Utilities.IS_IPHONE6(){
+            side = (view.frame.width - 30) / 4
+        }
+        else if Utilities.IS_IPHONE4() || Utilities.IS_IPHONE5(){
+            side = (view.frame.width - 20) / 3
+        }
+        return CGSizeMake(side, side);
+    }
     
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets
+    {
+        return UIEdgeInsetsMake(5, 0, 5, 0); //top,left,bottom,right
+    }
     
     
     /*

@@ -52,11 +52,11 @@ class Popup: UIView {
                 addSubview(cancelBtn)
             }
             else{
-                confirmBtn.frame = CGRect(x: 10, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50)
+                cancelBtn.frame = CGRect(x: 10, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50)
                 confirmBtnLabel.frame = CGRect(x: 0, y: 0, width: confirmBtn.frame.width, height: confirmBtn.frame.height)
                 addSubview(confirmBtn)
                 
-                cancelBtn.frame = CGRect(x: frame.width/2 + 5, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50)
+                confirmBtn.frame = CGRect(x: frame.width/2 + 5, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50)
                 cancelBtnLabel.frame = CGRect(x: 0, y: 0, width: confirmBtn.frame.width, height: confirmBtn.frame.height)
                 addSubview(cancelBtn)
             }
@@ -103,7 +103,8 @@ class Popup: UIView {
         addSubview(instrucLabel)
         
         // Confirm Btn
-        confirmBtn = UIButton(frame: CGRect(x: 10, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50))
+        confirmBtn = UIButton(frame: CGRect(x: frame.width/2 + 5, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50))
+        
         confirmBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: confirmBtn.frame.width, height: confirmBtn.frame.height))
         confirmBtnLabel.font = UIFont(name: "Avenir-Roman", size: 22)
         confirmBtnLabel.text = "DELETE"
@@ -114,7 +115,7 @@ class Popup: UIView {
         addSubview(confirmBtn)
         
         // Cancel Btn
-        cancelBtn = UIButton(frame: CGRect(x: frame.width/2 + 5, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50))
+        cancelBtn = UIButton(frame: CGRect(x: 10, y: frame.height * 2/3, width: frame.width/2 - 15, height: 50))
         cancelBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: confirmBtn.frame.width, height: confirmBtn.frame.height))
         cancelBtnLabel.font = UIFont(name: "Avenir-Roman", size: 22)
         cancelBtnLabel.text = "CANCEL"

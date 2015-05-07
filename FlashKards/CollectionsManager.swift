@@ -54,6 +54,32 @@ class CollectionsManager: NSObject {
         return -1
     }
     
+    func getCollectionWithID(id: Int) -> FlashCardCollection?{
+        var managedContext = appDelegate.managedObjectContext!
+        var entity = NSEntityDescription.entityForName("Collection", inManagedObjectContext: managedContext)
+        let fetchRequest = NSFetchRequest()
+        fetchRequest.entity = entity
+        let predicate = NSPredicate(format: "collectionID == '\(id)'")
+        fetchRequest.predicate = predicate
+        /* sorting...
+        let sortDescriptor = NSSortDescriptor(key: "lastReviewed", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        */
+        var error: NSError?
+        var fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error)
+        if let results = fetchResults{
+            if results.count > 0{
+                // println("Found existing collection")
+                return results[0] as? FlashCardCollection
+            }
+            else{
+                // println("Empty array returned")
+            }
+        }
+        return nil
+
+    }
+    
     func searchExistingCollectionsWithName(collectionName: String!)->NSManagedObject?{
         var managedContext = appDelegate.managedObjectContext!
         var entity = NSEntityDescription.entityForName("Collection", inManagedObjectContext: managedContext)
@@ -138,6 +164,8 @@ class CollectionsManager: NSObject {
             newCard.front = frontDict
             newCard.back = backDict
             newCard.cardID = 0
+            newCard.times_forgotten = 0
+            newCard.forgotten = false
             newCard.time_created = NSDate.timeIntervalSinceReferenceDate()
             newCard.last_updated = NSDate.timeIntervalSinceReferenceDate()
             newCard.parentCollection = targetCollection

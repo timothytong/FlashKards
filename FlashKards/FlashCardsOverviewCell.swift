@@ -62,7 +62,7 @@ class FlashCardsOverviewCell: UITableViewCell {
             let lastReviewedDate = collection.lastReviewed
             let numCardsInCollection = collection.numCards.integerValue
             let numCardsMemorized = collection.numCardsMemorized.integerValue
-            let progress = (numCardsMemorized == 0 && numCardsInCollection == 0) ? 100 : numCardsMemorized / numCardsInCollection
+            let progress = (numCardsMemorized == 0 && numCardsInCollection == 0) ? 100 : numCardsMemorized * 100 / numCardsInCollection
             self.kardLabel.text = (numCardsInCollection == 1) ? "KARD" : "KARDS"
             self.collectionLabel.text = collectionName
             self.collectionProgressLabel.text = "\(progress)%"

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ReviewFlashcardController: UIViewController, PopupDelegate {
+class ReviewFlashcardController: UIViewController, PopupDelegate{
     @IBOutlet private weak var flipButton: UIButton!
     @IBOutlet private weak var nextButton: UIButton!
     @IBOutlet private weak var nextCardView: FlashCardView!
@@ -27,8 +27,14 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     @IBOutlet private weak var mainCardContainer: UIView!
     @IBOutlet private weak var containerViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var containerViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var mainCardContainerBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var rememberBtnBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var
+    forgetButtonBottomConstraint: NSLayoutConstraint!
     private var countDownLabelText = 3
+    
     private var navBarHeight: CGFloat = 0
+    
     private let INITIAL_MAIN_TOP_CONSTRAINT_CONSTANT = 40
     private let INITIAL_NEXT_CARD_VIEW_SCALE_TRANSFORM = CGAffineTransformMakeScale(0.8, 0.8)
     private var reviewTimer: NSTimer!
@@ -48,7 +54,8 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     private var nextCard: FlashCard!
     private var endReviewPopup: Popup!
     private var cardsDone = 0
-
+    private var cardsForgotten = 0
+    
     var quizResultsDict:NSDictionary?{
         get{
             return self.resultsDictionary
@@ -61,6 +68,11 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         if let navbarHeight = Constants.navBarHeight{
             navBarHeight = navbarHeight
             containerViewTopConstraint.constant += navbarHeight
+        }
+        if Utilities.IS_IPHONE4(){
+            mainCardContainerBottomConstraint.constant -= 30
+            forgetButtonBottomConstraint.constant -= 30
+            rememberBtnBottomConstraint.constant -= 30
         }
         forgottenCardSet = [FlashCard]()
         view.sendSubviewToBack(backgroundView)
@@ -113,7 +125,9 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         nextButton.transform = INITIAL_NEXT_TRANSFORM
         flipButton.transform = INITIAL_FLIP_TRANSFORM
         
-        //        view.bringSubviewToFront(cardsContainer)
+        for card in cardSet{
+            card.forgotten = false
+        }
         // Do any additional setup after loading the view.
     }
     
@@ -134,6 +148,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
                 nextCardView.transform = INITIAL_NEXT_CARD_VIEW_SCALE_TRANSFORM
             }
             else{
+                self.cardSet = nil
                 println("There's only one card in collection")
             }
         }
@@ -159,6 +174,11 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     
     func forget(){
         forgottenCardSet.append(currentCard)
+        if currentCard.forgotten == false{
+            println("First time forgotten")
+            currentCard.forgotten = true
+            cardsForgotten++
+        }
         currentCardView.flip()
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
@@ -242,7 +262,10 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     }
     
     func showNextCard(){
-        if self.cardSet != nil{
+        if collectionOfInterest.numCards == 1{
+            cardsDone++
+        }
+        if cardSet != nil{
             currentCard = nextCard
             nextCardView.alpha = 1
             if !currentCardView.frontIsShowing{
@@ -296,11 +319,6 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
                             self.cardSet = nil
                             self.countdownLabel.text = "Done"
                         }
-                        
-                        
-                        
-                        
-                        
                 })
                 UIView.animateWithDuration(0.6, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
                     self.forgetButton.alpha = 1
@@ -311,6 +329,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
             })
         }
         else{
+            self.completedCardsNumLabel.text = "\(self.collectionOfInterest.numCards)/\(self.collectionOfInterest.numCards)"
             self.mainCardContainer.bringSubviewToFront(self.coverView)
             if self.reviewTimer != nil{
                 self.reviewTimer.invalidate()
@@ -336,7 +355,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
             UIView.transitionWithView(self.pauseButton, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
                 self.pauseButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
                 }, completion: { (complete) -> Void in
-                    self.endReview()
+                    self.endReview(true)
             })
         }
     }
@@ -411,34 +430,34 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
         return "Elapsed: " + hourString + ":" + minString + ":" + secString
     }
     
-    func endReview(){
-        let dimLayer = UIView(frame: UIScreen.mainScreen().bounds)
-        dimLayer.backgroundColor = UIColor(white: 0, alpha: 0.6)
-        dimLayer.userInteractionEnabled = true
-        dimLayer.alpha = 0
-        view.addSubview(dimLayer)
-        
-        endReviewPopup = Popup(frame: CGRect(x: view.frame.width/2 - 80, y: view.frame.height/2 - 30, width: 160, height: 60))
-        endReviewPopup.numOptions = 0
-        endReviewPopup.message = "Exiting in 3"
-        endReviewPopup.alpha = 1
-        endReviewPopup.transform = CGAffineTransformIdentity
-        dimLayer.addSubview(endReviewPopup)
-        
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            UIView.animateWithDuration(0.25, delay: 0.25, options: .CurveEaseInOut, animations: { () -> Void in
-                dimLayer.alpha = 1
-                }, completion: { (complete) -> Void in
-                    self.countDownLabelText = 3
-                    let timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "exitCountDown:", userInfo: nil, repeats: true)
+    func endReview(withCountDown: Bool){
+        if withCountDown{
+            endReviewPopup = Popup(frame: CGRect(x: view.frame.width/2 - 80, y: view.frame.height/2 - 30, width: 160, height: 60))
+            endReviewPopup.numOptions = 0
+            endReviewPopup.message = "Exiting in 3 "
+            endReviewPopup.alpha = 1
+            endReviewPopup.transform = CGAffineTransformIdentity
+            dimLayer.addSubview(endReviewPopup)
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                UIView.animateWithDuration(0.25, delay: 0.25, options: .CurveEaseInOut, animations: { () -> Void in
+                    self.dimLayer.alpha = 1
+                    }, completion: { (complete) -> Void in
+                        self.countDownLabelText = 3
+                        let timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "exitCountDown:", userInfo: nil, repeats: true)
+                })
             })
-        })
+            
+        }
+        else{
+            self.performSegueWithIdentifier("completeReview", sender: self)
+        }
     }
     
     func exitCountDown(timer: NSTimer){
         if countDownLabelText > 0 {
             countDownLabelText--
-            endReviewPopup.message = "Exiting in \(countDownLabelText)"
+            endReviewPopup.message = "Exiting in \(countDownLabelText) "
         }
         else{
             timer.invalidate()
@@ -477,7 +496,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
                 countDownTimer = nil
             }
         }
-        var quitConfirmPopup = Popup(frame:CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
+        var quitConfirmPopup = Popup(frame: CGRect(x: view.frame.width/2 - 125, y: view.frame.height/3, width: 250, height: view.frame.height/3))
         quitConfirmPopup.message = "Are you sure you want to quit?"
         quitConfirmPopup.confirmButtonText = "YES"
         quitConfirmPopup.cancelBtnText = "NO"
@@ -570,7 +589,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     func popupConfirmBtnDidTapped(popup: Popup) {
         popup.removeFromSuperview()
         hideDimLayer()
-        endReview()
+        endReview(false)
     }
     
     func hideDimLayer(){
@@ -588,6 +607,35 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        var status = "aborted"
+        if cardsDone >= collectionOfInterest.numCards.integerValue{
+            status = "complete"
+            collectionOfInterest.updateLastReviewTimeToCurrentTime()
+            collectionOfInterest.updateCardsMemorizedVal(Int32(collectionOfInterest.numCards.integerValue - cardsForgotten))
+        }
+        let newProgress = (cardsDone == 0) ? "N/A" : status == "complete" ? "\((cardsDone - cardsForgotten) * 100/cardsDone)%" : "\(collectionOfInterest.numCardsMemorized.integerValue * 100 / collectionOfInterest.numCards.integerValue)%"
+        resultsDictionary = NSDictionary(dictionary: [
+            "status": status,
+            "T I M E\n\n    U S E D": "\(calculateRelativeTimeWithSeconds(numSecondsElapsed))",
+            "N E W\n\n    P R O G R E S S": newProgress,
+            "C A R D S\n\n    R E V I E W E D": "\(cardsDone)",
+            "C A R D S\n\n    F O R G O T T E N": "\(cardsForgotten)"
+            ])
+    }
+    
+    func calculateRelativeTimeWithSeconds(seconds: Int64)->String{
+        var string = ""
+        var secs = seconds
+        let mins = secs / 60
+        if mins > 0 {
+            string += "\(mins) m\n"
+            secs -= (60 * mins)
+        }
+        string += "\(secs) s"
+        return string
+    }
+    func getCollection()->FlashCardCollection{
+        return self.collectionOfInterest
     }
     
     private func clearSubviews(viewToBeCleared: UIView){
@@ -595,7 +643,4 @@ class ReviewFlashcardController: UIViewController, PopupDelegate {
             subview.removeFromSuperview()
         }
     }
-    
-    
-    
 }

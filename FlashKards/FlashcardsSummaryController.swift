@@ -10,10 +10,13 @@ import UIKit
 class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITableViewDataSource, PopupDelegate {
     @IBOutlet private weak var editButton: UIButton!
     @IBOutlet private weak var tableViewTopConstraint: NSLayoutConstraint!
-    // If iPhone 4 move up!
+
+    @IBOutlet weak var buttonsBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var suggestedActionLabel: UILabel!
     private var collectionManager: CollectionsManager!
+    @IBOutlet weak var tableViewSugActionVConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tableViewSugActVConstraint: NSLayoutConstraint!
     private var flashcardCollection: FlashCardCollection!
     private var updateSummaryTimer: NSTimer!
     private var showResultsScreen = false
@@ -29,10 +32,19 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
             tableView.separatorStyle = .None
             tableView.scrollEnabled = false
         }
-        editButton.addTarget(self, action: "editButtonPressed", forControlEvents: .TouchUpInside)
+        if Utilities.IS_IPHONE4(){
+            tableViewTopConstraint.constant -= 20
+            tableViewSugActionVConstraint.constant -= 10
+        }
+        else if !Utilities.IS_IPHONE5(){
+            buttonsBottomConstraint.constant += 20
+            tableViewTopConstraint.constant += 30
+            tableViewSugActVConstraint.constant += 40
+        }
+//        editButton.addTarget(self, action: "editButtonPressed", forControlEvents: .TouchUpInside)
         // Do any additional setup after loading the view.
     }
-    
+    /*
     func editButtonPressed(){
         var featureNotAvailablePopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
         featureNotAvailablePopup.numOptions = 1
@@ -42,7 +54,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         navigationController?.view.addSubview(featureNotAvailablePopup)
         featureNotAvailablePopup.show()
     }
-    
+    */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -77,7 +89,8 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     
     func configureWithCollection(flashcardCol: FlashCardCollection!){
         flashcardCollection = flashcardCol
-        navigationItem.title = flashcardCollection.name
+        println("\(flashcardCollection.name.capitalizedString)")
+        navigationItem.title = flashcardCollection.name.uppercaseString
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -91,7 +104,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: CollectionSummaryCell = tableView.dequeueReusableCellWithIdentifier("summaryCell") as! CollectionSummaryCell
         let numCards = flashcardCollection.numCards
-        let kardOrKards = (numCards == 1) ? "KARD" : "KARDS"
+        let kardOrKards = (numCards == 1) ? "K A R D" : "K A R D S"
         let relTimeDiff = calculateRelativeDate(flashcardCollection.lastReviewed.doubleValue)
         switch indexPath.row{
         case 0:
@@ -99,8 +112,8 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         case 1:
             let numCardsMem = flashcardCollection.numCardsMemorized.integerValue
             let numCards = flashcardCollection.numCards.integerValue
-            let progress = (numCards == 0 && numCardsMem == 0) ? 100 : numCardsMem / numCards
-            cell.populateFieldsWithNumberString("\(progress)", Subtext1: "PERCENT", andSubtext2: "Memorized")
+            let progress = (numCards == 0 && numCardsMem == 0) ? 100 : numCardsMem * 100 / numCards
+            cell.populateFieldsWithNumberString("\(progress)", Subtext1: "P E R C E N T", andSubtext2: "Memorized")
         case 2:
             cell.populateFieldsWithNumberString(relTimeDiff[0], Subtext1: relTimeDiff[1], andSubtext2: "Last reviewed")
         default:
@@ -119,7 +132,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     
     func calculateRelativeDate(timeStamp: Double!)->[String]{
         if timeStamp == 0{
-            return ["X", "NEVER"]
+            return ["X", "N E V E R"]
         }
         
         let currentTime: Double = NSDate.timeIntervalSinceReferenceDate()
@@ -129,26 +142,40 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         switch diff{
         case 0...3600:
             time = "\(Int(diff/60))"
-            unit = (time == "1") ? "MIN" : "MINS"
+            unit = (time == "1") ? "M I N" : "M I N S"
         case 3601...86400:
             time = "\(Int(diff/3600))"
-            unit = (time == "1") ? "HOUR" : "HOURS"
+            unit = (time == "1") ? "H O U R" : "H O U R S"
         case 86401...2678400:
             time = "\(Int(diff/86400))"
-            unit = (time == "1") ? "DAY" : "DAYS"
+            unit = (time == "1") ? "D A Y" : "D A Y S"
         case 2678401...31622400:
             time = "\(Int(diff/2678400))"
-            unit = (time == "1") ? "MONTH" : "MONTHS"
+            unit = (time == "1") ? "M O N T H" : "M O N T HS"
         default:
             time = ">1"
-            unit = "YEAR"
+            unit = "Y E A R"
         }
         returnArray.append(time)
         returnArray.append(unit)
         return returnArray
     }
     
-    
+    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+        if identifier == "ReviewCollection" {
+            if flashcardCollection.numCards.integerValue < 1{
+                var reviewNotAvailablePopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
+                reviewNotAvailablePopup.numOptions = 1
+                reviewNotAvailablePopup.message = "No cards in deck."
+                reviewNotAvailablePopup.cancelBtnText = "OK"
+                reviewNotAvailablePopup.delegate = self
+                navigationController?.view.addSubview(reviewNotAvailablePopup)
+                reviewNotAvailablePopup.show()
+                return false
+            }
+        }
+        return true
+    }
     
     // MARK: - Navigation
     
@@ -166,14 +193,19 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
             let reviewVC: ReviewFlashcardController = segue.destinationViewController as! ReviewFlashcardController
             reviewVC.configureWithCollection(flashcardCollection)
             flashcardCollection.lastReviewed = NSDate.timeIntervalSinceReferenceDate()
-            flashcardCollection.updateLastReviewTimeToCurrentTime()
             /*
             navigationController?.modalPresentationStyle = UIModalPresentationStyle.CurrentContext
             presentViewController(reviewVC, animated: true, completion: nil)
             */
         }
         else if segue.identifier == "showResults"{
-            
+            let resultsVC: ResultsController = segue.destinationViewController as! ResultsController
+            if let resultsDict = quizResultsDict{
+                resultsVC.configureWithResults(resultsDict, andCollection: flashcardCollection)
+            }
+            else{
+                println("SOMETHING IS WRONG")
+            }
         }
     }
     
