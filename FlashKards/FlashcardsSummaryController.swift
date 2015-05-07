@@ -41,10 +41,10 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
             tableViewTopConstraint.constant += 30
             tableViewSugActVConstraint.constant += 40
         }
-        editButton.addTarget(self, action: "editButtonPressed", forControlEvents: .TouchUpInside)
+//        editButton.addTarget(self, action: "editButtonPressed", forControlEvents: .TouchUpInside)
         // Do any additional setup after loading the view.
     }
-    
+    /*
     func editButtonPressed(){
         var featureNotAvailablePopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
         featureNotAvailablePopup.numOptions = 1
@@ -54,7 +54,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         navigationController?.view.addSubview(featureNotAvailablePopup)
         featureNotAvailablePopup.show()
     }
-    
+    */
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -132,7 +132,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     
     func calculateRelativeDate(timeStamp: Double!)->[String]{
         if timeStamp == 0{
-            return ["X", "NEVER"]
+            return ["X", "N E V E R"]
         }
         
         let currentTime: Double = NSDate.timeIntervalSinceReferenceDate()

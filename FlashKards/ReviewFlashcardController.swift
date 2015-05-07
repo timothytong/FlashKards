@@ -148,6 +148,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
                 nextCardView.transform = INITIAL_NEXT_CARD_VIEW_SCALE_TRANSFORM
             }
             else{
+                self.cardSet = nil
                 println("There's only one card in collection")
             }
         }
@@ -607,7 +608,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         var status = "aborted"
-        if cardsDone == collectionOfInterest.numCards{
+        if cardsDone >= collectionOfInterest.numCards.integerValue{
             status = "complete"
             collectionOfInterest.updateLastReviewTimeToCurrentTime()
             collectionOfInterest.updateCardsMemorizedVal(Int32(collectionOfInterest.numCards.integerValue - cardsForgotten))
@@ -615,13 +616,24 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
         let newProgress = (cardsDone == 0) ? "N/A" : status == "complete" ? "\((cardsDone - cardsForgotten) * 100/cardsDone)%" : "\(collectionOfInterest.numCardsMemorized.integerValue * 100 / collectionOfInterest.numCards.integerValue)%"
         resultsDictionary = NSDictionary(dictionary: [
             "status": status,
-            "T I M E\n\n    U S E D": "\(numSecondsElapsed)",
+            "T I M E\n\n    U S E D": "\(calculateRelativeTimeWithSeconds(numSecondsElapsed))",
             "N E W\n\n    P R O G R E S S": newProgress,
             "C A R D S\n\n    R E V I E W E D": "\(cardsDone)",
             "C A R D S\n\n    F O R G O T T E N": "\(cardsForgotten)"
             ])
     }
     
+    func calculateRelativeTimeWithSeconds(seconds: Int64)->String{
+        var string = ""
+        var secs = seconds
+        let mins = secs / 60
+        if mins > 0 {
+            string += "\(mins) m\n"
+            secs -= (60 * mins)
+        }
+        string += "\(secs) s"
+        return string
+    }
     func getCollection()->FlashCardCollection{
         return self.collectionOfInterest
     }
