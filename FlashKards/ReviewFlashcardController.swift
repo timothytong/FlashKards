@@ -264,6 +264,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
     func showNextCard(){
         if collectionOfInterest.numCards == 1{
             cardsDone++
+            countdownLabel.text = "Done."
         }
         if cardSet != nil{
             currentCard = nextCard
