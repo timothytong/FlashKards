@@ -13,7 +13,7 @@ enum EditMode{
     case AddImgMode
 }
 
-class CustomizeCardController: UIViewController, PopupDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITextViewDelegate {
+class CustomizeCardController: UIViewController, PopupDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITextViewDelegate, UICollectionViewDelegateFlowLayout {
     // MARK: Variables
     // IBOutlets
     @IBOutlet private weak var addTxtButtonBottomConstraint: NSLayoutConstraint!
@@ -42,7 +42,8 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     @IBOutlet private weak var addTextBtn: UIButton!
     @IBOutlet private weak var addImgBtn: UIButton!
     @IBOutlet private weak var deleteBtn: UIButton!
-    
+    @IBOutlet private weak var importViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var importViewTrailingConstraint: NSLayoutConstraint!
     // Additional UI's
     private var activePopup: Popup?
     private var dimLayer: UIView!
@@ -96,6 +97,11 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         backView.userInteractionEnabled = false
         navigationItem.hidesBackButton = true
         
+        // Import View
+        if Utilities.IS_IPHONE6P(){
+            importViewLeadingConstraint.constant -= 8
+            importViewTrailingConstraint.constant -= 8
+        }
         
         // Dim layer
         dimLayer = UIView(frame: UIScreen.mainScreen().bounds)
@@ -1050,7 +1056,23 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         }
     }
     
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
+    {
+        println(view.frame.height)
+        var side = (view.frame.width - 40) / 4 // iPhone 6+
+        if Utilities.IS_IPHONE6(){
+            side = (view.frame.width - 30) / 4
+        }
+        else if Utilities.IS_IPHONE4() || Utilities.IS_IPHONE5(){
+            side = (view.frame.width - 20) / 3
+        }
+        return CGSizeMake(side, side);
+    }
     
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets
+    {
+        return UIEdgeInsetsMake(5, 0, 5, 0); //top,left,bottom,right
+    }
     
     
     /*
