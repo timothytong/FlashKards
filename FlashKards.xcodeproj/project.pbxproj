@@ -55,6 +55,9 @@
 		33CB736B1AC49D1400B72A6A /* CustomizeCardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CB736A1AC49D1400B72A6A /* CustomizeCardController.swift */; };
 		33CB73711AC4A65000B72A6A /* flip-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 33CB73701AC4A65000B72A6A /* flip-white.png */; };
 		33CB73731AC4B65600B72A6A /* RectSelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CB73721AC4B65600B72A6A /* RectSelView.swift */; };
+		33D1342A1AFB0CE2009138D0 /* EditDeckController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33D134291AFB0CE2009138D0 /* EditDeckController.swift */; };
+		33D1342F1AFB2571009138D0 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33D1342D1AFB2571009138D0 /* Fabric.framework */; };
+		33D134301AFB2572009138D0 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33D1342E1AFB2571009138D0 /* Crashlytics.framework */; };
 		33E719BA1ADA07A700869D52 /* ReviewFlashcardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E719B91ADA07A700869D52 /* ReviewFlashcardController.swift */; };
 		33E719BC1ADA081E00869D52 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E719BB1ADA081E00869D52 /* Constants.swift */; };
 		33ED156E1AE74A14004D8629 /* FlashCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33ED156D1AE74A14004D8629 /* FlashCardView.swift */; };
@@ -139,6 +142,9 @@
 		33CB736A1AC49D1400B72A6A /* CustomizeCardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomizeCardController.swift; sourceTree = "<group>"; };
 		33CB73701AC4A65000B72A6A /* flip-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "flip-white.png"; path = "Images/flip-white.png"; sourceTree = "<group>"; };
 		33CB73721AC4B65600B72A6A /* RectSelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectSelView.swift; sourceTree = "<group>"; };
+		33D134291AFB0CE2009138D0 /* EditDeckController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditDeckController.swift; sourceTree = "<group>"; };
+		33D1342D1AFB2571009138D0 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		33D1342E1AFB2571009138D0 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		33E719B91ADA07A700869D52 /* ReviewFlashcardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewFlashcardController.swift; sourceTree = "<group>"; };
 		33E719BB1ADA081E00869D52 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		33ED156D1AE74A14004D8629 /* FlashCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardView.swift; sourceTree = "<group>"; };
@@ -150,6 +156,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33D134301AFB2572009138D0 /* Crashlytics.framework in Frameworks */,
+				33D1342F1AFB2571009138D0 /* Fabric.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +177,8 @@
 				3320C5BE1ABF807B00A90CD4 /* FlashKards */,
 				3320C5D71ABF807C00A90CD4 /* FlashKardsTests */,
 				3320C5BD1ABF807B00A90CD4 /* Products */,
+				33D1342D1AFB2571009138D0 /* Fabric.framework */,
+				33D1342E1AFB2571009138D0 /* Crashlytics.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -301,6 +311,7 @@
 				33CB736A1AC49D1400B72A6A /* CustomizeCardController.swift */,
 				33E719B91ADA07A700869D52 /* ReviewFlashcardController.swift */,
 				3392E6461AEA66AC00B9615D /* ResultsController.swift */,
+				33D134291AFB0CE2009138D0 /* EditDeckController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -351,6 +362,7 @@
 				3320C5B91ABF807B00A90CD4 /* Frameworks */,
 				3320C5BA1ABF807B00A90CD4 /* Resources */,
 				33010B6A1AC4DC7F00C3F283 /* Embed Frameworks */,
+				33D1342B1AFB2525009138D0 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -461,6 +473,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		33D1342B1AFB2525009138D0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run ca36aee2d32355aa193c36987f683f974ebc43db 0465dc9bc686219f557f521e35fa5f60e252c9444fd0171466c1505e5300fd74";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3320C5B81ABF807B00A90CD4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -478,6 +506,7 @@
 				3375E2351AC3642B00C39472 /* CollectionsManager.swift in Sources */,
 				3320C5C51ABF807B00A90CD4 /* FlashKards.xcdatamodeld in Sources */,
 				336A29841AEEF213009199D3 /* reviewSummaryCell.swift in Sources */,
+				33D1342A1AFB0CE2009138D0 /* EditDeckController.swift in Sources */,
 				339D3BCF1ACB048500E4A6EE /* CollectionViewCell.swift in Sources */,
 				3330EE6D1AE051220004BDC0 /* CollectionHistory.m in Sources */,
 				33CB73731AC4B65600B72A6A /* RectSelView.swift in Sources */,
@@ -616,6 +645,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = FlashKards/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -633,6 +666,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = FlashKards/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
