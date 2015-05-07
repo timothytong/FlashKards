@@ -92,9 +92,6 @@
                                 <state key="normal" image="edit-white.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <segue destination="BTN-M9-kSg" kind="showDetail" identifier="editDeck" id="0Eh-vN-mAT"/>
-                                </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="gLk-EA-mYR">
                                 <rect key="frame" x="21" y="108" width="558" height="192"/>
@@ -197,7 +194,7 @@
         <!--EditController-->
         <scene sceneID="uAa-yb-SRf">
             <objects>
-                <viewController id="BTN-M9-kSg" userLabel="EditController" sceneMemberID="viewController">
+                <viewController id="BTN-M9-kSg" userLabel="EditController" customClass="EditDeckController" customModule="FlashKards" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vgC-pJ-9ub"/>
                         <viewControllerLayoutGuide type="bottom" id="5gd-Q6-s1J"/>
@@ -231,7 +228,7 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Y21-ul-th4">
                                 <rect key="frame" x="16" y="63" width="568" height="517"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="srg-aN-OSL">
-                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="itemSize" width="138" height="168"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -241,7 +238,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="138" height="168"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -262,6 +259,9 @@
                             <constraint firstItem="Hsv-uV-yqV" firstAttribute="top" secondItem="vgC-pJ-9ub" secondAttribute="bottom" constant="4" id="zGD-lG-hUe"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="collectionView" destination="Y21-ul-th4" id="ALr-2w-dOT"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tZJ-of-3hW" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="QcJ-N7-gvF" userLabel="Exit" sceneMemberID="exit"/>
