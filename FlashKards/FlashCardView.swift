@@ -77,8 +77,8 @@ class FlashCardView: UIView {
         clearSubviews(back)
         let frontDict = card.front as! NSDictionary
         let backDict = card.back as! NSDictionary
-        restoreViewsWithDictionary(frontDict, onView: front)
-        restoreViewsWithDictionary(backDict, onView: back)
+        front = Utilities.restoreViewsWithDictionary(frontDict, onView: front)
+        back = Utilities.restoreViewsWithDictionary(backDict, onView: back)
     }
     
     private func clearSubviews(viewToBeCleared: UIView){
@@ -87,33 +87,5 @@ class FlashCardView: UIView {
         }
     }
     
-    private func restoreViewsWithDictionary(dict: NSDictionary, onView view: UIView){
-        for key in dict.allKeys{
-            let element = dict.objectForKey(key) as! NSDictionary
-            let type = element.objectForKey("type") as! String
-            if type == "txt"{
-                let frameValue = element.objectForKey("frame") as! NSValue
-                let frame = frameValue.CGRectValue()
-                var label = UILabel(frame: frame)
-                label.font = UIFont(name: element.objectForKey("font") as! String, size: element.objectForKey("font_size") as! CGFloat)
-                label.text = element.objectForKey("content") as? String
-                label.textAlignment = .Center
-                label.numberOfLines = 0
-                label.lineBreakMode = NSLineBreakMode.ByCharWrapping
-                view.addSubview(label)
-            }
-            else if type == "img"{
-                let frameValue = element.objectForKey("frame") as! NSValue
-                let frame = frameValue.CGRectValue()
-                let imgURL = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String) + "/" + (element.objectForKey("content") as! String)
-                var imageView = UIImageView(frame: frame)
-                imageView.contentMode = UIViewContentMode.ScaleAspectFit
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    let image = UIImage(contentsOfFile: imgURL)
-                    imageView.image = image
-                    view.addSubview(imageView)
-                })
-            }
-        }
-    }
+        
 }
