@@ -161,7 +161,21 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         return returnArray
     }
     
-    
+    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+        if identifier == "ReviewCollection" {
+            if flashcardCollection.numCards.integerValue < 1{
+                var reviewNotAvailablePopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
+                reviewNotAvailablePopup.numOptions = 1
+                reviewNotAvailablePopup.message = "No cards in deck."
+                reviewNotAvailablePopup.cancelBtnText = "OK"
+                reviewNotAvailablePopup.delegate = self
+                navigationController?.view.addSubview(reviewNotAvailablePopup)
+                reviewNotAvailablePopup.show()
+                return false
+            }
+        }
+        return true
+    }
     
     // MARK: - Navigation
     
