@@ -9,6 +9,8 @@
 import UIKit
 
 class ReviewFlashcardController: UIViewController, PopupDelegate{
+    @IBOutlet private weak var backgroundTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var backgroundLeadingConstraint: NSLayoutConstraint!
     @IBOutlet private weak var flipButton: UIButton!
     @IBOutlet private weak var nextButton: UIButton!
     @IBOutlet private weak var nextCardView: FlashCardView!
@@ -73,6 +75,10 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
             mainCardContainerBottomConstraint.constant -= 30
             forgetButtonBottomConstraint.constant -= 30
             rememberBtnBottomConstraint.constant -= 30
+        }
+        if Utilities.IS_IPHONE6P(){
+            backgroundLeadingConstraint.constant -= 8
+            backgroundTrailingConstraint.constant -= 8
         }
         forgottenCardSet = [FlashCard]()
         view.sendSubviewToBack(backgroundView)
@@ -262,7 +268,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
     }
     
     func showNextCard(){
-        if collectionOfInterest.numCards == 1{
+        if collectionOfInterest.numCards == 1 || (cardSet == nil && currentCard.forgotten){
             cardsDone++
             countdownLabel.text = "Done."
         }
@@ -610,6 +616,8 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
         // Pass the selected object to the new view controller.
         var status = "aborted"
         if cardsDone >= collectionOfInterest.numCards.integerValue{
+            cardsDone = collectionOfInterest.numCards.integerValue
+            println("Complete!")
             status = "complete"
             collectionOfInterest.updateLastReviewTimeToCurrentTime()
             collectionOfInterest.updateCardsMemorizedVal(Int32(collectionOfInterest.numCards.integerValue - cardsForgotten))
@@ -639,9 +647,5 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
         return self.collectionOfInterest
     }
     
-    private func clearSubviews(viewToBeCleared: UIView){
-        for subview in viewToBeCleared.subviews{
-            subview.removeFromSuperview()
-        }
-    }
+
 }

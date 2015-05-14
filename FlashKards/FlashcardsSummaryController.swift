@@ -41,11 +41,12 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
             tableViewTopConstraint.constant += 30
             tableViewSugActVConstraint.constant += 40
         }
-        editButton.addTarget(self, action: "editButtonPressed", forControlEvents: .TouchUpInside)
+        // editButton.addTarget(self, action: "editButtonPressed", forControlEvents: .TouchUpInside)
         // Do any additional setup after loading the view.
     }
 
     func editButtonPressed(){
+        /*
         var featureNotAvailablePopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
         featureNotAvailablePopup.numOptions = 1
         featureNotAvailablePopup.message = "Sorry, this feature is not yet available."
@@ -53,6 +54,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         featureNotAvailablePopup.delegate = self
         navigationController?.view.addSubview(featureNotAvailablePopup)
         featureNotAvailablePopup.show()
+        */
     }
 
     override func didReceiveMemoryWarning() {
@@ -162,7 +164,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     }
     
     override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
-        if identifier == "ReviewCollection" {
+        if identifier == "ReviewCollection" || identifier == "EditCollection" {
             if flashcardCollection.numCards.integerValue < 1{
                 var reviewNotAvailablePopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
                 reviewNotAvailablePopup.numOptions = 1
@@ -206,6 +208,10 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
             else{
                 println("SOMETHING IS WRONG")
             }
+        }
+        else if segue.identifier == "EditCollection"{
+            let editVC: EditDeckController = segue.destinationViewController as! EditDeckController
+            editVC.configureWithCollection(flashcardCollection)
         }
     }
     
