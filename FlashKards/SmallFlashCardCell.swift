@@ -6,8 +6,14 @@
 //  Copyright (c) 2015 Timothy Tong. All rights reserved.
 //
 
-import Cocoa
+import UIKit
 
 class SmallFlashCardCell: UICollectionViewCell {
 
+    @IBOutlet private weak var view: UIView!
+    
+    func populateViewWithDict(dictionary: NSDictionary, widthScale wScale: CGFloat, heightScale hScale: CGFloat){
+        Utilities.clearSubviews(view)
+        Utilities.restoreViewsWithDictionary(dictionary, onView: view, widthScaleRatio: wScale, heightScaleRatio: hScale)
+    }
 }
