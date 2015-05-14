@@ -1068,7 +1068,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
     {
-        println(view.frame.height)
         var side = (view.frame.width - 40) / 4 // iPhone 6+
         if Utilities.IS_IPHONE6(){
             side = (view.frame.width - 30) / 4

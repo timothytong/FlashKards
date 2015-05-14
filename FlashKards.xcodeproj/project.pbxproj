@@ -36,6 +36,7 @@
 		33402CEF1AC09B5E00265F70 /* FlashCardsOverviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CED1AC09B5E00265F70 /* FlashCardsOverviewCell.swift */; };
 		33402CF01AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33402CEE1AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib */; };
 		33402CF91AC0C1F400265F70 /* AddCollectionPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33402CF81AC0C1F400265F70 /* AddCollectionPopup.swift */; };
+		33464C6D1B038E950007F8C4 /* settings-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 33464C6C1B038E950007F8C4 /* settings-white.png */; };
 		336A29821AEEF098009199D3 /* ReviewSummaryStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336A29811AEEF098009199D3 /* ReviewSummaryStatusCell.swift */; };
 		336A29841AEEF213009199D3 /* reviewSummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 336A29831AEEF213009199D3 /* reviewSummaryCell.swift */; };
 		3375E2351AC3642B00C39472 /* CollectionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3375E2341AC3642B00C39472 /* CollectionsManager.swift */; };
@@ -61,6 +62,8 @@
 		33E719BA1ADA07A700869D52 /* ReviewFlashcardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E719B91ADA07A700869D52 /* ReviewFlashcardController.swift */; };
 		33E719BC1ADA081E00869D52 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E719BB1ADA081E00869D52 /* Constants.swift */; };
 		33ED156E1AE74A14004D8629 /* FlashCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33ED156D1AE74A14004D8629 /* FlashCardView.swift */; };
+		33F0C80B1B042A000081DB44 /* delete_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 33F0C80A1B042A000081DB44 /* delete_icon.png */; };
+		33F0C80D1B0448800081DB44 /* SmallFlashCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F0C80C1B0448800081DB44 /* SmallFlashCardCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +126,7 @@
 		33402CED1AC09B5E00265F70 /* FlashCardsOverviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardsOverviewCell.swift; sourceTree = "<group>"; };
 		33402CEE1AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FlashCardsOverviewCellTemplate.xib; sourceTree = "<group>"; };
 		33402CF81AC0C1F400265F70 /* AddCollectionPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCollectionPopup.swift; sourceTree = "<group>"; };
+		33464C6C1B038E950007F8C4 /* settings-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settings-white.png"; path = "Images/settings-white.png"; sourceTree = "<group>"; };
 		336A29811AEEF098009199D3 /* ReviewSummaryStatusCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewSummaryStatusCell.swift; sourceTree = "<group>"; };
 		336A29831AEEF213009199D3 /* reviewSummaryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = reviewSummaryCell.swift; sourceTree = "<group>"; };
 		3375E2341AC3642B00C39472 /* CollectionsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionsManager.swift; sourceTree = "<group>"; };
@@ -149,6 +153,8 @@
 		33E719BB1ADA081E00869D52 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		33ED156D1AE74A14004D8629 /* FlashCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlashCardView.swift; sourceTree = "<group>"; };
 		33EE18741AD59FC8006373AA /* FlashKards-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FlashKards-Bridging-Header.h"; sourceTree = "<group>"; };
+		33F0C80A1B042A000081DB44 /* delete_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = delete_icon.png; path = Images/delete_icon.png; sourceTree = "<group>"; };
+		33F0C80C1B0448800081DB44 /* SmallFlashCardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmallFlashCardCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -240,8 +246,10 @@
 				33BF1DCA1AC600A700031C69 /* delete-white.png */,
 				33CA2C461AE1BA4300BC7804 /* right-blue.png */,
 				33BF1DC21AC5DB2B00031C69 /* newImg-blue.png */,
+				33F0C80A1B042A000081DB44 /* delete_icon.png */,
 				3311FED81ACB9CD8001C3693 /* ok-white.png */,
 				33BF1DCC1AC624DC00031C69 /* cancel-red.png */,
+				33464C6C1B038E950007F8C4 /* settings-white.png */,
 				333D95801AC902BA0028337D /* down-white.png */,
 				331734381ADCBFA50021DC8B /* cancel-red-forget.png */,
 				3317343A1ADCC5360021DC8B /* ok-gray.png */,
@@ -328,6 +336,7 @@
 				33ED156D1AE74A14004D8629 /* FlashCardView.swift */,
 				336A29811AEEF098009199D3 /* ReviewSummaryStatusCell.swift */,
 				336A29831AEEF213009199D3 /* reviewSummaryCell.swift */,
+				33F0C80C1B0448800081DB44 /* SmallFlashCardCell.swift */,
 			);
 			name = AuxiliaryViews;
 			sourceTree = "<group>";
@@ -444,6 +453,7 @@
 				3320C5CA1ABF807B00A90CD4 /* Main.storyboard in Resources */,
 				333439371AC450F300A808F9 /* go-white.png in Resources */,
 				33402CF01AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib in Resources */,
+				33F0C80B1B042A000081DB44 /* delete_icon.png in Resources */,
 				33213C3B1AC20D6A00CF1B38 /* cancel-white-highlighted.png in Resources */,
 				3317343B1ADCC5360021DC8B /* ok-gray.png in Resources */,
 				331734391ADCBFA50021DC8B /* cancel-red-forget.png in Resources */,
@@ -458,6 +468,7 @@
 				3311FED91ACB9CD8001C3693 /* ok-white.png in Resources */,
 				33BF1DCE1AC624DC00031C69 /* cancel-red.png in Resources */,
 				3320C5CC1ABF807B00A90CD4 /* Images.xcassets in Resources */,
+				33464C6D1B038E950007F8C4 /* settings-white.png in Resources */,
 				3327F5F61AD6DAA700D1B3D1 /* ok-blue.png in Resources */,
 				3334393E1AC495CF00A808F9 /* text-white.png in Resources */,
 				33BF1DCF1AC624DC00031C69 /* ok-green.png in Resources */,
@@ -518,6 +529,7 @@
 				33CB736B1AC49D1400B72A6A /* CustomizeCardController.swift in Sources */,
 				336A29821AEEF098009199D3 /* ReviewSummaryStatusCell.swift in Sources */,
 				3392E6471AEA66AC00B9615D /* ResultsController.swift in Sources */,
+				33F0C80D1B0448800081DB44 /* SmallFlashCardCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -593,7 +605,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -630,7 +642,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -656,6 +668,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "FlashKards/FlashKards-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -676,6 +689,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "FlashKards/FlashKards-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
