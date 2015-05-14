@@ -958,24 +958,19 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         let side = frontShowing ? "front" : "back"
         let tmpImgPath = documentsDir!.stringByAppendingPathComponent("\(collectionName)/tmp/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
         let imgPath = "\(collectionName)/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png"
-        /*
+        
         if UIImagePNGRepresentation(newImage).writeToFile(tmpImgPath, atomically: true){
-        println("Wrote to file")
+            println("Wrote to file")
         }
         else{
-        println("Could not write to file")
+            println("Could not write to file, using backup method...")
+            let imageData = UIImagePNGRepresentation(newImage)
+            let fileManager: NSFileManager = NSFileManager.defaultManager()
+            let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+            let documentsDirectory: NSString = paths[0] as! NSString
+            let fullPath = documentsDirectory.stringByAppendingPathComponent(imgPath)
+            fileManager.createFileAtPath(fullPath, contents: imageData, attributes: nil)
         }
-        */
-        
-        // Show the image with an UIImageView
-        let imageData = UIImagePNGRepresentation(newImage)
-        let fileManager: NSFileManager = NSFileManager.defaultManager()
-        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        let documentsDirectory: NSString = paths[0] as! NSString
-        let fullPath = documentsDirectory.stringByAppendingPathComponent(imgPath)
-        
-        fileManager.createFileAtPath(fullPath, contents: imageData, attributes: nil) //finally save the path (image)
-        
         
         var imageView = UIImageView(frame: CGRect(x: rectSel.frame.origin.x, y: rectSel.frame.origin.y, width: rectSel.frame.width, height: rectSel.frame.height))
         imageView.image = newImage
