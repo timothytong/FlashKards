@@ -20,13 +20,14 @@ class CollectionsManager: NSObject {
     func addCollectionWithName(name: String!, andCompletionHandler completionHandler:(success:Bool, newCollection: FlashCardCollection)->()){
         var managedContext = appDelegate.managedObjectContext!
         var newCollection = NSEntityDescription.insertNewObjectForEntityForName("Collection", inManagedObjectContext: managedContext) as! FlashCardCollection
-        let largestID = 0 //findLargestID()
+        let largestID = findLargestCardIDCollection()
         newCollection.collectionID = largestID + 1
         newCollection.name = name
         newCollection.numCards = 0
         newCollection.last_updated = NSDate.timeIntervalSinceReferenceDate()
         newCollection.time_created = NSDate.timeIntervalSinceReferenceDate()
         newCollection.lastReviewed = 0
+        newCollection.largestCardID = 0
         newCollection.numCardsMemorized = 0
         
         // println("Saving, assigning id \(largestID+1)")
@@ -35,24 +36,6 @@ class CollectionsManager: NSObject {
         completionHandler(success: success, newCollection: newCollection)
     }
     
-    func findLargestID()->Int{
-        var managedContext = appDelegate.managedObjectContext!
-        var entity = NSEntityDescription.entityForName("Collection", inManagedObjectContext: managedContext)
-        let fetchRequest = NSFetchRequest()
-        fetchRequest.entity = entity
-        fetchRequest.fetchLimit = 1
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: false)]
-        var error: NSError?
-        var fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error)
-        if let results = fetchResults{
-            if results.count > 0{
-                let largest = (results[0] as! NSManagedObject).valueForKey("id") as! Int
-                // println("Found largest id \(largest)")
-                return largest
-            }
-        }
-        return -1
-    }
     
     func getCollectionWithID(id: Int) -> FlashCardCollection?{
         var managedContext = appDelegate.managedObjectContext!
@@ -77,7 +60,7 @@ class CollectionsManager: NSObject {
             }
         }
         return nil
-
+        
     }
     
     func searchExistingCollectionsWithName(collectionName: String!)->NSManagedObject?{
@@ -148,41 +131,57 @@ class CollectionsManager: NSObject {
     }
     */
     
-    func findLargestCardIDInCollection()->Int{
+    
+    func findLargestCardIDCollection()->Int{
+        var managedContext = appDelegate.managedObjectContext!
+        var entity = NSEntityDescription.entityForName("Collection", inManagedObjectContext: managedContext)
+        let fetchRequest = NSFetchRequest()
+        fetchRequest.entity = entity
+        fetchRequest.fetchLimit = 1
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "collectionID", ascending: false)]
+        var error: NSError?
+        var fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error)
+        if let results = fetchResults{
+            if results.count > 0{
+                let largest = (results[0] as! NSManagedObject).valueForKey("collectionID") as! Int
+                 println("Found largest id \(largest)")
+                return largest
+            }
+        }
         return 0
     }
     
-    func addNewFlashcardWithData(newCardDict: NSDictionary, toCollection collectionName: String){
+    func addNewFlashcardWithData(newCardDict: NSDictionary, toCollection collection: FlashCardCollection){
         let frontDict = newCardDict["front"]! as! NSDictionary
         let backDict = newCardDict["back"]! as! NSDictionary
-        if let targetCollection = searchExistingCollectionsWithName(collectionName) as? FlashCardCollection{
-            var managedContext = appDelegate.managedObjectContext!
-            var flashcardEntity = NSEntityDescription.entityForName("FlashCard", inManagedObjectContext: managedContext)
-            var newCard = NSManagedObject(entity: flashcardEntity!, insertIntoManagedObjectContext: targetCollection.managedObjectContext) as! FlashCard
-            
-            var frontData = NSKeyedArchiver.archivedDataWithRootObject(frontDict)
-            newCard.front = frontDict
-            newCard.back = backDict
-            newCard.cardID = 0
-            newCard.times_forgotten = 0
-            newCard.forgotten = false
-            newCard.time_created = NSDate.timeIntervalSinceReferenceDate()
-            newCard.last_updated = NSDate.timeIntervalSinceReferenceDate()
-            newCard.parentCollection = targetCollection
-            newCard.memorized = NSNumber(bool: false)
-            targetCollection.addFlashcardsObject(newCard)
-            targetCollection.last_updated = NSDate.timeIntervalSinceReferenceDate()
-            targetCollection.numCards = targetCollection.numCards.integerValue + 1
-            var flashCardSaveError: NSError?
-            var flashCardCollectionSaveError: NSError?
-            
-            let success = (newCard.managedObjectContext!.save(&flashCardSaveError) && targetCollection.managedObjectContext!.save(&flashCardCollectionSaveError))
-                if success{
-                println("SUCCESSFULLY ADDED A CARD!!!")
-                }
-                else{
-                println("FAILED ADDING A CARD!!!")
-            }
+        
+        var managedContext = appDelegate.managedObjectContext!
+        var flashcardEntity = NSEntityDescription.entityForName("FlashCard", inManagedObjectContext: managedContext)
+        var newCard = FlashCard(entity: flashcardEntity!, insertIntoManagedObjectContext: collection.managedObjectContext)
+        
+        newCard.front = frontDict
+        newCard.back = backDict
+        newCard.cardID = collection.largestCardID.integerValue + 1
+        newCard.times_forgotten = 0
+        newCard.forgotten = false
+        newCard.time_created = NSDate.timeIntervalSinceReferenceDate()
+        newCard.last_updated = NSDate.timeIntervalSinceReferenceDate()
+        newCard.parentCollection = collection
+        newCard.memorized = NSNumber(bool: false)
+        collection.addFlashcardsObject(newCard)
+        collection.largestCardID = collection.largestCardID.integerValue + 1
+        collection.last_updated = NSDate.timeIntervalSinceReferenceDate()
+        collection.numCards = collection.numCards.integerValue + 1
+        var flashCardSaveError: NSError?
+        var flashCardCollectionSaveError: NSError?
+
+        
+        let success = (newCard.managedObjectContext!.save(&flashCardSaveError) && collection.managedObjectContext!.save(&flashCardCollectionSaveError))
+        if success{
+            println("SUCCESSFULLY ADDED A CARD!!!")
+        }
+        else{
+            println("FAILED ADDING A CARD!!!")
         }
     }
 }

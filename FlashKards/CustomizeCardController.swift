@@ -263,7 +263,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     func configureWithCollection(collection: FlashCardCollection!){
         collectionID = collection.collectionID.integerValue
-        println("collectionID: \(collectionID)")
+//        println("collectionID: \(collectionID)")
         collectionName = collection.name
         cardID = collection.numCards.integerValue + 1
     }
@@ -518,7 +518,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     }
     
     func save(){
-        println("front count: \(frontElementsDict.count) back count: \(backElementsDict.count)")
+//        println("front count: \(frontElementsDict.count) back count: \(backElementsDict.count)")
         var savePopup: Popup!
         if numElementsBack == 0 || numElementsFront == 0 {
             savePopup = Popup(frame: CGRect(x: view.frame.width/2 - 125, y: view.frame.height/3, width: 250, height: view.frame.height/3))
@@ -555,7 +555,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                 }, completion: { (complete) -> Void in
                     let dictionary: NSDictionary = NSDictionary(dictionary: ["front": self.frontElementsDict, "back": self.backElementsDict])
                     let collectionManager = CollectionsManager()
-                    collectionManager.addNewFlashcardWithData(dictionary, toCollection: self.collectionName)
+                    collectionManager.addNewFlashcardWithData(dictionary, toCollection: collectionManager.searchExistingCollectionsWithName(self.collectionName)! as! FlashCardCollection)
                     savePopup.message = "Saved."
                     UIView.animateWithDuration(0.3, delay: 1, options: .CurveEaseIn, animations: { () -> Void in
                         savePopup.alpha = 0
@@ -645,7 +645,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     }
     
     func textViewTapped(sender: UITapGestureRecognizer){
-        println("TextView tapped!")
+//        println("TextView tapped!")
         if let textView = sender.view{
             if textView.isKindOfClass(UITextField){
                 if !textView.isFirstResponder(){
