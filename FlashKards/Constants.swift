@@ -9,5 +9,5 @@ import UIKit
 
 class Constants {
     static var navBarHeight: CGFloat?
-    static let appVersion = 0.5
+    static let appVersion = 1.1
 }
