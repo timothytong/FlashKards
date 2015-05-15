@@ -71,7 +71,11 @@ class ResultsController: UIViewController, UITableViewDataSource, UITableViewDel
     
     func configureWithResults(results: NSDictionary, andCollection collection: FlashCardCollection) {
         resultsArray = Array<Dictionary<String, String>>()
-        for key in results.allKeys {
+        let resultDicts = NSMutableDictionary(dictionary: results)
+        let statusDict = ["status": resultDicts.objectForKey("status")! as! String]
+        resultsArray.append(statusDict)
+        resultDicts.removeObjectForKey("status")
+        for key in resultDicts.allKeys {
             let dict = [key as! String: results.objectForKey(key)! as! String] as Dictionary
             resultsArray.append(dict)
         }

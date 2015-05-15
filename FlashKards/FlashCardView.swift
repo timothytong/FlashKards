@@ -73,19 +73,12 @@ class FlashCardView: UIView {
     }
     
     func restoreViewsWithFlashcard(card: FlashCard){
-        clearSubviews(front)
-        clearSubviews(back)
+        Utilities.clearSubviews(front)
+        Utilities.clearSubviews(back)
         let frontDict = card.front as! NSDictionary
         let backDict = card.back as! NSDictionary
-        front = Utilities.restoreViewsWithDictionary(frontDict, onView: front)
-        back = Utilities.restoreViewsWithDictionary(backDict, onView: back)
+        front = Utilities.restoreViewsWithDictionary(frontDict, onView: front, widthScaleRatio: 1, heightScaleRatio: 1)
+        back = Utilities.restoreViewsWithDictionary(backDict, onView: back, widthScaleRatio: 1, heightScaleRatio: 1)
     }
     
-    private func clearSubviews(viewToBeCleared: UIView){
-        for subview in viewToBeCleared.subviews{
-            subview.removeFromSuperview()
-        }
-    }
-    
-        
 }

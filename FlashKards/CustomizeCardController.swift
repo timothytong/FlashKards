@@ -263,7 +263,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     func configureWithCollection(collection: FlashCardCollection!){
         collectionID = collection.collectionID.integerValue
-        println("collectionID: \(collectionID)")
+//        println("collectionID: \(collectionID)")
         collectionName = collection.name
         cardID = collection.numCards.integerValue + 1
     }
@@ -518,7 +518,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     }
     
     func save(){
-        println("front count: \(frontElementsDict.count) back count: \(backElementsDict.count)")
+//        println("front count: \(frontElementsDict.count) back count: \(backElementsDict.count)")
         var savePopup: Popup!
         if numElementsBack == 0 || numElementsFront == 0 {
             savePopup = Popup(frame: CGRect(x: view.frame.width/2 - 125, y: view.frame.height/3, width: 250, height: view.frame.height/3))
@@ -555,7 +555,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                 }, completion: { (complete) -> Void in
                     let dictionary: NSDictionary = NSDictionary(dictionary: ["front": self.frontElementsDict, "back": self.backElementsDict])
                     let collectionManager = CollectionsManager()
-                    collectionManager.addNewFlashcardWithData(dictionary, toCollection: self.collectionName)
+                    collectionManager.addNewFlashcardWithData(dictionary, toCollection: collectionManager.searchExistingCollectionsWithName(self.collectionName)! as! FlashCardCollection)
                     savePopup.message = "Saved."
                     UIView.animateWithDuration(0.3, delay: 1, options: .CurveEaseIn, animations: { () -> Void in
                         savePopup.alpha = 0
@@ -645,7 +645,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     }
     
     func textViewTapped(sender: UITapGestureRecognizer){
-        println("TextView tapped!")
+//        println("TextView tapped!")
         if let textView = sender.view{
             if textView.isKindOfClass(UITextField){
                 if !textView.isFirstResponder(){
@@ -854,10 +854,10 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         thumbnails.append(thumbnail)
         galleryCollectionView.performBatchUpdates({ () -> Void in
             self.galleryCollectionView.insertItemsAtIndexPaths([NSIndexPath(forRow: self.thumbnails.count - 1, inSection: 0)])
-        }, completion: { (complete) -> Void in
-            
+            }, completion: { (complete) -> Void in
+                
         })
-
+        
     }
     
     // MARK: ALAssetsLibrary
@@ -959,9 +959,19 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         let tmpImgPath = documentsDir!.stringByAppendingPathComponent("\(collectionName)/tmp/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
         let imgPath = "\(collectionName)/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png"
         
-        UIImagePNGRepresentation(newImage).writeToFile(tmpImgPath, atomically: true)
+        if UIImagePNGRepresentation(newImage).writeToFile(tmpImgPath, atomically: true){
+            println("Wrote to file")
+        }
+        else{
+            println("Could not write to file, using backup method...")
+            let imageData = UIImagePNGRepresentation(newImage)
+            let fileManager: NSFileManager = NSFileManager.defaultManager()
+            let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+            let documentsDirectory: NSString = paths[0] as! NSString
+            let fullPath = documentsDirectory.stringByAppendingPathComponent(imgPath)
+            fileManager.createFileAtPath(fullPath, contents: imageData, attributes: nil)
+        }
         
-        // Show the image with an UIImageView
         var imageView = UIImageView(frame: CGRect(x: rectSel.frame.origin.x, y: rectSel.frame.origin.y, width: rectSel.frame.width, height: rectSel.frame.height))
         imageView.image = newImage
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
@@ -1058,7 +1068,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
     {
-        println(view.frame.height)
         var side = (view.frame.width - 40) / 4 // iPhone 6+
         if Utilities.IS_IPHONE6(){
             side = (view.frame.width - 30) / 4
