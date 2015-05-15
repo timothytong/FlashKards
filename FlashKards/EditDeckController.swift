@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditDeckController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class EditDeckController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, SmallFlashCardCellDelegate {
 
     @IBOutlet weak var collectionView: UICollectionView!
     private var collection: FlashCardCollection!
@@ -28,8 +28,9 @@ class EditDeckController: UIViewController, UICollectionViewDataSource, UICollec
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var cell:SmallFlashCardCell = collectionView.dequeueReusableCellWithReuseIdentifier("flashcardCell", forIndexPath: indexPath) as! SmallFlashCardCell
+        cell.delegate = self
         let flashCard = collectionArray[indexPath.row]
-        cell.populateViewWithDict(flashCard.front as! NSDictionary, widthScale: widthRatio, heightScale: heightRatio)
+        cell.populateViewWithDict(flashCard.front as! NSDictionary, widthScale: widthRatio, heightScale: heightRatio, index: indexPath.item)
         return cell
     }
     
@@ -62,5 +63,29 @@ class EditDeckController: UIViewController, UICollectionViewDataSource, UICollec
         widthRatio = width/originalWidth
         heightRatio = height/originalHeight
         return CGSize(width: width, height: height)
+    }
+    
+    func smallFlashCardCellDeleteButtonTapped(index: Int) {
+        collectionView.performBatchUpdates({ () -> Void in
+            println("Deleting index \(index)")
+            let card = self.collectionArray.removeAtIndex(index)
+            self.collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
+            let collection = card.parentCollection
+            if !card.forgotten{
+                println("This is a remembered card.")
+                collection.numCardsMemorized = collection.numCardsMemorized.integerValue - 1
+            }
+            collection.removeFlashcardsObject(card)
+            collection.numCards = collection.numCards.integerValue - 1
+            var error: NSError?
+            if collection.managedObjectContext!.save(&error){
+                println("Card successfully deleted from collection")
+            }
+            else{
+                println("Can't Delete from collection!")
+            }
+        }, completion: { (comeplete) -> Void in
+            self.collectionView.reloadData()
+        })
     }
 }

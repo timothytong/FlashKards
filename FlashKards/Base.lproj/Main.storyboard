@@ -318,6 +318,7 @@
                                             <constraint firstAttribute="trailingMargin" secondItem="9MK-I8-4w9" secondAttribute="trailing" constant="-8" id="qcP-9s-6nN"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="deleteButton" destination="XX3-Si-2tY" id="eXI-xA-i7C"/>
                                             <outlet property="view" destination="9MK-I8-4w9" id="YxO-l5-X6U"/>
                                         </connections>
                                     </collectionViewCell>
