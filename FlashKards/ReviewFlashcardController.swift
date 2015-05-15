@@ -44,6 +44,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
     private var collectionOfInterest: FlashCardCollection!
     private var cardSet: [FlashCard]!
     private var forgottenCardSet: [FlashCard]!
+    private var doneCardSet: Set<FlashCard>!
     private var numSecondsElapsed: Int64 = 0
     private var isPaused = true
     private var dimLayer: UIView!
@@ -134,6 +135,8 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
         for card in cardSet{
             card.forgotten = false
         }
+        
+        doneCardSet = Set<FlashCard>()
         // Do any additional setup after loading the view.
     }
     
@@ -169,6 +172,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
     }
     
     func remember(){
+        doneCardSet.insert(currentCard)
         cardsDone++
         updateCardsDoneLabel()
         showNextCard()
@@ -439,6 +443,11 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
     
     func endReview(withCountDown: Bool){
         if withCountDown{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+                for card in self.doneCardSet{
+                    card.managedObjectContext!.save(nil)
+                }
+            })
             endReviewPopup = Popup(frame: CGRect(x: view.frame.width/2 - 80, y: view.frame.height/2 - 30, width: 160, height: 60))
             endReviewPopup.numOptions = 0
             endReviewPopup.message = "Exiting in 3 "
