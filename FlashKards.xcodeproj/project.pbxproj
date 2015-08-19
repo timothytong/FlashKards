@@ -155,6 +155,7 @@
 		33EE18741AD59FC8006373AA /* FlashKards-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FlashKards-Bridging-Header.h"; sourceTree = "<group>"; };
 		33F0C80A1B042A000081DB44 /* delete_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = delete_icon.png; path = Images/delete_icon.png; sourceTree = "<group>"; };
 		33F0C80C1B0448800081DB44 /* SmallFlashCardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmallFlashCardCell.swift; sourceTree = "<group>"; };
+		AF0227BD1B8431E600DA3BA6 /* FlashKards 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "FlashKards 2.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -763,9 +764,10 @@
 		3320C5C31ABF807B00A90CD4 /* FlashKards.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				AF0227BD1B8431E600DA3BA6 /* FlashKards 2.xcdatamodel */,
 				3320C5C41ABF807B00A90CD4 /* FlashKards.xcdatamodel */,
 			);
-			currentVersion = 3320C5C41ABF807B00A90CD4 /* FlashKards.xcdatamodel */;
+			currentVersion = AF0227BD1B8431E600DA3BA6 /* FlashKards 2.xcdatamodel */;
 			path = FlashKards.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
