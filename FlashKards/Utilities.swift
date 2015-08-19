@@ -71,7 +71,7 @@ class Utilities {
                 label.text = element.objectForKey("content") as? String
                 label.textAlignment = .Center
                 label.numberOfLines = 0
-                label.lineBreakMode = NSLineBreakMode.ByCharWrapping
+                label.lineBreakMode = NSLineBreakMode.ByWordWrapping
                 view.addSubview(label)
             }
             else if type == "img"{

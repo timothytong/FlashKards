@@ -21,5 +21,5 @@
 @dynamic parentCollection;
 @dynamic times_forgotten;
 @dynamic forgotten;
-
+@dynamic latest_element_ID;
 @end

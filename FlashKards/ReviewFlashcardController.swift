@@ -96,7 +96,6 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
         currentCardView.layer.borderColor = UIColor(white: 0.5, alpha: 1).CGColor
         currentCardView.clipsToBounds = true
         
-        
         nextCardView.layer.cornerRadius = 3
         nextCardView.layer.borderWidth = 1
         nextCardView.layer.borderColor = UIColor(white: 0.5, alpha: 1).CGColor

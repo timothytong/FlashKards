@@ -168,6 +168,7 @@ class CollectionsManager: NSObject {
         newCard.last_updated = NSDate.timeIntervalSinceReferenceDate()
         newCard.parentCollection = collection
         newCard.memorized = NSNumber(bool: false)
+        newCard.latest_element_ID = newCardDict["latest_element_id"]! as! NSNumber
         collection.addFlashcardsObject(newCard)
         collection.largestCardID = collection.largestCardID.integerValue + 1
         collection.last_updated = NSDate.timeIntervalSinceReferenceDate()

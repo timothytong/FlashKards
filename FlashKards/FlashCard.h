@@ -22,5 +22,6 @@
 @property (nonatomic, retain) FlashCardCollection *parentCollection;
 @property (nonatomic, retain) NSNumber * times_forgotten;
 @property (nonatomic, readwrite) BOOL forgotten;
+@property (nonatomic, retain) NSNumber * latest_element_ID;
 
 @end

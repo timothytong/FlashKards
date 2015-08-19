@@ -553,7 +553,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             UIView.animateWithDuration(0.4, delay: 0, options: .CurveEaseIn, animations: { () -> Void in
                 savePopup.alpha = 1
                 }, completion: { (complete) -> Void in
-                    let dictionary: NSDictionary = NSDictionary(dictionary: ["front": self.frontElementsDict, "back": self.backElementsDict])
+                    let dictionary: NSDictionary = NSDictionary(dictionary: ["front": self.frontElementsDict, "back": self.backElementsDict, "latest_element_id": self.newElementTag])
                     let collectionManager = CollectionsManager()
                     collectionManager.addNewFlashcardWithData(dictionary, toCollection: collectionManager.searchExistingCollectionsWithName(self.collectionName)! as! FlashCardCollection)
                     savePopup.message = "Saved."
@@ -645,7 +645,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     }
     
     func textViewTapped(sender: UITapGestureRecognizer){
-//        println("TextView tapped!")
         if let textView = sender.view{
             if textView.isKindOfClass(UITextField){
                 if !textView.isFirstResponder(){
@@ -714,21 +713,41 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     func completeAddTextAction(){
         // Store in a dictionary then show it
         if let textField = textViewBeingAdded{
-            UIView.transitionWithView(textField, duration: 0.2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-                textField.layer.borderWidth = 0
-                }, completion: { (complete) -> Void in
-                    self.textViewBeingAdded = nil
-                    self.exitEditMode()
-                    self.cancelAddTxtBtn.alpha = 0
-                    self.confirmAddTextBtn.alpha = 0
-                    self.confirmAddElementBtn.alpha = 1
-            })
             if count(textField.text) > 0{
-                textField.editable = false
-                textField.tag = newElementTag
-                
                 let optimalFontSize = Utilities.calculateOptimalFontSizeWithText(textField.text, inRect: textField.frame)
                 textField.font = textField.font.fontWithSize(optimalFontSize)
+                
+                var label = UILabel(frame: textField.frame)
+
+                label.font = UIFont(name: "HelveticaNeue-Light", size: optimalFontSize)
+                label.text = textField.text
+                label.textAlignment = .Center
+                label.numberOfLines = 0
+                label.lineBreakMode = NSLineBreakMode.ByWordWrapping
+                label.alpha = 0
+                label.tag = newElementTag
+                if frontShowing{
+                    frontView.addSubview(label)
+                } else {
+                    backView.addSubview(label)
+                }
+
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    UIView.transitionWithView(textField, duration: 0.2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+                        textField.alpha = 0
+                        label.alpha = 1
+                        }, completion: { (complete) -> Void in
+                            textField.removeFromSuperview()
+                    })
+                })
+                
+                self.textViewBeingAdded = nil
+                self.exitEditMode()
+                self.cancelAddTxtBtn.alpha = 0
+                self.confirmAddTextBtn.alpha = 0
+                self.confirmAddElementBtn.alpha = 1
+                
                 var dictionary = NSDictionary(dictionary:[
                     "id": newElementTag,
                     "frame": NSValue(CGRect: textField.frame),

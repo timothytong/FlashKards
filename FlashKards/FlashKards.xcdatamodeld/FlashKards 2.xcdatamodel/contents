@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Collection" representedClassName="FlashCardCollection" syncable="YES">
+        <attribute name="collectionID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="largestCardID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="last_updated" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="lastReviewed" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="numCards" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="numCardsMemorized" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="time_created" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="flashcards" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="FlashCard" inverseName="parentCollection" inverseEntity="FlashCard" syncable="YES"/>
+        <relationship name="reviewHistory" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="CollectionReviewHistory" inverseName="collection" inverseEntity="CollectionReviewHistory" syncable="YES"/>
+    </entity>
+    <entity name="CollectionReviewHistory" representedClassName="CollectionHistory" syncable="YES">
+        <attribute name="completed" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="historyID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="rememberedCards" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="time" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="timeUsed" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="totalNumCards" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="collection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Collection" inverseName="reviewHistory" inverseEntity="Collection" syncable="YES"/>
+    </entity>
+    <entity name="FlashCard" representedClassName="FlashCard" syncable="YES">
+        <attribute name="back" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="cardID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="forgotten" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="front" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="last_updated" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="latest_element_ID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="memorized" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="time_created" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="times_forgotten" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="parentCollection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Collection" inverseName="flashcards" inverseEntity="Collection" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Collection" positionX="-173" positionY="-151" width="128" height="193"/>
+        <element name="CollectionReviewHistory" positionX="-54" positionY="105" width="128" height="148"/>
+        <element name="FlashCard" positionX="61" positionY="-117" width="128" height="195"/>
+    </elements>
+</model>
