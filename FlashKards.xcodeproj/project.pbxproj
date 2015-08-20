@@ -64,6 +64,8 @@
 		33ED156E1AE74A14004D8629 /* FlashCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33ED156D1AE74A14004D8629 /* FlashCardView.swift */; };
 		33F0C80B1B042A000081DB44 /* delete_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 33F0C80A1B042A000081DB44 /* delete_icon.png */; };
 		33F0C80D1B0448800081DB44 /* SmallFlashCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F0C80C1B0448800081DB44 /* SmallFlashCardCell.swift */; };
+		AF0227C01B8459C500DA3BA6 /* SidebarOptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0227BF1B8459C500DA3BA6 /* SidebarOptionsCell.swift */; };
+		AF0227C41B845A0B00DA3BA6 /* SidebarOptionsCellTemplate.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF0227C31B845A0B00DA3BA6 /* SidebarOptionsCellTemplate.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -156,6 +158,8 @@
 		33F0C80A1B042A000081DB44 /* delete_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = delete_icon.png; path = Images/delete_icon.png; sourceTree = "<group>"; };
 		33F0C80C1B0448800081DB44 /* SmallFlashCardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmallFlashCardCell.swift; sourceTree = "<group>"; };
 		AF0227BD1B8431E600DA3BA6 /* FlashKards 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "FlashKards 2.xcdatamodel"; sourceTree = "<group>"; };
+		AF0227BF1B8459C500DA3BA6 /* SidebarOptionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidebarOptionsCell.swift; sourceTree = "<group>"; };
+		AF0227C31B845A0B00DA3BA6 /* SidebarOptionsCellTemplate.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SidebarOptionsCellTemplate.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -331,6 +335,7 @@
 				33CB73721AC4B65600B72A6A /* RectSelView.swift */,
 				33A53ECE1AC2F0C0001815FA /* Popup.swift */,
 				33402CF81AC0C1F400265F70 /* AddCollectionPopup.swift */,
+				AF0227BE1B84582300DA3BA6 /* OptionsCell */,
 				339D3BCC1ACB046100E4A6EE /* ImageCollectionCell */,
 				33402CF11AC09CB800265F70 /* HomePageCell */,
 				3334393C1AC4703C00A808F9 /* CollectionSummaryCell */,
@@ -359,6 +364,15 @@
 				339D3BCD1ACB048500E4A6EE /* CollectionViewCell.swift */,
 			);
 			name = ImageCollectionCell;
+			sourceTree = "<group>";
+		};
+		AF0227BE1B84582300DA3BA6 /* OptionsCell */ = {
+			isa = PBXGroup;
+			children = (
+				AF0227BF1B8459C500DA3BA6 /* SidebarOptionsCell.swift */,
+				AF0227C31B845A0B00DA3BA6 /* SidebarOptionsCellTemplate.xib */,
+			);
+			name = OptionsCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -455,6 +469,7 @@
 				333439371AC450F300A808F9 /* go-white.png in Resources */,
 				33402CF01AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib in Resources */,
 				33F0C80B1B042A000081DB44 /* delete_icon.png in Resources */,
+				AF0227C41B845A0B00DA3BA6 /* SidebarOptionsCellTemplate.xib in Resources */,
 				33213C3B1AC20D6A00CF1B38 /* cancel-white-highlighted.png in Resources */,
 				3317343B1ADCC5360021DC8B /* ok-gray.png in Resources */,
 				331734391ADCBFA50021DC8B /* cancel-red-forget.png in Resources */,
@@ -519,6 +534,7 @@
 				3320C5C51ABF807B00A90CD4 /* FlashKards.xcdatamodeld in Sources */,
 				336A29841AEEF213009199D3 /* reviewSummaryCell.swift in Sources */,
 				33D1342A1AFB0CE2009138D0 /* EditDeckController.swift in Sources */,
+				AF0227C01B8459C500DA3BA6 /* SidebarOptionsCell.swift in Sources */,
 				339D3BCF1ACB048500E4A6EE /* CollectionViewCell.swift in Sources */,
 				3330EE6D1AE051220004BDC0 /* CollectionHistory.m in Sources */,
 				33CB73731AC4B65600B72A6A /* RectSelView.swift in Sources */,

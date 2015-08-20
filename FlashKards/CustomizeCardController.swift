@@ -13,9 +13,17 @@ enum EditMode{
     case AddImgMode
 }
 
-class CustomizeCardController: UIViewController, PopupDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITextViewDelegate, UICollectionViewDelegateFlowLayout {
+class CustomizeCardController: UIViewController, PopupDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITextViewDelegate, UICollectionViewDelegateFlowLayout,
+    UITableViewDelegate,
+    UITableViewDataSource {
     // MARK: Variables
     // IBOutlets
+
+    @IBOutlet private weak var sideBar: UIView!
+    @IBOutlet private weak var sidebarHeight: NSLayoutConstraint!
+    @IBOutlet private weak var sideBarTableView: UITableView!
+
+    @IBOutlet private weak var sideBarLeftConstraint: NSLayoutConstraint!
     @IBOutlet private weak var addTxtButtonBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var confirmAddTextBtn: UIButton!
     @IBOutlet private weak var cancelAddTxtBtn: UIButton!
@@ -44,6 +52,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     @IBOutlet private weak var deleteBtn: UIButton!
     @IBOutlet private weak var importViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet private weak var importViewTrailingConstraint: NSLayoutConstraint!
+    
     // Additional UI's
     private var activePopup: Popup?
     private var dimLayer: UIView!
@@ -96,6 +105,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         frontView.userInteractionEnabled = false
         backView.userInteractionEnabled = false
         navigationItem.hidesBackButton = true
+
         
         // Import View
         if Utilities.IS_IPHONE6P(){
@@ -121,7 +131,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         addTextBtn.addTarget(self, action: "removeTouchDownGlow:", forControlEvents: .TouchUpOutside)
         
         // Glow
-        var blueGlowColor = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1)
+        var blueGlowColor = Constants.sepLineColor_default
         var greenGlowColor = UIColor(red: 4/255, green: 247/255, blue: 21/255, alpha: 1)
         var redGlowColor = UIColor(red: 247/255, green: 5/255, blue: 2/255, alpha: 1)
         
@@ -242,6 +252,20 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         cancelAddTxtBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         confirmAddTextBtn.addTarget(self, action: "buttonPressed:", forControlEvents: .TouchUpInside)
         
+        // Options bar
+        sideBar.layer.shadowRadius = 13
+        sideBar.layer.masksToBounds = false
+        sideBar.layer.shadowOffset = CGSizeMake(3, 1);
+        sideBar.layer.shadowOpacity = 0.8
+        sideBar.layer.shadowColor = UIColor(red: 57.0/255, green: 57.0/255, blue: 57.0/255, alpha: 1).CGColor
+        sidebarHeight.constant = 180;
+        
+        let optionCellNib: UINib! = UINib(nibName: "SidebarOptionsCellTemplate", bundle: nil)
+        sideBarTableView.registerNib(optionCellNib, forCellReuseIdentifier: "optionCell")
+        sideBarTableView.dataSource = self
+        sideBarTableView.delegate = self
+        sideBarTableView.scrollEnabled = false
+        
         // Misc
         let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
         documentsDir = paths[0] as? String
@@ -249,6 +273,8 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         if Utilities.IS_IPHONE4(){
             addTxtButtonBottomConstraint.constant -= 30
         }
+        
+        sideBarLeftConstraint.constant = view.frame.width / 2
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -463,7 +489,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             UIView.transitionWithView(sender, duration: 0.4, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
                 let newImgString = (sender.tag == 0) ? "newImg-blue.png" : "text-blue.png"
                 sender.setImage(UIImage(named: newImgString), forState: UIControlState.Normal)
-                var color = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1)
+                var color = Constants.sepLineColor_default
                 sender.layer.shadowColor = color.CGColor;
                 sender.layer.shadowRadius = 4.0;
                 sender.layer.shadowOpacity = 0.9;
@@ -700,7 +726,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                 }
             }
             UIView.transitionWithView(textField, duration: 0.7, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-                textField.layer.borderColor = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1).CGColor
+                textField.layer.borderColor = Constants.sepLineColor_default.CGColor
                 }, completion: { (complete) -> Void in
                     UIView.transitionWithView(textField, duration: 0.7, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
                         textField.layer.borderColor = UIColor.blackColor().CGColor
@@ -1025,7 +1051,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.transitionWithView(imageView, duration: 0.7, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-                imageView.layer.borderColor = UIColor(red: 2/255, green: 210/255, blue: 255/255, alpha: 1).CGColor
+                imageView.layer.borderColor = Constants.sepLineColor_default.CGColor
                 }, completion: { (complete) -> Void in
                     UIView.transitionWithView(imageView, duration: 0.7, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
                         imageView.layer.borderColor = UIColor.blackColor().CGColor
@@ -1102,7 +1128,29 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         return UIEdgeInsetsMake(5, 0, 5, 0); //top,left,bottom,right
     }
     
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell: SidebarOptionsCell = sideBarTableView.dequeueReusableCellWithIdentifier("optionCell") as! SidebarOptionsCell
+        switch(indexPath.row){
+        case 0:
+            cell.optionLabel.text = "FONT"
+        case 1:
+            cell.optionLabel.text = "COLOUR"
+        case 2:
+            cell.optionLabel.text = "WRAPPING"
+        default:
+            break
+        }
+        return cell
+
+    }
     
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 60
+    }
     /*
     // MARK: - Navigation
     

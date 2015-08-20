@@ -10,6 +10,7 @@ import UIKit
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, AddCollectionPopupDelegate,PopupDelegate{
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private weak var addCardsButton: UIBarButtonItem!
+    @IBOutlet private weak var settingsButton: UIButton!
     private var newCollectionPopup: AddCollectionPopup!
     private var deleteCollectionPopup: Popup!
     private var dimLayer: UIView!
@@ -77,6 +78,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         flashcardCollections = collectionsManager.fetchCollections()
         tableView.reloadData()
         fileManager = FileManager()
+        settingsButton.alpha = 0
     }
     override func viewWillDisappear(animated: Bool){
         super.viewWillDisappear(animated)

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14E17e" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="osD-1S-xje">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="osD-1S-xje">
     <dependencies>
         <deployment version="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -86,6 +86,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addCardsButton" destination="lg3-Uq-4Qa" id="jyl-OP-fW8"/>
+                        <outlet property="settingsButton" destination="2gX-UL-5ZH" id="BWa-uA-i5x"/>
                         <outlet property="tableView" destination="J8x-q4-y5Y" id="hgL-Ab-5ZS"/>
                         <segue destination="Ab2-qA-MnK" kind="show" identifier="showSummary" id="yrj-4c-tK2"/>
                     </connections>
@@ -1055,6 +1056,35 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dz5-Ku-apZ" userLabel="Sidebar">
+                                <rect key="frame" x="315" y="0.0" width="285" height="600"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4KA-SQ-Xc9" userLabel="SepLine">
+                                        <rect key="frame" x="0.0" y="0.0" width="2" height="600"/>
+                                        <color key="backgroundColor" red="0.0078431372550000003" green="0.82352941180000006" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="2" id="wer-iP-ZNf"/>
+                                        </constraints>
+                                    </view>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="uJn-Hz-VcM" userLabel="SidebarTableView">
+                                        <rect key="frame" x="2" y="0.0" width="285" height="600"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="sectionIndexBackgroundColor" red="0.22352941179999999" green="0.22352941179999999" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    </tableView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.22352941179999999" green="0.22352941179999999" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="285" id="0UX-W4-1fd"/>
+                                    <constraint firstItem="4KA-SQ-Xc9" firstAttribute="top" secondItem="dz5-Ku-apZ" secondAttribute="top" id="7Wo-IR-BNl"/>
+                                    <constraint firstAttribute="height" constant="600" id="CSz-aD-EmN"/>
+                                    <constraint firstAttribute="bottom" secondItem="uJn-Hz-VcM" secondAttribute="bottom" id="GK6-VO-Yel"/>
+                                    <constraint firstAttribute="bottom" secondItem="4KA-SQ-Xc9" secondAttribute="bottom" id="UAj-lk-Mbh"/>
+                                    <constraint firstAttribute="trailing" secondItem="uJn-Hz-VcM" secondAttribute="trailing" constant="-2" id="UoF-YT-XEW"/>
+                                    <constraint firstItem="uJn-Hz-VcM" firstAttribute="leading" secondItem="4KA-SQ-Xc9" secondAttribute="trailing" id="VAp-Za-4NZ"/>
+                                    <constraint firstItem="uJn-Hz-VcM" firstAttribute="top" secondItem="dz5-Ku-apZ" secondAttribute="top" id="YgP-DB-mym"/>
+                                    <constraint firstItem="4KA-SQ-Xc9" firstAttribute="leading" secondItem="dz5-Ku-apZ" secondAttribute="leading" id="jLW-dG-UhS"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.22352941179999999" green="0.22352941179999999" blue="0.22352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -1064,6 +1094,7 @@
                             <constraint firstItem="fpA-Aw-N9N" firstAttribute="top" secondItem="ld1-Ya-Xxv" secondAttribute="bottom" constant="10" id="Gwy-yU-UEc"/>
                             <constraint firstItem="xmq-55-N6z" firstAttribute="trailing" secondItem="Lab-fK-CwS" secondAttribute="trailing" constant="-40" id="HMr-m9-Akg"/>
                             <constraint firstItem="Lab-fK-CwS" firstAttribute="top" secondItem="vdz-Go-63w" secondAttribute="bottom" constant="7" id="J7R-NY-adz"/>
+                            <constraint firstAttribute="centerY" secondItem="dz5-Ku-apZ" secondAttribute="centerY" id="MKr-p8-GeB"/>
                             <constraint firstItem="fpA-Aw-N9N" firstAttribute="leading" secondItem="MaO-CZ-4EZ" secondAttribute="leadingMargin" constant="10" id="MsG-AO-l5Q"/>
                             <constraint firstItem="mTJ-59-Q9J" firstAttribute="leading" secondItem="MaO-CZ-4EZ" secondAttribute="leadingMargin" constant="10" id="Nlk-yJ-IrK"/>
                             <constraint firstItem="xmq-55-N6z" firstAttribute="top" secondItem="ld1-Ya-Xxv" secondAttribute="bottom" constant="8" id="OJ4-mx-AsD"/>
@@ -1078,6 +1109,7 @@
                             <constraint firstItem="KMO-1Z-EtY" firstAttribute="centerX" secondItem="mTJ-59-Q9J" secondAttribute="centerX" constant="40" id="kfV-UV-HOE"/>
                             <constraint firstItem="Fe5-EW-pKX" firstAttribute="top" secondItem="YK3-nh-gjM" secondAttribute="bottom" constant="-47" id="oJR-th-RFo"/>
                             <constraint firstItem="w1a-AY-FGu" firstAttribute="top" secondItem="6L4-IT-Lyf" secondAttribute="bottom" id="oka-XL-SEN"/>
+                            <constraint firstItem="dz5-Ku-apZ" firstAttribute="leading" secondItem="MaO-CZ-4EZ" secondAttribute="leadingMargin" constant="299" id="q67-Ih-NC1"/>
                             <constraint firstItem="YK3-nh-gjM" firstAttribute="leading" secondItem="KMO-1Z-EtY" secondAttribute="trailing" constant="25" id="tGP-EY-ebO"/>
                             <constraint firstItem="Fe5-EW-pKX" firstAttribute="top" secondItem="KMO-1Z-EtY" secondAttribute="bottom" constant="-50" id="tv9-3E-SJI"/>
                             <constraint firstItem="mTJ-59-Q9J" firstAttribute="top" secondItem="ld1-Ya-Xxv" secondAttribute="bottom" constant="40" id="ubc-VD-SND"/>
@@ -1114,7 +1146,11 @@
                         <outlet property="importViewLeadingConstraint" destination="iHe-eL-rU0" id="pzQ-lf-cBi"/>
                         <outlet property="importViewTrailingConstraint" destination="vT1-7J-GhU" id="Twl-a2-uKS"/>
                         <outlet property="saveBtn" destination="0uQ-gR-uKx" id="hhB-Dp-jje"/>
+                        <outlet property="sideBar" destination="dz5-Ku-apZ" id="4XK-lY-ns1"/>
+                        <outlet property="sideBarLeftConstraint" destination="q67-Ih-NC1" id="ccU-Jc-BhL"/>
+                        <outlet property="sideBarTableView" destination="uJn-Hz-VcM" id="QEN-fg-it0"/>
                         <outlet property="sideLabel" destination="xmq-55-N6z" id="cd6-Sq-ry4"/>
+                        <outlet property="sidebarHeight" destination="CSz-aD-EmN" id="eXR-3E-Vjl"/>
                         <outlet property="spinner" destination="ume-la-Opv" id="oeM-dd-X8d"/>
                     </connections>
                 </viewController>
@@ -1123,7 +1159,7 @@
                 <swipeGestureRecognizer direction="right" id="Gsg-T1-f9f"/>
                 <panGestureRecognizer minimumNumberOfTouches="1" maximumNumberOfTouches="1" id="YwW-rL-hz5"/>
             </objects>
-            <point key="canvasLocation" x="2568" y="189"/>
+            <point key="canvasLocation" x="2559" y="232"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="xRv-5X-ENr">
