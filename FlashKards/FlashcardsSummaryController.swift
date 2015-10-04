@@ -70,8 +70,8 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         updateSummaryTimer = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "updateSummary", userInfo: nil, repeats: true)
         if showResultsScreen {
             showResultsScreen = false
-            if let dict = self.quizResultsDict{
-                println("Showing results screen")
+            if let _ = self.quizResultsDict{
+                print("Showing results screen")
                 self.performSegueWithIdentifier("showResults", sender: self)
             }
         }
@@ -91,7 +91,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     
     func configureWithCollection(flashcardCol: FlashCardCollection!){
         flashcardCollection = flashcardCol
-        println("\(flashcardCollection.name.capitalizedString)")
+        print("\(flashcardCollection.name.capitalizedString)")
         navigationItem.title = flashcardCollection.name.uppercaseString
     }
     
@@ -104,7 +104,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
         return 64
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: CollectionSummaryCell = tableView.dequeueReusableCellWithIdentifier("summaryCell") as! CollectionSummaryCell
+        let cell: CollectionSummaryCell = tableView.dequeueReusableCellWithIdentifier("summaryCell") as! CollectionSummaryCell
         let numCards = flashcardCollection.numCards
         let kardOrKards = (numCards == 1) ? "K A R D" : "K A R D S"
         let relTimeDiff = calculateRelativeDate(flashcardCollection.lastReviewed.doubleValue)
@@ -122,7 +122,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
             break
         }
         // TODO: Add more details... time created, updated, numCardsMemorized
-        let subString = count(relTimeDiff[1]) > 2 ? (relTimeDiff[1] as NSString).substringToIndex(3) as String : ""
+        let subString = relTimeDiff[1].characters.count > 2 ? (relTimeDiff[1] as NSString).substringToIndex(3) as String : ""
         if numCards.integerValue < 10 { suggestedActionLabel.text = "Suggested Action:\nAdd some FlashKards." }
         if ((subString != "MIN") && (subString != "HOU") && (numCards.integerValue >= 10)) { suggestedActionLabel.text = "Suggested Action:\nReview the FlashKards." }
         if numCards.integerValue >= 10 && ((subString == "MIN") || (subString == "HOU")) { suggestedActionLabel.text = "Do something else,\n come back later." }
@@ -166,7 +166,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
         if identifier == "ReviewCollection" || identifier == "EditCollection" {
             if flashcardCollection.numCards.integerValue < 1{
-                var reviewNotAvailablePopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
+                let reviewNotAvailablePopup = Popup(frame: CGRect(x: 35, y: view.frame.height/3, width: view.frame.width - 70, height: view.frame.height/3))
                 reviewNotAvailablePopup.numOptions = 1
                 reviewNotAvailablePopup.message = "No cards in deck."
                 reviewNotAvailablePopup.cancelBtnText = "OK"
@@ -206,7 +206,7 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
                 resultsVC.configureWithResults(resultsDict, andCollection: flashcardCollection)
             }
             else{
-                println("SOMETHING IS WRONG")
+                print("SOMETHING IS WRONG")
             }
         }
         else if segue.identifier == "EditCollection"{
@@ -221,9 +221,9 @@ class FlashcardsSummaryController: UIViewController, UITableViewDelegate, UITabl
     
     @IBAction func unwindToSummary(sender: UIStoryboardSegue)
     {
-        println("unwinded to summary, destination \(sender.destinationViewController), originating VC \(sender.sourceViewController)")
+        print("unwinded to summary, destination \(sender.destinationViewController), originating VC \(sender.sourceViewController)")
         if sender.identifier == "completeReview"{
-            println("Complete Review")
+            print("Complete Review")
             let sourceController = sender.sourceViewController as! ReviewFlashcardController
             showResultsScreen = true
             quizResultsDict = sourceController.quizResultsDict

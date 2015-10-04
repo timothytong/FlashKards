@@ -77,10 +77,6 @@ class Popup: UIView {
     private var cancelBtn: UIButton!
     private var cancelBtnLabel: UILabel!
     
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     override init(frame: CGRect){
         super.init(frame: frame)
         backgroundColor = UIColor(red: 53/255, green: 53/255, blue: 53/255, alpha: 1)
@@ -125,6 +121,10 @@ class Popup: UIView {
         cancelBtn.addSubview(cancelBtnLabel)
         addSubview(cancelBtn)
     }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     func removeButtons(){
         if confirmBtn.isDescendantOfView(self){
@@ -147,7 +147,7 @@ class Popup: UIView {
     func cancelBtnTapped(){
         hide { () -> () in
             if (self.delegate?.respondsToSelector(Selector("popupCancelBtnDidTapped:")) == true){
-                println("Calling delegate...")
+                print("Calling delegate...")
                 self.delegate!.popupCancelBtnDidTapped!(self)
             }
         }

@@ -21,8 +21,8 @@ class reviewSummaryCell: UITableViewCell {
     }
 
     func configureWithDict(dict: Dictionary<String, String>){
-        attrLabel.text = dict.keys.array.first!
-        valueLabel.text = dict.values.array.first!
+        attrLabel.text = dict.keys.first!
+        valueLabel.text = dict.values.first!
     }
     
     override func setSelected(selected: Bool, animated: Bool) {

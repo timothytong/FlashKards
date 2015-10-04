@@ -43,7 +43,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         // TableView
         tableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        var homePageCellNib = UINib(nibName: "FlashCardsOverviewCellTemplate", bundle: nil)
+        let homePageCellNib = UINib(nibName: "FlashCardsOverviewCellTemplate", bundle: nil)
         tableView.registerNib(homePageCellNib, forCellReuseIdentifier: "homePageCell")
         tableView.allowsMultipleSelection = false
         
@@ -91,7 +91,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     // MARK: UITableView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:FlashCardsOverviewCell = tableView.dequeueReusableCellWithIdentifier("homePageCell") as! FlashCardsOverviewCell
+        let cell:FlashCardsOverviewCell = tableView.dequeueReusableCellWithIdentifier("homePageCell") as! FlashCardsOverviewCell
         let collection = flashcardCollections[indexPath.row]
         cell.populateCellWithCollection(collection)
         return cell
@@ -122,7 +122,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        _ = UIStoryboard(name: "Main", bundle: nil)
         performSegueWithIdentifier("showSummary", sender: indexPath)
     }
     // MARK: Segue
@@ -173,7 +173,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func addCollectionInputAlreadyExists(input: String!)->Bool{
-        if let collectionOfSameName = collectionsManager.searchExistingCollectionsWithName(input){
+        if let _ = collectionsManager.searchExistingCollectionsWithName(input){
             return true
         }
         return false
@@ -203,29 +203,29 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             })
         })
         if let rowOfInterest = self.rowOfInterest{
-            //            println("Deleting row \(rowOfInterest); CDObjCount: \(flashcardCoreDataObjs.count); tableRowsCount: \(tableView.numberOfRowsInSection(0))")
+            //            print("Deleting row \(rowOfInterest); CDObjCount: \(flashcardCoreDataObjs.count); tableRowsCount: \(tableView.numberOfRowsInSection(0))")
             let collectionToBeDeleted = flashcardCollections[rowOfInterest.row]
             collectionsManager.deleteCollectionWithName(collectionToBeDeleted.name, completionHandler: { (success) -> Void in
                 if success{
-                    println("deletion success")
+                    print("deletion success")
                     self.fileManager.deleteDirectory(collectionToBeDeleted.name, andAllItsFiles: true, withCompletionHandler: { () -> () in
-                        println("Running completion handler...")
+                        print("Running completion handler...")
                         self.flashcardCollections.removeAtIndex(rowOfInterest.row)
                         self.tableView.deleteRowsAtIndexPaths([rowOfInterest], withRowAnimation: UITableViewRowAnimation.Automatic)
                     })
                 }
                 else{
-                    println("Deletion Error")
+                    print("Deletion Error")
                 }
             })
         }
         else{
-            println("rowOfInterest NOT FOUND")
+            print("rowOfInterest NOT FOUND")
         }
     }
     
     func popupCancelBtnDidTapped(popup: Popup) {
-        println("CANCEL")
+        print("CANCEL")
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
                 self.dimLayer.alpha = 0

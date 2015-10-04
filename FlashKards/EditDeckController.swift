@@ -67,23 +67,26 @@ class EditDeckController: UIViewController, UICollectionViewDataSource, UICollec
     
     func smallFlashCardCellDeleteButtonTapped(index: Int) {
         collectionView.performBatchUpdates({ () -> Void in
-            println("Deleting index \(index)")
+            print("Deleting index \(index)")
             let card = self.collectionArray.removeAtIndex(index)
             self.collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
             let collection = card.parentCollection
             if !card.forgotten{
-                println("This is a remembered card.")
+                print("This is a remembered card.")
                 collection.numCardsMemorized = collection.numCardsMemorized.integerValue - 1
             }
             collection.removeFlashcardsObject(card)
             collection.numCards = collection.numCards.integerValue - 1
-            var error: NSError?
-            if collection.managedObjectContext!.save(&error){
-                println("Card successfully deleted from collection")
+
+            do {
+                try collection.managedObjectContext!.save()
+                print("Card successfully deleted from collection")
+            } catch {
+                print("Card cant be deleted!!")
             }
-            else{
-                println("Can't Delete from collection!")
-            }
+            
+
+
         }, completion: { (comeplete) -> Void in
             self.collectionView.reloadData()
         })

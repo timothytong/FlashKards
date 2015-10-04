@@ -157,11 +157,11 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
             }
             else{
                 self.cardSet = nil
-                println("There's only one card in collection")
+                print("There's only one card in collection")
             }
         }
         else{
-            println("No card in collection")
+            print("No card in collection")
         }
     }
     
@@ -184,7 +184,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
     func forget(){
         forgottenCardSet.append(currentCard)
         if currentCard.forgotten == false{
-            println("First time forgotten")
+            print("First time forgotten")
             currentCard.forgotten = true
             cardsForgotten++
         }
@@ -310,17 +310,17 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
                         self.nextCardView.transform = CGAffineTransformIdentity
                         self.nextCardView.alpha = 0
                         
-                        println("Swapped!")
+                        print("Swapped!")
                         self.nextCardView.transform = self.INITIAL_NEXT_CARD_VIEW_SCALE_TRANSFORM
                         
                         if !self.cardSet.isEmpty{
-                            println("Preparing next card...")
+                            print("Preparing next card...")
                             let nextCard = self.cardSet.removeAtIndex(0) as FlashCard
                             self.nextCard = nextCard
                             self.nextCardView.restoreViewsWithFlashcard(nextCard)
                         }
                         else if !self.forgottenCardSet.isEmpty{
-                            println("Preparing a forgotten card...")
+                            print("Preparing a forgotten card...")
                             let nextCard = self.forgottenCardSet.removeAtIndex(0) as FlashCard
                             self.nextCard = nextCard
                             self.nextCardView.restoreViewsWithFlashcard(nextCard)
@@ -444,7 +444,12 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
         if withCountDown{
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
                 for card in self.doneCardSet{
-                    card.managedObjectContext!.save(nil)
+                    do {
+                        try card.managedObjectContext!.save()
+                    } catch {
+                        print("Cannot save card!")
+                    }
+                    
                 }
             })
             endReviewPopup = Popup(frame: CGRect(x: view.frame.width/2 - 80, y: view.frame.height/2 - 30, width: 160, height: 60))
@@ -625,7 +630,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
         var status = "aborted"
         if cardsDone >= collectionOfInterest.numCards.integerValue{
             cardsDone = collectionOfInterest.numCards.integerValue
-            println("Complete!")
+            print("Complete!")
             status = "complete"
             collectionOfInterest.updateLastReviewTimeToCurrentTime()
             collectionOfInterest.updateCardsMemorizedVal(Int32(collectionOfInterest.numCards.integerValue - cardsForgotten))

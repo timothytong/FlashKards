@@ -11,101 +11,122 @@ import Foundation
 class FileManager: NSObject {
     var error: NSError?
     var paths: [AnyObject]!
-    var documentsDirectory: String!
+    var documentsDirectory: NSURL!
     let fileManager = NSFileManager.defaultManager()
+    
     override init() {
         paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        documentsDirectory = paths[0] as! String
+        documentsDirectory = paths[0] as! NSURL
     }
     
     func createDirectoryWithName(name: String!){
-        println("Creating new directory...")
-        var dir = name
-        var dataPath = documentsDirectory.stringByAppendingPathComponent("\(dir)")
-        if (!fileManager.fileExistsAtPath(dataPath)) {
-            fileManager.createDirectoryAtPath(dataPath, withIntermediateDirectories: false, attributes: nil, error: &error)
-            println(" -- created datapath \(dataPath)")
+        print("Creating new directory...")
+        let dir = name
+        let dataPath = documentsDirectory.URLByAppendingPathComponent("\(dir)")
+        if let pathString = dataPath.path {
+            if !fileManager.fileExistsAtPath(pathString) {
+                do {
+                    try fileManager.createDirectoryAtPath(pathString, withIntermediateDirectories: false, attributes: nil)
+                    print(" -- created datapath \(dataPath)")
+                } catch {
+                    print("cannot create dir!!")
+                }
+                
+            }
+            else{
+                print(" -- datapath \(dataPath) exists - cleanup needed!")
+                deleteFilesInDirectory(name, withCompletionHandler: nil)
+            }
+        } else {
+            "Datapath is nil!"
         }
-        else{
-            println(" -- datapath \(dataPath) exists - cleanup needed!")
-            deleteFilesInDirectory(name, withCompletionHandler: nil)
-        }
+        
     }
     
     func deleteFilesInDirectory(directoryName: String!, withCompletionHandler completionHandler:(()->())?){
-        var dir = directoryName
-        var dataPath = documentsDirectory.stringByAppendingPathComponent("\(dir)")
-        println("Deleting all files in dir \(dataPath)")
-        if let url = NSURL(string: dataPath){
-            let enumerator = fileManager.enumeratorAtURL(url, includingPropertiesForKeys: nil, options: nil, errorHandler: nil)
-            while let file = enumerator?.nextObject() as? String {
-                println("Deleting")
-                fileManager.removeItemAtURL(url.URLByAppendingPathComponent(file), error: nil)
-            }
-
+        let dir = directoryName
+        let dataPath = documentsDirectory.URLByAppendingPathComponent("\(dir)")
+        print("Deleting all files in dir \(dataPath)")
+        let enumerator = fileManager.enumeratorAtURL(dataPath, includingPropertiesForKeys: nil, options: .SkipsHiddenFiles) { (url, error) -> Bool in
+            print("Error when deleting")
+            return false
         }
+        while let file = enumerator?.nextObject() as? String {
+            do {
+                print("Trying to delete \(file)")
+                try self.fileManager.removeItemAtURL(dataPath.URLByAppendingPathComponent(file))
+            } catch {
+                print("Unable to delete \(file)")
+            }
+            
+        }
+        
+        
         completionHandler?()
     }
     
     func deleteDirectory(directoryName: String!, andAllItsFiles deleteAllFiles: Bool, withCompletionHandler completionHandler:()->()){
-        var dir = directoryName
+        print("-deleteDirectory")
+        let dir = directoryName
         if deleteAllFiles{
             deleteFilesInDirectory(dir, withCompletionHandler: { () -> () in
-                var dataPath = self.documentsDirectory.stringByAppendingPathComponent("\(dir)")
-                if !self.fileManager.removeItemAtPath(dataPath, error: &self.error) {
-                    println("Failed to delete directory: \(self.error!.localizedDescription)")
-                }
-                else{
-                    println("Deleted directory \(dataPath)")
+                let dataPath = self.documentsDirectory.URLByAppendingPathComponent("\(dir)")
+                do {
+                    try self.fileManager.removeItemAtURL(dataPath)
+                    print("    Deleted directory \(dataPath)")
+                } catch {
+                    print("    Failed to delete directory: \(self.error!.localizedDescription)")
                 }
                 completionHandler()
             })
         } else{
-            var originalDataPath = self.documentsDirectory.stringByAppendingPathComponent("\(dir)")
-            var newDataPath = originalDataPath.stringByDeletingLastPathComponent
-            println("COPYING TO DATAPATH: "+newDataPath)
-            copyFilesInDirectory(originalDataPath, toDirectory: newDataPath, withCompletionHandler: { () -> () in
-                if !self.fileManager.removeItemAtPath(originalDataPath, error: &self.error) {
-                    println("Failed to delete directory: \(self.error!.localizedDescription)")
-                }
-                else{
-                    println("Deleted directory \(originalDataPath)")
-                }
-                completionHandler()
-                
+            let originalDataPath = self.documentsDirectory.URLByAppendingPathComponent("\(dir)")
+            if let newDataPath = originalDataPath.URLByDeletingLastPathComponent {
+                print("    COPYING TO DATAPATH: \(newDataPath.path)")
+                copyFilesInDirectory(originalDataPath, toDirectory: newDataPath, withCompletionHandler: { () -> () in
+                    do {
+                        try self.fileManager.removeItemAtURL(originalDataPath)
+                        print("    Deleted directory \(originalDataPath.path!)")
+                    } catch {
+                        print("    Failed to delete directory: \(originalDataPath.path!)")
+                    }
+                    completionHandler()
             })
         }
         
     }
     
-    func processString(string: String!)->String{
-        let result = string.stringByReplacingOccurrencesOfString(" ", withString: "%20", options: .LiteralSearch, range: nil).stringByReplacingOccurrencesOfString("/", withString: "%2F", options: .LiteralSearch, range: nil)
-        println("returning \(result)")
-        return result
-    }
-    
-    private func copyFilesInDirectory(fromDir: String, toDirectory toDir: String, withCompletionHandler handler: ()->()){
-        println("from: \(fromDir)\nto: \(toDir)")
-        var error: NSError?
-        
-        var contents = fileManager.contentsOfDirectoryAtPath(fromDir, error: &error)
-        if let dirContents = contents{
-            let enumerator = (dirContents as NSArray).objectEnumerator()
+}
 
-            while let file = enumerator.nextObject() as? String{
-                let filePath = fromDir.stringByAppendingPathComponent(file)
-                let destFilePath = toDir.stringByAppendingPathComponent(file)
-                println("copying \(filePath)")
-                if(fileManager.copyItemAtURL(NSURL(fileURLWithPath: filePath)!, toURL: NSURL(fileURLWithPath: destFilePath)!, error: &error)){
-                    println("COPIED")
-                }
-                else{
-                    println("COPY ERROR: \(error!.localizedDescription)")
-                }
+func processString(string: String!)->String{
+    let result = string.stringByReplacingOccurrencesOfString(" ", withString: "%20", options: .LiteralSearch, range: nil).stringByReplacingOccurrencesOfString("/", withString: "%2F", options: .LiteralSearch, range: nil)
+    print("returning \(result)")
+    return result
+}
+
+private func copyFilesInDirectory(fromDir: NSURL, toDirectory toDir: NSURL, withCompletionHandler handler: ()->()){
+    print("-copyFilesInDirectory")
+    print("    from: \(fromDir)\nto: \(toDir)")
+    do {
+        let contents = try fileManager.contentsOfDirectoryAtURL(fromDir, includingPropertiesForKeys: nil, options: .SkipsHiddenFiles)
+        let enumerator = (contents as NSArray).objectEnumerator()
+        while let file = enumerator.nextObject() as? String{
+            let filePath = fromDir.URLByAppendingPathComponent(file)
+            let destFilePath = toDir.URLByAppendingPathComponent(file)
+            do {
+                print("    Trying to copy \(filePath) to \(destFilePath)...")
+                try fileManager.copyItemAtURL(filePath, toURL: destFilePath)
+                print("    COPIED")
+            } catch {
+                print("    ERROR WHILE COPYING")
             }
-            handler()
         }
+        handler()
+        
+    } catch {
+        print("    Unable to read contents of directory at \(fromDir.path!)")
     }
+}
 }
 
 

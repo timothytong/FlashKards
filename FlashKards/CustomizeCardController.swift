@@ -15,14 +15,13 @@ enum EditMode{
 
 class CustomizeCardController: UIViewController, PopupDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITextViewDelegate, UICollectionViewDelegateFlowLayout,
     UITableViewDelegate,
-    UITableViewDataSource {
-    // MARK: Variables
+UITableViewDataSource {
+    // MARK: - Variables
+    
     // IBOutlets
-
     @IBOutlet private weak var sideBar: UIView!
     @IBOutlet private weak var sidebarHeight: NSLayoutConstraint!
     @IBOutlet private weak var sideBarTableView: UITableView!
-
     @IBOutlet private weak var sideBarLeftConstraint: NSLayoutConstraint!
     @IBOutlet private weak var addTxtButtonBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var confirmAddTextBtn: UIButton!
@@ -86,26 +85,26 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     private var animatedBools: Array<Bool>!
     
-    // ALAssets.
+    // ALAssets
     private var library: ALAssetsLibrary!
     private var assetThumbnails: Array<UIImage>!
     private var thumbnails: Array<UIImage>!
     private var alreadyEnumerated = false
     private var urls: Array<NSURL>!
     
-    private var documentsDir: String!
-    
+    // Files
+    private var documentsDir: NSURL!
     private var fileManager: FileManager!
     
     private var textViewBeingAdded: UITextView?
-    // MARK: Functions
+    
+    // MARK: - Functions
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         frontView.userInteractionEnabled = false
         backView.userInteractionEnabled = false
         navigationItem.hidesBackButton = true
-
         
         // Import View
         if Utilities.IS_IPHONE6P(){
@@ -131,9 +130,9 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         addTextBtn.addTarget(self, action: "removeTouchDownGlow:", forControlEvents: .TouchUpOutside)
         
         // Glow
-        var blueGlowColor = Constants.sepLineColor_default
-        var greenGlowColor = UIColor(red: 4/255, green: 247/255, blue: 21/255, alpha: 1)
-        var redGlowColor = UIColor(red: 247/255, green: 5/255, blue: 2/255, alpha: 1)
+        let blueGlowColor = Constants.sepLineColor_default
+        let greenGlowColor = UIColor(red: 4/255, green: 247/255, blue: 21/255, alpha: 1)
+        let redGlowColor = UIColor(red: 247/255, green: 5/255, blue: 2/255, alpha: 1)
         
         addImgBtn.layer.shadowColor = blueGlowColor.CGColor
         addImgBtn.layer.shadowRadius = 0
@@ -259,6 +258,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         sideBar.layer.shadowOpacity = 0.8
         sideBar.layer.shadowColor = UIColor(red: 57.0/255, green: 57.0/255, blue: 57.0/255, alpha: 1).CGColor
         sidebarHeight.constant = 180;
+        sideBarLeftConstraint.constant = view.frame.width / 2 - 20
         
         let optionCellNib: UINib! = UINib(nibName: "SidebarOptionsCellTemplate", bundle: nil)
         sideBarTableView.registerNib(optionCellNib, forCellReuseIdentifier: "optionCell")
@@ -268,13 +268,13 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         
         // Misc
         let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true)
-        documentsDir = paths[0] as? String
+        documentsDir = NSURL(string: paths[0])
+        frontView.userInteractionEnabled = true
+        backView.userInteractionEnabled = true
         
         if Utilities.IS_IPHONE4(){
             addTxtButtonBottomConstraint.constant -= 30
         }
-        
-        sideBarLeftConstraint.constant = view.frame.width / 2
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -289,7 +289,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     func configureWithCollection(collection: FlashCardCollection!){
         collectionID = collection.collectionID.integerValue
-//        println("collectionID: \(collectionID)")
         collectionName = collection.name
         cardID = collection.numCards.integerValue + 1
     }
@@ -301,7 +300,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             self.thumbnails.removeAll(keepCapacity: false)
             self.alreadyEnumerated = false
         }
-        // Dispose of any resources that can be recreated.
     }
     
     func touchDownGlow(sender: UIButton!){
@@ -430,7 +428,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     
     // Ask user if they really want to quit without saving.
     func back() {
-        var backConfirmPopup = Popup(frame: CGRect(x: view.frame.width/2 - 125, y: view.frame.height/3, width: 250, height: view.frame.height/3))
+        let backConfirmPopup = Popup(frame: CGRect(x: view.frame.width/2 - 125, y: view.frame.height/3, width: 250, height: view.frame.height/3))
         backConfirmPopup.message = "Are you sure you want to quit without saving?"
         backConfirmPopup.confirmButtonText = "QUIT"
         backConfirmPopup.cancelBtnText = "NO"
@@ -442,7 +440,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         backConfirmPopup.show()
     }
     
-    // MARK: Popup delegation methods
+    // MARK: - Popup delegation methods
     func popupConfirmBtnDidTapped(popup: Popup) {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: { () -> Void in
@@ -466,7 +464,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         })
     }
     
-    // MARK: Button interactions
+    // MARK: - Button interactions
     func addElementBtnsTapped(sender: UIButton!){
         if !isInEditMode{
             sender.layer.shadowRadius = 0;
@@ -489,7 +487,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             UIView.transitionWithView(sender, duration: 0.4, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
                 let newImgString = (sender.tag == 0) ? "newImg-blue.png" : "text-blue.png"
                 sender.setImage(UIImage(named: newImgString), forState: UIControlState.Normal)
-                var color = Constants.sepLineColor_default
+                let color = Constants.sepLineColor_default
                 sender.layer.shadowColor = color.CGColor;
                 sender.layer.shadowRadius = 4.0;
                 sender.layer.shadowOpacity = 0.9;
@@ -511,7 +509,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         }
     }
     
-    // MARK: Buttons processing
+    // MARK: - Buttons processing
     func buttonPressed(sender:UIButton!){
         switch(sender.tag){
         case 0,1:
@@ -544,7 +542,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     }
     
     func save(){
-//        println("front count: \(frontElementsDict.count) back count: \(backElementsDict.count)")
+        //        println("front count: \(frontElementsDict.count) back count: \(backElementsDict.count)")
         var savePopup: Popup!
         if numElementsBack == 0 || numElementsFront == 0 {
             savePopup = Popup(frame: CGRect(x: view.frame.width/2 - 125, y: view.frame.height/3, width: 250, height: view.frame.height/3))
@@ -606,6 +604,8 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             }
         }
     }
+    
+    // MARK: -
     
     func dismissImportImgView(){
         collapseImgOptionsView()
@@ -684,7 +684,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         // Show the image with an UIImageView
         confirmAddElementBtn.userInteractionEnabled = false
         exitEditBtn.userInteractionEnabled = false
-        var textField = UITextView(frame: CGRect(x: rectSel.frame.origin.x, y: rectSel.frame.origin.y, width: rectSel.frame.width, height: rectSel.frame.height))
+        let textField = UITextView(frame: CGRect(x: rectSel.frame.origin.x, y: rectSel.frame.origin.y, width: rectSel.frame.width, height: rectSel.frame.height))
         textField.tag = newElementTag
         textField.layer.borderWidth = 1
         textField.editable = true
@@ -696,7 +696,6 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         textField.becomeFirstResponder()
         textViewBeingAdded = textField
         // TODO: Add logic to move elements up when the keyboard is up so the user can see the center of the textfield
-        // TODO: Add pan gesture and long press gesture (option to delete)...
         if frontShowing{
             frontView.addSubview(textField)
             frontView.bringSubviewToFront(textField)
@@ -739,12 +738,10 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     func completeAddTextAction(){
         // Store in a dictionary then show it
         if let textField = textViewBeingAdded{
-            if count(textField.text) > 0{
+            if textField.text.characters.count > 0{
                 let optimalFontSize = Utilities.calculateOptimalFontSizeWithText(textField.text, inRect: textField.frame)
-                textField.font = textField.font.fontWithSize(optimalFontSize)
                 
-                var label = UILabel(frame: textField.frame)
-
+                let label = UILabel(frame: textField.frame)
                 label.font = UIFont(name: "HelveticaNeue-Light", size: optimalFontSize)
                 label.text = textField.text
                 label.textAlignment = .Center
@@ -752,12 +749,23 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                 label.lineBreakMode = NSLineBreakMode.ByWordWrapping
                 label.alpha = 0
                 label.tag = newElementTag
+                label.layer.masksToBounds = false
+                // TODO: Add pan gesture and long press gesture (option to delete)...
+                let longPress = UITapGestureRecognizer(target: self, action: "elementLongPressed:")
+                //                longPress.minimumPressDuration = 1
+                label.addGestureRecognizer(longPress)
+                label.userInteractionEnabled = true
+                
+                
                 if frontShowing{
                     frontView.addSubview(label)
+                    frontView.bringSubviewToFront(label)
+                    view.bringSubviewToFront(frontView)
                 } else {
                     backView.addSubview(label)
+                    backView.bringSubviewToFront(label)
+                    view.bringSubviewToFront(backView)
                 }
-
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     UIView.transitionWithView(textField, duration: 0.2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
@@ -765,8 +773,14 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                         label.alpha = 1
                         }, completion: { (complete) -> Void in
                             textField.removeFromSuperview()
+
                     })
                 })
+                
+
+                
+                
+                print("ADDED LONG PRESS")
                 
                 self.textViewBeingAdded = nil
                 self.exitEditMode()
@@ -774,7 +788,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                 self.confirmAddTextBtn.alpha = 0
                 self.confirmAddElementBtn.alpha = 1
                 
-                var dictionary = NSDictionary(dictionary:[
+                let dictionary = NSDictionary(dictionary:[
                     "id": newElementTag,
                     "frame": NSValue(CGRect: textField.frame),
                     "content": textField.text,
@@ -796,7 +810,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                 newElementTag++
             }
             else{
-                var warningPopup = Popup(frame: CGRect(x: view.frame.width / 2 - 80, y: view.frame.height / 2 - 70, width: 160, height: 140))
+                let warningPopup = Popup(frame: CGRect(x: view.frame.width / 2 - 80, y: view.frame.height / 2 - 70, width: 160, height: 140))
                 warningPopup.numOptions = 1
                 warningPopup.message = "Please enter some text."
                 warningPopup.cancelBtnText = "OK"
@@ -905,7 +919,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         
     }
     
-    // MARK: ALAssetsLibrary
+    // MARK: - ALAssetsLibrary
     func enumerateAssetsWithCompletionHandler(handler:()->()){
         var numPics = 0
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
@@ -919,7 +933,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                         if result != nil{
                             let representation = result!.defaultRepresentation()
                             var tempImg = result!.aspectRatioThumbnail()
-                            self.assetThumbnails.append(UIImage(CGImage: tempImg.takeUnretainedValue())!)
+                            self.assetThumbnails.append(UIImage(CGImage: tempImg.takeUnretainedValue()))
                             tempImg = nil
                             self.urls.append(representation.url())
                             numPics++
@@ -929,7 +943,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                 }
                 else{
                     //                    println("Enumeration complete")
-                    for i in 0 ..< numPics{
+                    for _ in 0 ..< numPics{
                         self.animatedBools.append(false)
                     }
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -978,7 +992,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
                 })
             }
             }) { (error) -> Void in
-                println("ERROR when fetching individual full image")
+                print("ERROR when fetching individual full image")
         }
         
     }
@@ -996,28 +1010,28 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         })
     }
     
-    func completeImgImportProcessWithImage(newImage: UIImage!){
+    func completeImgImportProcessWithImage(newImage: UIImage){
         confirmAddElementBtn.userInteractionEnabled = false
         exitEditBtn.userInteractionEnabled = false
         // Save image to disk, grab a url to it.
         let side = frontShowing ? "front" : "back"
-        let tmpImgPath = documentsDir!.stringByAppendingPathComponent("\(collectionName)/tmp/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
+        let tmpImgPath = documentsDir!.URLByAppendingPathComponent("\(collectionName)/tmp/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png")
         let imgPath = "\(collectionName)/\(collectionName)-\(cardID)-\(side)-\(newElementTag).png"
         
-        if UIImagePNGRepresentation(newImage).writeToFile(tmpImgPath, atomically: true){
-            println("Wrote to file")
+        if UIImagePNGRepresentation(newImage)!.writeToFile(tmpImgPath.path!, atomically: true){
+            print("Wrote to file")
         }
         else{
-            println("Could not write to file, using backup method...")
+            print("Could not write to file, using backup method...")
             let imageData = UIImagePNGRepresentation(newImage)
             let fileManager: NSFileManager = NSFileManager.defaultManager()
             let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-            let documentsDirectory: NSString = paths[0] as! NSString
+            let documentsDirectory = paths[0] as NSString
             let fullPath = documentsDirectory.stringByAppendingPathComponent(imgPath)
             fileManager.createFileAtPath(fullPath, contents: imageData, attributes: nil)
         }
         
-        var imageView = UIImageView(frame: CGRect(x: rectSel.frame.origin.x, y: rectSel.frame.origin.y, width: rectSel.frame.width, height: rectSel.frame.height))
+        let imageView = UIImageView(frame: CGRect(x: rectSel.frame.origin.x, y: rectSel.frame.origin.y, width: rectSel.frame.width, height: rectSel.frame.height))
         imageView.image = newImage
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
         imageView.tag = newElementTag
@@ -1026,7 +1040,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         // TODO: Add pan gesture and long press gesture (option to delete)...
         
         // Store in a dictionary then show it
-        var dictionary = NSDictionary(dictionary:[
+        let dictionary = NSDictionary(dictionary:[
             "id": newElementTag,
             "frame": NSValue(CGRect: imageView.frame),
             "content": imgPath,
@@ -1073,9 +1087,9 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         return self.hideStatusBar
     }
     
-    // MARK: UICollectionView
+    // MARK: - Collection View
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var cell:CollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("imgCollectionCell", forIndexPath: indexPath) as! CollectionViewCell
+        let cell:CollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("imgCollectionCell", forIndexPath: indexPath) as! CollectionViewCell
         cell.putImage(self.thumbnails[indexPath.row] as UIImage!, withAnimation: !animatedBools[indexPath.row])
         if !animatedBools[indexPath.row]{ animatedBools[indexPath.row] = true }
         return cell
@@ -1093,8 +1107,8 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
         return 1
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        if let touch = touches.first as? UITouch{
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let touch = touches.first {
             if let tv = self.textViewBeingAdded{
                 let location = touch.locationInView(tv)
                 if CGRectContainsPoint(tv.bounds, location){
@@ -1129,7 +1143,8 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell: SidebarOptionsCell = sideBarTableView.dequeueReusableCellWithIdentifier("optionCell") as! SidebarOptionsCell
+        let cell: SidebarOptionsCell = sideBarTableView.dequeueReusableCellWithIdentifier("optionCell") as! SidebarOptionsCell
+        cell.iconImageView.backgroundColor = UIColor.whiteColor()
         switch(indexPath.row){
         case 0:
             cell.optionLabel.text = "FONT"
@@ -1141,7 +1156,7 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
             break
         }
         return cell
-
+        
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -1161,4 +1176,14 @@ class CustomizeCardController: UIViewController, PopupDelegate, UICollectionView
     }
     */
     
+    // MARK: - Editing
+    func elementLongPressed(sender: UILongPressGestureRecognizer){
+        let view = sender.view!
+        let senderTag = view.tag
+        print("LONG PRESS - VIEW #\(senderTag)")
+        if !editing{
+            editing = true
+            
+        }
+    }
 }

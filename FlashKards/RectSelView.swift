@@ -23,10 +23,6 @@ class RectSelView: UIView {
     private var circles: Array<UIView>!
     private var prevTranslation: CGPoint!
     
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
     override init(frame: CGRect){
         super.init(frame: frame)
         clipsToBounds = false
@@ -41,7 +37,7 @@ class RectSelView: UIView {
         layer.addSublayer(dashedBorder)
         
         // Pan gesture (drag move) for the view itself
-        var dragPan = UIPanGestureRecognizer(target: self, action: "selRectPanned:")
+        let dragPan = UIPanGestureRecognizer(target: self, action: "selRectPanned:")
         self.addGestureRecognizer(dragPan)
         
         // The 4 resize grippers.
@@ -59,12 +55,12 @@ class RectSelView: UIView {
         // Invisible pannable areas
         panAreas = [topLeftPanArea, topRightPanArea, bottomLeftPanArea, bottomRightPanArea]
         for(var i = 0; i < panAreas.count; i++){
-            var panArea = panAreas[i]
+            let panArea = panAreas[i]
             let x = i % 2 == 0 ? -10 : frame.width - 20
             let y = (i < 2) ? -10 : frame.height - 20
             panArea.frame = CGRect(x: x, y: y, width: 30, height: 30)
             panArea.tag = i
-            var pan = UIPanGestureRecognizer(target: self, action: "resizeDotPanned:")
+            let pan = UIPanGestureRecognizer(target: self, action: "resizeDotPanned:")
             pan.maximumNumberOfTouches = 1
             pan.minimumNumberOfTouches = 1
             addSubview(panArea)
@@ -75,7 +71,7 @@ class RectSelView: UIView {
         // Circles
         circles = [topLeftCircle, topRightCircle, bottomLeftCircle, bottomRightCircle]
         for(var i = 0; i < circles.count; i++){
-            var circle = circles[i]
+            let circle = circles[i]
             let x = (i % 2 == 0) ? -5 : frame.width - 5
             let y = (i < 2) ? -5 : frame.width - 5
             circle.frame = CGRect(x: x, y: y, width: 10, height: 10)
@@ -88,6 +84,10 @@ class RectSelView: UIView {
             addSubview(circle)
             circles[i] = circle
         }
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func layoutSubviews() {
@@ -104,7 +104,7 @@ class RectSelView: UIView {
             return
         }
         var translation = sender.translationInView(self)
-        var temp = translation
+        let temp = translation
         //        println("\(translation.x), \(translation.y)")
         translation.x -= prevTranslation.x
         translation.y -= prevTranslation.y
@@ -144,7 +144,7 @@ class RectSelView: UIView {
             return
         }
         var translation = sender.translationInView(self)
-        var temp = translation
+        let temp = translation
         //        println("\(translation.x), \(translation.y)")
         translation.x -= prevTranslation.x
         translation.y -= prevTranslation.y
@@ -207,7 +207,7 @@ class RectSelView: UIView {
         }
         
         for(var i = 0; i < circles.count; i++){
-            var circle = circles[i]
+            let circle = circles[i]
             let x = (i % 2 == 0) ? -5 : frame.width - 5
             let y = (i < 2) ? -5 : frame.height - 5
             circle.frame = CGRect(x: x, y: y, width: 10, height: 10)
@@ -215,7 +215,7 @@ class RectSelView: UIView {
         }
         
         for(var i = 0; i < panAreas.count; i++){
-            var panArea = panAreas[i]
+            let panArea = panAreas[i]
             let x = i % 2 == 0 ? -10 : frame.width - 20
             let y = (i < 2) ? -10 : frame.height - 20
             panArea.frame = CGRect(x: x, y: y, width: 30, height: 30)

@@ -17,9 +17,6 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
     var delegate: AnyObject?
     private var bannedCharset = "<>?;@$%^&\\'`"
     private var errMsgLabel: UILabel!
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
     
     override init(frame: CGRect){
         super.init(frame: frame)
@@ -30,7 +27,7 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         layer.borderColor = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 0.7).CGColor
         
         // Instruction label
-        var instrucLabel = UILabel(frame: CGRectMake(10, 25, frame.width - 20, frame.height/3))
+        let instrucLabel = UILabel(frame: CGRectMake(10, 25, frame.width - 20, frame.height/3))
         instrucLabel.text = "Name your new collection."
         instrucLabel.font = UIFont(name: "AppleSDGothicNeo-Thin", size: 30)
         instrucLabel.textColor = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
@@ -47,15 +44,15 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         inputField.textAlignment = NSTextAlignment.Center
         inputField.returnKeyType = UIReturnKeyType.Done
         inputField.delegate = self
-        var cancelImg = UIImage(named: "cancel-white.png")
-        var cancelImg_hilighted = UIImage(named: "cancel-white-highlighted.png")
-        var clrBtn = UIButton(frame:CGRectMake(0, 0, 22, 24))
+        let cancelImg = UIImage(named: "cancel-white.png")
+        let cancelImg_hilighted = UIImage(named: "cancel-white-highlighted.png")
+        let clrBtn = UIButton(frame:CGRectMake(0, 0, 22, 24))
         clrBtn.setImage(cancelImg, forState: .Normal)
         clrBtn.setImage(cancelImg_hilighted, forState: .Highlighted)
         clrBtn.addTarget(self, action: "clearTxt", forControlEvents: .TouchUpInside)
         inputField.rightView = clrBtn
         inputField.rightViewMode = .WhileEditing
-        var border = CALayer()
+        let border = CALayer()
         border.frame = CGRect(x: 0, y: inputField.frame.size.height - 1, width: inputField.frame.size.width, height: inputField.frame.size.height)
         border.borderColor = UIColor(red: 247/255, green: 4/255, blue: 0, alpha: 1).CGColor
         border.borderWidth = 1
@@ -74,8 +71,8 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         addSubview(errMsgLabel)
         
         // Done Btn
-        var doneBtn = UIButton(frame: CGRect(x: frame.width/2 - 50, y: frame.height * 3/4, width: 100, height: 50))
-        var doneBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: doneBtn.frame.width, height: doneBtn.frame.height))
+        let doneBtn = UIButton(frame: CGRect(x: frame.width/2 - 50, y: frame.height * 3/4, width: 100, height: 50))
+        let doneBtnLabel = UILabel(frame: CGRect(x: 0, y: 0, width: doneBtn.frame.width, height: doneBtn.frame.height))
         doneBtnLabel.font = UIFont(name: "Avenir-Roman", size: 22)
         doneBtnLabel.text = "DONE"
         doneBtnLabel.textAlignment = NSTextAlignment.Center
@@ -85,11 +82,15 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         addSubview(doneBtn)
         
         // Cancel Btn
-        var cancelBtn = UIButton(frame: CGRect(x: frame.width - 25, y: 5, width: 20, height: 20))
+        let cancelBtn = UIButton(frame: CGRect(x: frame.width - 25, y: 5, width: 20, height: 20))
         cancelBtn.setImage(cancelImg, forState: .Normal)
         cancelBtn.setImage(cancelImg_hilighted, forState: .Highlighted)
         cancelBtn.addTarget(self, action: "cancelBtnTapped", forControlEvents: UIControlEvents.TouchUpInside)
         addSubview(cancelBtn)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func clearTxt(){
@@ -97,18 +98,20 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
     }
     
     private func checkInputValidity() -> Bool{
-        let textFieldText = inputField.text
-        if count(textFieldText) == 0{
-            showTextFieldWarning(1)
-            return false
+        if let textFieldText = inputField.text {
+            if textFieldText.characters.count == 0{
+                showTextFieldWarning(1)
+                return false
+            }
+            else if textFieldText.characters.count > 20{
+                inputField.text = (textFieldText as NSString).substringToIndex(20)
+                errMsgLabel.text = "Maximum 20 characters."
+                showTextFieldWarning(0)
+                return false
+            }
+            return true
         }
-        else if count(textFieldText) > 20{
-            inputField.text = (textFieldText as NSString).substringToIndex(20)
-            errMsgLabel.text = "Maximum 20 characters."
-            showTextFieldWarning(0)
-            return false
-        }
-        return true
+        return false
     }
     
     func cancelBtnTapped(){
@@ -166,15 +169,15 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         let charset = NSCharacterSet(charactersInString: bannedCharset).invertedSet
         let components = string.componentsSeparatedByCharactersInSet(charset)
-        let filteredText = join("", components)
+        let filteredText = components.joinWithSeparator("")
         //        println("STRING: \(string), FILTERED: \(filteredText)")
         var allowedInput = (string == filteredText) ? false : true
-        if !allowedInput && count(string) > 0{
+        if !allowedInput && string.characters.count > 0{
             showTextFieldWarning(0)
-            errMsgLabel.text = "Invalid character \"\((string as NSString).substringFromIndex(count(string) - 1))\""
+            errMsgLabel.text = "Invalid character \"\((string as NSString).substringFromIndex(string.characters.count - 1))\""
         }
         else{
-            if count(string) == 0{ allowedInput = true } // This is a backspace
+            if string.characters.count == 0{ allowedInput = true } // This is a backspace
             errMsgLabel.text = ""
         }
         return allowedInput
@@ -221,7 +224,7 @@ class AddCollectionPopup: UIView, UITextFieldDelegate {
         NSNotificationCenter.defaultCenter().removeObserver(UITextFieldTextDidChangeNotification)
     }
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         dismissKeyboard()
     }
     

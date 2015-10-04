@@ -14,20 +14,20 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eDr-Tr-erp">
-                        <rect key="frame" x="19" y="12" width="35" height="35"/>
+                        <rect key="frame" x="6" y="12" width="35" height="35"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="35" id="0Pq-yY-aEH"/>
                             <constraint firstAttribute="height" constant="35" id="gmW-NV-tIW"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OPTION TEXT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wxz-HQ-xHD">
-                        <rect key="frame" x="72" y="2" width="240" height="56"/>
+                        <rect key="frame" x="59" y="2" width="253" height="56"/>
                         <fontDescription key="fontDescription" name="AvenirNextCondensed-Regular" family="Avenir Next Condensed" pointSize="20"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fNH-MB-8KV">
-                        <rect key="frame" x="65" y="7" width="1" height="43.5"/>
+                        <rect key="frame" x="52" y="7" width="1" height="43.5"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="1" id="U26-s6-XDI"/>
@@ -38,7 +38,7 @@
                 <constraints>
                     <constraint firstAttribute="bottomMargin" secondItem="wxz-HQ-xHD" secondAttribute="bottom" constant="-6.5" id="1lS-Zp-ekn"/>
                     <constraint firstItem="fNH-MB-8KV" firstAttribute="leading" secondItem="eDr-Tr-erp" secondAttribute="trailing" constant="11" id="9fT-qi-eei"/>
-                    <constraint firstItem="eDr-Tr-erp" firstAttribute="leading" secondItem="LR5-IS-6OD" secondAttribute="leadingMargin" constant="11" id="AkX-RK-ZeH"/>
+                    <constraint firstItem="eDr-Tr-erp" firstAttribute="leading" secondItem="LR5-IS-6OD" secondAttribute="leadingMargin" constant="-2" id="AkX-RK-ZeH"/>
                     <constraint firstAttribute="bottomMargin" secondItem="fNH-MB-8KV" secondAttribute="bottom" constant="1" id="Iba-dm-88G"/>
                     <constraint firstItem="wxz-HQ-xHD" firstAttribute="top" secondItem="LR5-IS-6OD" secondAttribute="topMargin" constant="-6" id="PDR-gV-vqj"/>
                     <constraint firstItem="wxz-HQ-xHD" firstAttribute="leading" secondItem="eDr-Tr-erp" secondAttribute="trailing" constant="18" id="QRM-JE-quq"/>
