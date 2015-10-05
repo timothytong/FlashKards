@@ -14,9 +14,7 @@
 		3320C5C21ABF807B00A90CD4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5C11ABF807B00A90CD4 /* AppDelegate.swift */; };
 		3320C5C51ABF807B00A90CD4 /* FlashKards.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5C31ABF807B00A90CD4 /* FlashKards.xcdatamodeld */; };
 		3320C5C71ABF807B00A90CD4 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5C61ABF807B00A90CD4 /* HomeViewController.swift */; };
-		3320C5CA1ABF807B00A90CD4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3320C5C81ABF807B00A90CD4 /* Main.storyboard */; };
 		3320C5CC1ABF807B00A90CD4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3320C5CB1ABF807B00A90CD4 /* Images.xcassets */; };
-		3320C5CF1ABF807B00A90CD4 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3320C5CD1ABF807B00A90CD4 /* LaunchScreen.xib */; };
 		3320C5DB1ABF807C00A90CD4 /* FlashKardsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3320C5DA1ABF807C00A90CD4 /* FlashKardsTests.swift */; };
 		33213C391AC1E44700CF1B38 /* cancel-white.png in Resources */ = {isa = PBXBuildFile; fileRef = 33213C381AC1E44700CF1B38 /* cancel-white.png */; };
 		33213C3B1AC20D6A00CF1B38 /* cancel-white-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 33213C3A1AC20D6A00CF1B38 /* cancel-white-highlighted.png */; };
@@ -66,6 +64,8 @@
 		33F0C80D1B0448800081DB44 /* SmallFlashCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33F0C80C1B0448800081DB44 /* SmallFlashCardCell.swift */; };
 		AF0227C01B8459C500DA3BA6 /* SidebarOptionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF0227BF1B8459C500DA3BA6 /* SidebarOptionsCell.swift */; };
 		AF0227C41B845A0B00DA3BA6 /* SidebarOptionsCellTemplate.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF0227C31B845A0B00DA3BA6 /* SidebarOptionsCellTemplate.xib */; };
+		AF1F1B0F1BC2011E0038A62E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF1F1B0E1BC2011E0038A62E /* Main.storyboard */; settings = {ASSET_TAGS = (); }; };
+		AF2938351BC1284D00A4F24B /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AF2938341BC1284D00A4F24B /* Info.plist */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,11 +97,9 @@
 		3317343A1ADCC5360021DC8B /* ok-gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ok-gray.png"; path = "Images/ok-gray.png"; sourceTree = "<group>"; };
 		3318DD301AE9197100ECB48F /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		3320C5BC1ABF807B00A90CD4 /* FlashKards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlashKards.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3320C5C01ABF807B00A90CD4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3320C5C11ABF807B00A90CD4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3320C5C41ABF807B00A90CD4 /* FlashKards.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FlashKards.xcdatamodel; sourceTree = "<group>"; };
 		3320C5C61ABF807B00A90CD4 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		3320C5C91ABF807B00A90CD4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3320C5CB1ABF807B00A90CD4 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3320C5CE1ABF807B00A90CD4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		3320C5D41ABF807C00A90CD4 /* FlashKardsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlashKardsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,6 +158,8 @@
 		AF0227BD1B8431E600DA3BA6 /* FlashKards 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "FlashKards 2.xcdatamodel"; sourceTree = "<group>"; };
 		AF0227BF1B8459C500DA3BA6 /* SidebarOptionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidebarOptionsCell.swift; sourceTree = "<group>"; };
 		AF0227C31B845A0B00DA3BA6 /* SidebarOptionsCellTemplate.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SidebarOptionsCellTemplate.xib; sourceTree = "<group>"; };
+		AF1F1B0E1BC2011E0038A62E /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		AF2938341BC1284D00A4F24B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,7 +221,7 @@
 		3320C5BF1ABF807B00A90CD4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				3320C5C01ABF807B00A90CD4 /* Info.plist */,
+				AF2938341BC1284D00A4F24B /* Info.plist */,
 				33213C371AC1E43900CF1B38 /* Images */,
 			);
 			name = "Supporting Files";
@@ -278,7 +278,7 @@
 		3334392D1AC4443600A808F9 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				3320C5C81ABF807B00A90CD4 /* Main.storyboard */,
+				AF1F1B0E1BC2011E0038A62E /* Main.storyboard */,
 				33402CFA1AC0C20700265F70 /* AuxiliaryViews */,
 				33402CF71AC0B7F300265F70 /* ViewControllers */,
 			);
@@ -422,7 +422,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0620;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Timothy Tong";
 				TargetAttributes = {
 					3320C5BB1ABF807B00A90CD4 = {
@@ -466,14 +466,15 @@
 				33BF1DC51AC5DB2B00031C69 /* text-blue.png in Resources */,
 				33213C391AC1E44700CF1B38 /* cancel-white.png in Resources */,
 				33BF1DCB1AC600A700031C69 /* delete-white.png in Resources */,
-				3320C5CA1ABF807B00A90CD4 /* Main.storyboard in Resources */,
 				333439371AC450F300A808F9 /* go-white.png in Resources */,
 				33402CF01AC09B5E00265F70 /* FlashCardsOverviewCellTemplate.xib in Resources */,
 				33F0C80B1B042A000081DB44 /* delete_icon.png in Resources */,
+				AF1F1B0F1BC2011E0038A62E /* Main.storyboard in Resources */,
 				AF0227C41B845A0B00DA3BA6 /* SidebarOptionsCellTemplate.xib in Resources */,
 				33213C3B1AC20D6A00CF1B38 /* cancel-white-highlighted.png in Resources */,
 				3317343B1ADCC5360021DC8B /* ok-gray.png in Resources */,
 				331734391ADCBFA50021DC8B /* cancel-red-forget.png in Resources */,
+				AF2938351BC1284D00A4F24B /* Info.plist in Resources */,
 				33CA2C451AE1B8C200BC7804 /* flip-blue.png in Resources */,
 				333439351AC44F6F00A808F9 /* edit-white.png in Resources */,
 				333D95811AC902BA0028337D /* down-white.png in Resources */,
@@ -481,7 +482,6 @@
 				33CB73691AC49C6900B72A6A /* newImg-white.png in Resources */,
 				33CB73711AC4A65000B72A6A /* flip-white.png in Resources */,
 				3327F5F51AD6DAA700D1B3D1 /* cancel-blue.png in Resources */,
-				3320C5CF1ABF807B00A90CD4 /* LaunchScreen.xib in Resources */,
 				3311FED91ACB9CD8001C3693 /* ok-white.png in Resources */,
 				33BF1DCE1AC624DC00031C69 /* cancel-red.png in Resources */,
 				3320C5CC1ABF807B00A90CD4 /* Images.xcassets in Resources */,
@@ -570,14 +570,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		3320C5C81ABF807B00A90CD4 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3320C5C91ABF807B00A90CD4 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		3320C5CD1ABF807B00A90CD4 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -609,6 +601,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -623,6 +616,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -660,6 +654,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
@@ -682,6 +677,7 @@
 				INFOPLIST_FILE = FlashKards/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.timothytong.flashkards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "FlashKards/FlashKards-Bridging-Header.h";
@@ -704,6 +700,7 @@
 				INFOPLIST_FILE = FlashKards/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.timothytong.flashkards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "FlashKards/FlashKards-Bridging-Header.h";
@@ -725,6 +722,7 @@
 				);
 				INFOPLIST_FILE = FlashKardsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.timothytong.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlashKards.app/FlashKards";
 			};
@@ -740,6 +738,7 @@
 				);
 				INFOPLIST_FILE = FlashKardsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.timothytong.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlashKards.app/FlashKards";
 			};

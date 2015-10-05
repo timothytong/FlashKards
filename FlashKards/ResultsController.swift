@@ -116,13 +116,13 @@ class ResultsController: UIViewController, UITableViewDataSource, UITableViewDel
         var returnCell: UITableViewCell!
         if indexPath.section == 0{
             let dict = resultsArray[0] as Dictionary
-            var cell = tableView.dequeueReusableCellWithIdentifier("reviewSummaryStatusCell") as! ReviewSummaryStatusCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("reviewSummaryStatusCell") as! ReviewSummaryStatusCell
             cell.configureWithDict(dict)
             returnCell = cell
         }
         else{
             let dict = resultsArray[indexPath.row + 1] as Dictionary
-            var cell = tableView.dequeueReusableCellWithIdentifier("reviewSummaryCell") as! reviewSummaryCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("reviewSummaryCell") as! reviewSummaryCell
             cell.configureWithDict(dict)
             returnCell = cell
         }
@@ -143,7 +143,7 @@ class ResultsController: UIViewController, UITableViewDataSource, UITableViewDel
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        var label = UILabel()
+        let label = UILabel()
         label.textColor = UIColor.whiteColor()
         label.backgroundColor = UIColor(red: 62/255, green: 62/255, blue: 62/255, alpha: 1)
         label.font = UIFont(name: "AvenirNextCondensed-Regular", size: 16)

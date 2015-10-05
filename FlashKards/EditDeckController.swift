@@ -23,11 +23,11 @@ class EditDeckController: UIViewController, UICollectionViewDataSource, UICollec
     func configureWithCollection(collection: FlashCardCollection){
         self.collection = collection
         collectionArray = (collection.flashcards as NSSet).allObjects as! [FlashCard]
-        collectionArray.sort({$0.cardID.integerValue < $1.cardID.integerValue})
+        collectionArray.sortInPlace({$0.cardID.integerValue < $1.cardID.integerValue})
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var cell:SmallFlashCardCell = collectionView.dequeueReusableCellWithReuseIdentifier("flashcardCell", forIndexPath: indexPath) as! SmallFlashCardCell
+        let cell:SmallFlashCardCell = collectionView.dequeueReusableCellWithReuseIdentifier("flashcardCell", forIndexPath: indexPath) as! SmallFlashCardCell
         cell.delegate = self
         let flashCard = collectionArray[indexPath.row]
         cell.populateViewWithDict(flashCard.front as! NSDictionary, widthScale: widthRatio, heightScale: heightRatio, index: indexPath.item)
@@ -49,7 +49,7 @@ class EditDeckController: UIViewController, UICollectionViewDataSource, UICollec
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
     {
-        var originalWidth = view.frame.width - 52
+        let originalWidth = view.frame.width - 52
         var originalHeight = view.frame.height - 123 - 100
         if Utilities.IS_IPHONE4(){
             originalHeight += 23

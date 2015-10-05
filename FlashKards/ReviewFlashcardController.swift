@@ -204,8 +204,8 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
             UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
                 self.flipButton.alpha = 1
                 self.nextButton.alpha = 1
-                var scaleTransform = CGAffineTransformMakeScale(0.5, 0.5)
-                var rotationTransform = CGAffineTransformMakeRotation(1/3 * CGFloat(M_PI))
+                let scaleTransform = CGAffineTransformMakeScale(0.5, 0.5)
+                let rotationTransform = CGAffineTransformMakeRotation(1/3 * CGFloat(M_PI))
                 let flipTransform = CGAffineTransformConcat(scaleTransform, rotationTransform)
                 self.flipButton.transform = flipTransform
                 
@@ -214,8 +214,8 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
             })
             
             UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
-                var scaleTransform = CGAffineTransformMakeScale(0.8, 0.8)
-                var rotationTransform = CGAffineTransformMakeRotation(2/3 * CGFloat(M_PI))
+                let scaleTransform = CGAffineTransformMakeScale(0.8, 0.8)
+                let rotationTransform = CGAffineTransformMakeRotation(2/3 * CGFloat(M_PI))
                 let flipTransform = CGAffineTransformConcat(scaleTransform, rotationTransform)
                 self.flipButton.transform = flipTransform
                 
@@ -224,8 +224,8 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
             })
             
             UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
-                var scaleTransform = CGAffineTransformMakeScale(1, 1)
-                var rotationTransform = CGAffineTransformMakeRotation(CGFloat(M_PI))
+                let scaleTransform = CGAffineTransformMakeScale(1, 1)
+                let rotationTransform = CGAffineTransformMakeRotation(CGFloat(M_PI))
                 let flipTransform = CGAffineTransformConcat(scaleTransform, rotationTransform)
                 self.flipButton.transform = flipTransform
                 
@@ -240,8 +240,8 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
             UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
                 self.flipButton.alpha = 0
                 self.nextButton.alpha = 0
-                var scaleTransform = CGAffineTransformMakeScale(0.5, 0.5)
-                var rotationTransform = CGAffineTransformMakeRotation(2/3 * CGFloat(M_PI))
+                let scaleTransform = CGAffineTransformMakeScale(0.5, 0.5)
+                let rotationTransform = CGAffineTransformMakeRotation(2/3 * CGFloat(M_PI))
                 let flipTransform = CGAffineTransformConcat(scaleTransform, rotationTransform)
                 self.flipButton.transform = flipTransform
                 
@@ -250,8 +250,8 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
             })
             
             UIView.addKeyframeWithRelativeStartTime(0, relativeDuration: 0, animations: {
-                var scaleTransform = CGAffineTransformMakeScale(0.3, 0.3)
-                var rotationTransform = CGAffineTransformMakeRotation(1/3 * CGFloat(M_PI))
+                let scaleTransform = CGAffineTransformMakeScale(0.3, 0.3)
+                let rotationTransform = CGAffineTransformMakeRotation(1/3 * CGFloat(M_PI))
                 let flipTransform = CGAffineTransformConcat(scaleTransform, rotationTransform)
                 self.flipButton.transform = flipTransform
                 
@@ -464,7 +464,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
                     self.dimLayer.alpha = 1
                     }, completion: { (complete) -> Void in
                         self.countDownLabelText = 3
-                        let timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "exitCountDown:", userInfo: nil, repeats: true)
+                        _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "exitCountDown:", userInfo: nil, repeats: true)
                 })
             })
             
@@ -516,7 +516,7 @@ class ReviewFlashcardController: UIViewController, PopupDelegate{
                 countDownTimer = nil
             }
         }
-        var quitConfirmPopup = Popup(frame: CGRect(x: view.frame.width/2 - 125, y: view.frame.height/3, width: 250, height: view.frame.height/3))
+        let quitConfirmPopup = Popup(frame: CGRect(x: view.frame.width/2 - 125, y: view.frame.height/3, width: 250, height: view.frame.height/3))
         quitConfirmPopup.message = "Are you sure you want to quit?"
         quitConfirmPopup.confirmButtonText = "YES"
         quitConfirmPopup.cancelBtnText = "NO"

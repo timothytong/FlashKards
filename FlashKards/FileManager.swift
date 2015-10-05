@@ -16,7 +16,7 @@ class FileManager: NSObject {
     
     override init() {
         paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        documentsDirectory = paths[0] as! NSURL
+        documentsDirectory = NSURL(string: paths[0] as! String)!
     }
     
     func createDirectoryWithName(name: String!){

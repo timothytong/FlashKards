@@ -62,7 +62,7 @@ class Utilities {
             let actualFrame = CGRect(x: frame.origin.x * widthRatio, y: frame.origin.y * heightRatio, width: frame.width * widthRatio, height: frame.height * heightRatio)
             
             if type == "txt"{
-                var label = UILabel(frame: actualFrame)
+                let label = UILabel(frame: actualFrame)
                 var fontSize = element.objectForKey("font_size") as! CGFloat
                 if(widthRatio < 1 || heightRatio < 1){
                     fontSize *= (widthRatio < heightRatio) ? widthRatio : heightRatio
@@ -75,11 +75,11 @@ class Utilities {
                 view.addSubview(label)
             }
             else if type == "img"{
-                let imgURL = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String) + "/" + (element.objectForKey("content") as! String)
-                var imageView = UIImageView(frame: actualFrame)
+                let imgURL = (NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]) + "/" + (element.objectForKey("content") as! String)
+                let imageView = UIImageView(frame: actualFrame)
                 imageView.contentMode = UIViewContentMode.ScaleAspectFit
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    var image = UIImage(contentsOfFile: imgURL)
+                    let image = UIImage(contentsOfFile: imgURL)
                     /*
                     if image != nil && (widthRatio < 1 || heightRatio < 1){
                     // Lower the quality of the image!
